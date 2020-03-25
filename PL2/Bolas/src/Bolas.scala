@@ -68,11 +68,7 @@ object Bolas {
        else{
          escoger_bola(tablero)
        }
-     
-     
-    
-     }
-     
+     }  
   }
   
   //Mueve la bola escogida a la posicion que le introducimos
@@ -210,17 +206,17 @@ object Bolas {
                       
   def main(args: Array[String]){
       val tablero_vacio = List(List('A','A','A','A','A','A','A','A','A'),
-                      List('N','G','R','A','A','A','A','A','A'),
-                      List('A','N','A','_','G','G','A','G','G'),
-                      List('A','R','A','A','R','A','A','G','A'),
-                      List('_','_','G','G','G','G','A','_','A'),
-                      List('A','_','_','G','G','G','A','_','A'),
-                      List('A','_','G','_','G','_','_','_','_'),
-                      List('A','_','A','A','A','_','A','A','A'),
-                      List('A','A','G','G','G','G','A','A','A'))
+                               List('N','G','R','A','A','A','A','A','A'),
+                               List('A','N','A','_','G','G','A','G','G'),
+                               List('A','R','A','A','R','A','A','G','A'),
+                               List('_','_','G','G','G','G','A','_','A'),
+                               List('A','_','_','G','G','G','A','_','A'),
+                               List('A','_','G','_','G','_','_','_','_'),
+                               List('A','_','A','A','A','_','A','A','A'),
+                               List('A','A','G','G','G','G','A','A','A'))
     
                       
-    val tablero_inicial=llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
+    val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
     mostrar_tablero(tablero_inicial)
     escoger_bola(tablero_inicial)
     //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
