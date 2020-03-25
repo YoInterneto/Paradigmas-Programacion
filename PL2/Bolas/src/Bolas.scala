@@ -22,6 +22,7 @@ object Bolas {
         val tablero_inicial = tablero(posicion1).updated(posicion2, valor)
         val tablero_inicial_final = tablero.updated(posicion1, tablero_inicial)
         llenar_tablero_inicial(tablero_inicial_final,cont+1)//Llamamos a la funcion con contador +1
+        
       }
       else {llenar_tablero_inicial(tablero,cont)}//Si la posicion esta reemplazada volvemos otra vez
       
@@ -104,7 +105,8 @@ object Bolas {
   }
   
   def rellenar_turno(tablero:List[List[Char]],cont:Int):List[List[Char]]={//Para rellenar las 3 en cada turno
-    
+
+    val huecos = huecos_restantes(tablero, 0, 0, 0)
     val lista = List('A','N','R','V','M','G')
     val r = scala.util.Random
     val color = r.nextInt(6)
@@ -116,15 +118,28 @@ object Bolas {
       return tablero
     }
     else{
-      
-      if(tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
-        val tablero_inicial = tablero(posicion1).updated(posicion2, valor)
-        val tablero_inicial_final = tablero.updated(posicion1, tablero_inicial)
-        rellenar_turno(tablero_inicial_final,cont+1)//Llamamos a la funcion con contador +1
+    //Si queda un hueco lo rellena
+      if(huecos==1){
+        if(tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
+          val tablero_inicial = tablero(posicion1).updated(posicion2, valor)
+          val tablero_inicial_final = tablero.updated(posicion1, tablero_inicial)
+          return tablero_inicial_final//Llamamos a la funcion con contador +1
       }
-      else {
-        rellenar_turno(tablero,cont)
-      }//Si la posicion esta reemplazada volvemos otra vez
+        else {
+          rellenar_turno(tablero,cont)
+        }
+      }
+      
+      else{
+        if(tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
+          val tablero_inicial = tablero(posicion1).updated(posicion2, valor)
+          val tablero_inicial_final = tablero.updated(posicion1, tablero_inicial)
+          rellenar_turno(tablero_inicial_final,cont+1)//Llamamos a la funcion con contador +1
+      }
+        else {
+          rellenar_turno(tablero,cont)
+        }
+      }
         
     }
     
@@ -150,6 +165,28 @@ object Bolas {
       
     }
   }
+  
+  def huecos_restantes(tablero:List[List[Char]],cont:Int,fila:Int,columna:Int): Int={
+    if(fila==9){
+      return cont
+    }
+    else{
+      if(columna==9){
+      huecos_restantes(tablero, cont, fila+1, 0)
+    }
+    else{
+      if(tablero(fila)(columna)=='_'){
+        huecos_restantes(tablero, cont+1, fila,columna+1)
+      }
+      else{
+        huecos_restantes(tablero, cont, fila,columna+1)
+      }
+    }
+    }
+    
+  }
+  
+  
 
   def mostrar_tablero(tablero:List[List[Char]]):List[List[Char]]={//Mostrar el tablero bien
     
@@ -168,17 +205,18 @@ object Bolas {
   def main(args: Array[String]){
       val tablero_vacio = List(List('A','A','A','A','A','A','A','A','A'),
                       List('N','G','R','A','A','A','A','A','A'),
-                      List('_','_','_','_','G','G','A','G','G'),
-                      List('A','A','A','A','_','A','A','G','A'),
-                      List('A','_','G','G','G','G','A','_','A'),
-                      List('A','_','G','G','G','_','A','_','A'),
-                      List('A','_','G','_','G','_','A','A','A'),
+                      List('A','N','A','_','G','G','A','G','G'),
+                      List('A','R','A','A','R','A','A','G','A'),
+                      List('_','_','G','G','G','G','A','_','A'),
+                      List('A','_','_','G','G','G','A','_','A'),
+                      List('A','_','G','_','G','_','_','_','_'),
                       List('A','_','A','A','A','_','A','A','A'),
                       List('A','A','G','G','G','G','A','A','A'))
 
     val tablero_inicial=llenar_tablero_inicial(tablero_vacio,0)
     mostrar_tablero(tablero_inicial)
     escoger_bola(tablero_inicial)
+    //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
 
    
 
