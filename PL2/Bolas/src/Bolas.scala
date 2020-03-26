@@ -257,6 +257,7 @@ object Bolas {
   //**********************************************************************************************
   def comprobar_tablero(tablero:List[List[Char]],fila:Int,columna:Int):List[List[Char]] = {
     //Si llegamos al final de una fila vamos a la siguiente
+    println("("+ fila +" x "+ columna+")")
     if(columna == 9){
       comprobar_tablero(tablero, fila + 1, 0)
     }
@@ -279,45 +280,26 @@ object Bolas {
       //sigue iterando con el mismo tablero
       }else{
         if(horizontal_cont >= 5){
-          val tableroAux = List() //Tablero borrando columna + horizontal_cont posiciones
+          val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) //Tablero borrando columna + horizontal_cont posiciones
+          mostrar_tablero(tableroAux)
+          println("********************************\n")
           comprobar_tablero(tableroAux, fila, columna+1)
         }else if(vertical_cont >= 5){
-          val tableroAux = List() //Tablero borrando fila + vertical_cont posiciones
+          val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
+          mostrar_tablero(tableroAux)
+          println("********************************\n")
           comprobar_tablero(tableroAux, fila, columna+1)
         }else if(diagonalIzq_cont >= 5){
-          val tableroAux = List() //Tablero borando la diagonalIzq
+          val tableroAux = List() //Tablero borrando la diagonalIzq
           comprobar_tablero(tableroAux, fila, columna+1)
         }else{
           val tableroAux = List() //Tablero borrando la diagonalDcha
           comprobar_tablero(tableroAux, fila, columna+1)
         }
       }
-      
     }
-      /*
-      //No se puede comprobar las horizontales
-      if(columna >= 5){
-        //No puede diagonalIzq y diagonalDcha
-        if(fila >= 7){
-          
-        }
-        //No se puede diagonalDcha
-        else if(columna >= 7){
-          
-        }
-        //No se puede 
-        else if(fila >= 5){
-          
-        }
-        else{
-          
-        }
-      }
-      //No se puede comprobar las verticales
-      else if(fila >= 5){
-        tablero
-      }*/
   }
+  
   
   def horizontal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(columna==8){
@@ -333,6 +315,27 @@ object Bolas {
     }
   }
   
+  def borrar_horizontal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
+    if(contador == 0){
+      //boramos una ultima vez y devolvemos el tablero
+      val lineaTablero = tablero(fila)
+      val lineaTableroAux = reemplazar(lineaTablero, columna, '_')
+      val tableroAux = reemplazar_lista(tablero, fila, lineaTableroAux)
+      tablero
+    }
+    else{
+      //borramos la siguiente posicion que sera (fila)(columna + contador) y seguimos
+      val index = columna + contador - 1
+      
+      val lineaTablero = tablero(fila)
+      val lineaTableroAux = reemplazar(lineaTablero, index, '_')
+      val tableroAux = reemplazar_lista(tablero, fila, lineaTableroAux)
+      
+      borrar_horizontal(tableroAux, contador-1, fila, columna)
+    }
+  }
+  
+  
   def vertical(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(fila == 8){
       contador
@@ -343,6 +346,26 @@ object Bolas {
       }else{
         contador
       }
+    }
+  }
+  
+  def borrar_vertical(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
+    if(contador == 0){
+      //boramos una ultima vez y devolvemos el tablero
+      val lineaTablero = tablero(fila)
+      val lineaTableroAux = reemplazar(lineaTablero, columna, '_')
+      val tableroAux = reemplazar_lista(tablero, fila, lineaTableroAux)
+      tablero
+    }
+    else{
+      //borramos la siguiente posicion que sera (fila + contador)(columna) y seguimos
+      val index = fila + contador - 1
+      
+      val lineaTablero = tablero(index)
+      val lineaTableroAux = reemplazar(lineaTablero, columna, '_')
+      val tableroAux = reemplazar_lista(tablero, index, lineaTableroAux)
+      
+      borrar_vertical(tableroAux, contador-1, fila, columna)
     }
   }
   
@@ -368,6 +391,33 @@ object Bolas {
                                List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'))
+                               
+      val tableroPruebas = List(List('A','A','A','A','A','_','A','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','A','_','_','_','_','_','_','_'),
+                               List('_','A','_','_','_','_','_','_','_'),
+                               List('_','A','_','_','_','_','_','_','_'),
+                               List('_','a','_','_','_','_','_','_','_'),
+                               List('_','a','_','_','_','_','_','_','_'),
+                               List('_','a','_','_','_','_','_','_','_'),
+                               List('_','a','_','_','_','_','_','_','_'))
+                               
+                               
+      println("****primera fila****")
+      val nuevo = borrar_horizontal(tableroPruebas, 5, 0, 0)
+      mostrar_tablero(nuevo)
+      println("****segunda fila****")
+
+      val nuevo2 = borrar_vertical(tableroPruebas, 7, 2, 1)
+      mostrar_tablero(nuevo2)
+      println("****segunda/2 fila****")
+
+      val nuevo3 = borrar_vertical(tableroPruebas, 3, 2, 1)
+      mostrar_tablero(nuevo3)
+      println("******************************")
+      
+      comprobar_tablero(tableroPruebas, 0, 0)
+
                  
       //No sabia que esta funcion estaba hecha jj, era tambien para ir aprendiendo el lenguaje
       //y viendo cosas, si se puede utilizar el count, es mejor que la que esta
@@ -380,10 +430,10 @@ object Bolas {
     //println(reemplazar_lista(tablero_vacio, 0, List('A','B','C','D','E')))
     
                                
-     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
-     mostrar_tablero(tablero_inicial)
-     escoger_bola(tablero_inicial)
-    //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
+     //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
+     //mostrar_tablero(tablero_inicial)
+     //escoger_bola(tablero_inicial)
+     //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
      
    
 
