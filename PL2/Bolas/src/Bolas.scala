@@ -203,6 +203,17 @@ object Bolas {
     println(tablero(8))
     return tablero
   }
+  
+  //Funcion que cuenta los huecos libres que hay en el tablero
+  def huecos_libres(tablero: List[List[Char]], huecos: Int, indexFila: Int): Int = {
+    if(indexFila == 0){
+      val ocurrencias = tablero(indexFila).count(x => {x == '_'})
+      huecos + ocurrencias
+    }else{
+      val ocurrencias = tablero(indexFila).count(x => {x == '_'})
+      huecos_libres(tablero, huecos + ocurrencias, indexFila - 1)
+    }
+  }
                       
   def main(args: Array[String]){
       val tablero_vacio = List(List('A','A','A','A','A','A','A','A','A'),
@@ -214,6 +225,11 @@ object Bolas {
                                List('A','_','G','_','G','_','_','_','_'),
                                List('A','_','A','A','A','_','A','A','A'),
                                List('A','A','G','G','G','G','A','A','A'))
+                 
+      //No sabia que esta funcion estaba hecha jj, era tambien para ir aprendiendo el lenguaje
+      //y viendo cosas, si se puede utilizar el count, es mejor que la que esta
+      val huecos = huecos_libres(tablero_vacio, 0, 8)
+      println(huecos)
     
                       
     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
