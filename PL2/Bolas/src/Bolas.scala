@@ -3,7 +3,7 @@
 object Bolas {
   
   //Se llena el tablero inicialmente vacio aleatoriamente                    
-  def llenar_tablero_inicial(tablero:List[List[Char]],cont:Int):List[List[Char]]={
+  def llenar_tablero_inicial(tablero: List[List[Char]], cont: Int):List[List[Char]]={
     
     val lista = List('A','N','R','V','M','G')//Posibles colores
     
@@ -18,7 +18,7 @@ object Bolas {
       return tablero
     }
     else{//Si no se han llenado los 9
-      if (tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
+      if (tablero(posicion1)(posicion2) == '_'){//Si esa posicion no se ha reemplazado
         val tablero_inicial = reemplazar(tablero(posicion1), posicion2, valor) //tablero(posicion1).updated(posicion2, valor)
         val tablero_inicial_final = reemplazar_lista(tablero, posicion1, tablero_inicial)//tablero.updated(posicion1, tablero_inicial)
         llenar_tablero_inicial(tablero_inicial_final,cont+1)//Llamamos a la funcion con contador + 1
@@ -31,37 +31,40 @@ object Bolas {
   }
   
   //Comprueba que fila y columna no se pasen de los limites
-  def comprobar_limite(x:Int,y:Int):Boolean={
+  def comprobar_limite(x: Int, y: Int):Boolean={
     
     if(x<=8 && x>=0 && y>=0 && y<=8){
-      return true
+      true
     }
     else{
       println("Se ha pasado de los limites del tablero")
-      return false
+      false
     }
   }
   
   //Escoge la bola del tablero que quiere mover
-  def escoger_bola(tablero:List[List[Char]]){
+  def escoger_bola(tablero: List[List[Char]]){
      
      if(final_partida(tablero, 0, 0)){
        println("Tablero completo, partida finalizada")
      }
      else{
-       print("Introduzca la fila de la bola que quiere utilizar(0-8): ")
-       val x = scala.io.StdIn.readInt()
-       print("Introduzca la columna de la bola que quiere utilizar(0-8): ")
-       val y = scala.io.StdIn.readInt()
+       print("Introduzca la fila de la bola que quiere utilizar(1-9): ")
+       val xIn = scala.io.StdIn.readInt()
+       print("Introduzca la columna de la bola que quiere utilizar(1-9): ")
+       val yIn = scala.io.StdIn.readInt()
+       
+       val x = xIn - 1
+       val y = yIn - 1
        
        if(comprobar_limite(x,y)){
        val bola = tablero(x)(y)
-         if(bola!='_'){//Si en el hueco hay una bola
+         if(bola != '_'){//Si en el hueco hay una bola
            println("Bola escogida:"+ bola)
            mover_bola(tablero,bola,x,y)
          }
          else{
-           println("Posicion vacia, vuelva a introducir ")
+           println("ERROR: Posicion vacia. Intente otra posicion. ")
            escoger_bola(tablero)
          }
        }
@@ -74,13 +77,19 @@ object Bolas {
   //Mueve la bola escogida a la posicion que le introducimos
   def mover_bola(tablero:List[List[Char]],bola:Char,x:Int,y:Int){
     
-    print("Introduzca la fila donde la quiere introducir(0-8): ")
-    val x2 = scala.io.StdIn.readInt()
-    print("Introduzca la columna donde la quiere introducir(0-8): ")
-    val y2 = scala.io.StdIn.readInt()
+    print("Introduzca la fila donde la quiere introducir(1-9): ")
+    val xIn = scala.io.StdIn.readInt()
+    print("Introduzca la columna donde la quiere introducir(1-9): ")
+    val yIn = scala.io.StdIn.readInt()
+    
+    val x2 = xIn - 1
+    val y2 = yIn - 1
+    
     if(comprobar_limite(x2, y2)){
+      
       val hueco = tablero(x2)(y2)
-      if(hueco=='_'){//Si el hueco donde queremos introducir esta vacio
+      
+      if(hueco == '_'){//Si el hueco donde queremos introducir esta vacio
         val tablero_inicial = reemplazar(tablero(x2),y2,bola)//tablero(x2).updated(y2, bola) 
         val tablero_sin_hueco = reemplazar_lista(tablero, x2, tablero_inicial) //tablero.updated(x2, tablero_inicial)
         val tablero_hueco = reemplazar(tablero_sin_hueco(x), y, '_') //tablero_sin_hueco(x).updated(y, '_')//Donde estaba la bola antes, ahora esta vacio
@@ -88,12 +97,16 @@ object Bolas {
         
         //escoger_bola(tablero_con_hueco)
         val tablero_sig_turno = rellenar_turno(tablero_con_hueco, 0)
+        
         mostrar_tablero(tablero_sig_turno)
+        
+        comprobar_tablero(tablero)
+        
         escoger_bola(tablero_sig_turno)
          
       }
       else{
-        println("Hueco ocupado, no puede introducir la bola en este hueco")
+        println("ERROR: Posicion ocupada. Intente otra posicion.")
         mover_bola(tablero,bola,x,y)
       }
     }
@@ -105,7 +118,7 @@ object Bolas {
   }
   
   //En cada turno se introducen 3 bolas aleatorias
-  def rellenar_turno(tablero:List[List[Char]],cont:Int):List[List[Char]]={//Para rellenar las 3 en cada turno
+  def rellenar_turno(tablero:List[List[Char]],contador:Int):List[List[Char]]={//Para rellenar las 3 en cada turno
 
     val huecos = huecos_restantes(tablero, 0, 0, 0)
     val lista = List('A','N','R','V','M','G')
@@ -115,8 +128,8 @@ object Bolas {
     val posicion2 = r.nextInt(9)
     val valor = lista(color)
     
-    if(cont==3){
-      return tablero
+    if(contador==3){
+      tablero
     }
     else{
     //Si queda un hueco lo rellena
@@ -124,10 +137,10 @@ object Bolas {
         if(tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
           val tablero_inicial = reemplazar(tablero(posicion1), posicion2, valor)//tablero(posicion1).updated(posicion2, valor)
           val tablero_inicial_final = reemplazar_lista(tablero, posicion1, tablero_inicial)//tablero.updated(posicion1, tablero_inicial)
-          return tablero_inicial_final//Si solo quedaba un hueco, se completa y devuelve el tablero final
+          tablero_inicial_final//Si solo quedaba un hueco, se completa y devuelve el tablero final
       }
         else {
-          rellenar_turno(tablero,cont)
+          rellenar_turno(tablero,contador)
         }
       }
       
@@ -135,20 +148,22 @@ object Bolas {
         if(tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
           val tablero_inicial = reemplazar(tablero(posicion1), posicion2, valor)//tablero(posicion1).updated(posicion2, valor)
           val tablero_inicial_final = reemplazar_lista(tablero, posicion1, tablero_inicial)//tablero.updated(posicion1, tablero_inicial)
-          rellenar_turno(tablero_inicial_final,cont+1)//Llamamos a la funcion con contador +1
+          rellenar_turno(tablero_inicial_final,contador+1)//Llamamos a la funcion con contador +1
       }
         else {
-          rellenar_turno(tablero,cont)
+          rellenar_turno(tablero,contador)
         }
       }
         
     }
     
   }
+  
+  
   //Comprueba que se ha terminado la partida (tablero completo)
-  def final_partida(tablero:List[List[Char]],fila:Int,columna:Int):Boolean={
+  def final_partida(tablero: List[List[Char]], fila: Int, columna: Int):Boolean={
     if(fila==9){
-      return true
+       true
     }
     else{
       if(columna==9){
@@ -156,64 +171,78 @@ object Bolas {
       }
       else{
         if(tablero(fila)(columna)=='_'){
-          return false
+          false
       }
         else{
           final_partida(tablero,fila,columna+1)
-          
         }
       }
-      
     }
   }
   
+  
   //Funcion auxiliar para saber los huecos restantes, se usara en rellenear_turno
-  def huecos_restantes(tablero:List[List[Char]],cont:Int,fila:Int,columna:Int): Int={
+  def huecos_restantes(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int): Int={
     if(fila==9){
-      return cont
+      contador
     }
     else{
       if(columna==9){
-      huecos_restantes(tablero, cont, fila+1, 0)
+      huecos_restantes(tablero, contador, fila+1, 0)
     }
     else{
       if(tablero(fila)(columna)=='_'){
-        huecos_restantes(tablero, cont+1, fila,columna+1)
+        huecos_restantes(tablero, contador+1, fila,columna+1)
       }
       else{
-        huecos_restantes(tablero, cont, fila,columna+1)
+        huecos_restantes(tablero, contador, fila,columna+1)
       }
     }
-    }
-    
+   }
   }
   
   
   //Mostrar el tablero bien, asi es un poco guarro
-  def mostrar_tablero(tablero:List[List[Char]]):List[List[Char]]={
-    
-    println(tablero(0))
-    println(tablero(1))
-    println(tablero(2))
-    println(tablero(3))
-    println(tablero(4))
-    println(tablero(5))
-    println(tablero(6))
-    println(tablero(7))
-    println(tablero(8))
-    return tablero
+  def mostrar_tablero(tablero: List[List[Char]]){
+    print("    ")
+    mostrar_numeros(tablero(0), 0)
+    mostrar_tableroAux(tablero, 0)
   }
-  
-  //Funcion que cuenta los huecos libres que hay en el tablero
-  /*def huecos_libres(tablero: List[List[Char]], huecos: Int, indexFila: Int): Int = {
-    if(indexFila == 0){
-      val ocurrencias = tablero(indexFila).count(x => {x == '_'})
-      huecos + ocurrencias
-    }else{
-      val ocurrencias = tablero(indexFila).count(x => {x == '_'})
-      huecos_libres(tablero, huecos + ocurrencias, indexFila - 1)
+  def mostrar_numeros(fila: List[Char], contador: Int){
+    if(contador == fila.length){
+      println(" ")
     }
-  }*/
+    else{
+      print((contador+1) + "   ")
+      mostrar_numeros(fila, contador+1)
+    }
+  }
+  def mostrar_tableroAux(tablero: List[List[Char]], contador: Int){
+    if(contador == tablero.length){
+    }
+    else{
+      print((contador+1) + " ")
+      mostrar_fila(tablero(contador), 0)
+      println("")
+      mostrar_tableroAux(tablero, contador+1)
+    }
+  }
+  def mostrar_fila(fila: List[Char], contador: Int){
+    if(contador == fila.length){
+      print("|\n")
+    }
+    else{
+      val casilla = fila(contador)
+      if(casilla == '_'){
+        print("|   ")
+        mostrar_fila(fila, contador+1)
+      }
+      else{
+        print("| "+ casilla +" ")
+        mostrar_fila(fila, contador+1)
+      }
+    }
+  }
   
   //Funcion que sustituye al updated
   def reemplazar(lista:List[Char],index:Int,valor:Char):List[Char]={
@@ -255,11 +284,13 @@ object Bolas {
   //Funcion que itera el tablero de juego y comprueba si hay alguna colocacion de las fichas en
   //el tablero que satisfaga las condiciones
   //**********************************************************************************************
-  def comprobar_tablero(tablero:List[List[Char]],fila:Int,columna:Int):List[List[Char]] = {
+  def comprobar_tablero(tablero:List[List[Char]]):List[List[Char]] = {
+    comprobar_tableroAux(tablero, 0, 0)
+  }
+  def comprobar_tableroAux(tablero:List[List[Char]],fila:Int,columna:Int):List[List[Char]] = {
     //Si llegamos al final de una fila vamos a la siguiente
-    println("("+ fila +" x "+ columna+")")
     if(columna == 9){
-      comprobar_tablero(tablero, fila + 1, 0)
+      comprobar_tableroAux(tablero, fila + 1, 0)
     }
     //Si llegamos al final retornamos el tablero
     else if(fila == 9){
@@ -267,40 +298,49 @@ object Bolas {
     }
     //Para las demas posiciones, comprobamos su horizontal, vertical y diagonales
     else{
-      val horizontal_cont = horizontal(tablero, 1, fila, columna)
-      val vertical_cont = vertical(tablero, 1, fila, columna)
-      val diagonalIzq_cont = diagonalIzq(tablero, 1, fila, columna)
-      val diagonalDcha_cont = diagonalDcha(tablero, 1, fila, columna)
-      
-      //Si para esa posicion no se ha encontrado nada, se sigue iterando igual
-      if((horizontal_cont < 5) && (vertical_cont < 5) && 
+      //Si la posicion no es null comprueba
+      if(tablero(fila)(columna) != '_'){
+        val horizontal_cont = horizontal(tablero, 1, fila, columna)
+        val vertical_cont = vertical(tablero, 1, fila, columna)
+        val diagonalIzq_cont = diagonalIzq(tablero, 1, fila, columna)
+        val diagonalDcha_cont = diagonalDcha(tablero, 1, fila, columna)
+        
+        if((horizontal_cont < 5) && (vertical_cont < 5) && 
           (diagonalIzq_cont < 5) && (diagonalDcha_cont < 5)){
-        comprobar_tablero(tablero, fila, columna+1)
-      //Si se encuentra una coincidencia se borran las fichas del tablero y se
-      //sigue iterando con el mismo tablero
-      }else{
-        if(horizontal_cont >= 5){
-          val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) //Tablero borrando columna + horizontal_cont posiciones
-          mostrar_tablero(tableroAux)
-          println("********************************\n")
-          comprobar_tablero(tableroAux, fila, columna+1)
-        }else if(vertical_cont >= 5){
-          val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
-          mostrar_tablero(tableroAux)
-          println("********************************\n")
-          comprobar_tablero(tableroAux, fila, columna+1)
-        }else if(diagonalIzq_cont >= 5){
-          val tableroAux = List() //Tablero borrando la diagonalIzq
-          comprobar_tablero(tableroAux, fila, columna+1)
+        comprobar_tableroAux(tablero, fila, columna+1)
+        
+        //Si se encuentra una coincidencia se borran las fichas del tablero y se
+        //sigue iterando con el mismo tablero
         }else{
-          val tableroAux = List() //Tablero borrando la diagonalDcha
-          comprobar_tablero(tableroAux, fila, columna+1)
+          println("("+ fila +" x "+ columna+")")
+          if(horizontal_cont >= 5){
+            val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) //Tablero borrando columna + horizontal_cont posiciones
+            mostrar_tablero(tableroAux)
+            comprobar_tableroAux(tableroAux, fila, columna+1)
+          }else if(vertical_cont >= 5){
+            val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
+            mostrar_tablero(tableroAux)
+            comprobar_tableroAux(tableroAux, fila, columna+1)
+          }else if(diagonalIzq_cont >= 5){
+            val tableroAux = List() //Tablero borrando la diagonalIzq
+            comprobar_tableroAux(tableroAux, fila, columna+1)
+          }else{
+            val tableroAux = List() //Tablero borrando la diagonalDcha
+            comprobar_tableroAux(tableroAux, fila, columna+1)
+          }
         }
+      }
+      //Si es null no la comprueba y sigue iterando
+      else{
+        comprobar_tableroAux(tablero, fila, columna+1)
       }
     }
   }
   
   
+  //**********************************************************************************************
+  //Cuenta cuantas fichas de un mismo color hay de forma consecutiva en una horizontal del tablero
+  //**********************************************************************************************
   def horizontal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(columna==8){
       contador
@@ -314,7 +354,9 @@ object Bolas {
       }
     }
   }
-  
+  //**********************************************************************************************
+  //Borra n fichas que sean consecutivas y horizontales en el tablero
+  //**********************************************************************************************
   def borrar_horizontal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
     if(contador == 0){
       //boramos una ultima vez y devolvemos el tablero
@@ -336,6 +378,9 @@ object Bolas {
   }
   
   
+  //**********************************************************************************************
+  //Cuenta cuantas fichas de un mismo color hay de forma consecutiva en una vertical del tablero
+  //**********************************************************************************************
   def vertical(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(fila == 8){
       contador
@@ -348,7 +393,9 @@ object Bolas {
       }
     }
   }
-  
+  //**********************************************************************************************
+  //Borra n fichas que sean consecutivas y verticales en el tablero
+  //**********************************************************************************************
   def borrar_vertical(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
     if(contador == 0){
       //boramos una ultima vez y devolvemos el tablero
@@ -369,10 +416,17 @@ object Bolas {
     }
   }
   
+  //itera con fila+1 columna+1
+  //si es la primera vuelta -> 
   def diagonalDcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    contador
+    if(fila == 8 || columna == 8){
+      contador
+    }else{
+      contador
+    }
   }
   
+  //itera con fila+1 columna-1
   def diagonalIzq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     contador
   }
@@ -394,16 +448,16 @@ object Bolas {
                                
       val tableroPruebas = List(List('A','A','A','A','A','_','A','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
-                               List('_','A','_','_','_','_','_','_','_'),
-                               List('_','A','_','_','_','_','_','_','_'),
-                               List('_','A','_','_','_','_','_','_','_'),
-                               List('_','a','_','_','_','_','_','_','_'),
-                               List('_','a','_','_','_','_','_','_','_'),
-                               List('_','a','_','_','_','_','_','_','_'),
-                               List('_','a','_','_','_','_','_','_','_'))
+                               List('_','A','_','_','_','_','_','_','A'),
+                               List('_','A','_','_','_','_','_','_','A'),
+                               List('_','A','_','_','_','_','_','_','A'),
+                               List('_','A','_','_','_','_','_','_','A'),
+                               List('_','A','_','_','_','_','_','_','A'),
+                               List('_','A','_','_','_','_','_','_','A'),
+                               List('_','A','_','_','_','_','_','_','A'))
                                
                                
-      println("****primera fila****")
+      /*println("****primera fila****")
       val nuevo = borrar_horizontal(tableroPruebas, 5, 0, 0)
       mostrar_tablero(nuevo)
       println("****segunda fila****")
@@ -414,10 +468,9 @@ object Bolas {
 
       val nuevo3 = borrar_vertical(tableroPruebas, 3, 2, 1)
       mostrar_tablero(nuevo3)
-      println("******************************")
+      println("******************************")*/
       
-      comprobar_tablero(tableroPruebas, 0, 0)
-
+      comprobar_tablero(tableroPruebas)
                  
       //No sabia que esta funcion estaba hecha jj, era tambien para ir aprendiendo el lenguaje
       //y viendo cosas, si se puede utilizar el count, es mejor que la que esta
