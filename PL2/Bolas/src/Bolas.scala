@@ -19,8 +19,8 @@ object Bolas {
     }
     else{//Si no se han llenado los 9
       if (tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
-        val tablero_inicial = tablero(posicion1).updated(posicion2, valor)
-        val tablero_inicial_final = tablero.updated(posicion1, tablero_inicial)
+        val tablero_inicial = reemplazar(tablero(posicion1), posicion2, valor) //tablero(posicion1).updated(posicion2, valor)
+        val tablero_inicial_final = reemplazar_lista(tablero, posicion1, tablero_inicial)//tablero.updated(posicion1, tablero_inicial)
         llenar_tablero_inicial(tablero_inicial_final,cont+1)//Llamamos a la funcion con contador + 1
         
       }
@@ -81,10 +81,10 @@ object Bolas {
     if(comprobar_limite(x2, y2)){
       val hueco = tablero(x2)(y2)
       if(hueco=='_'){//Si el hueco donde queremos introducir esta vacio
-        val tablero_inicial = tablero(x2).updated(y2, bola)
-        val tablero_sin_hueco = tablero.updated(x2, tablero_inicial)
-        val tablero_hueco = tablero_sin_hueco(x).updated(y, '_')//Donde estaba la bola antes, ahora esta vacio
-        val tablero_con_hueco = tablero_sin_hueco.updated(x, tablero_hueco)//Lo reemplazamos
+        val tablero_inicial = reemplazar(tablero(x2),y2,bola)//tablero(x2).updated(y2, bola) 
+        val tablero_sin_hueco = reemplazar_lista(tablero, x2, tablero_inicial) //tablero.updated(x2, tablero_inicial)
+        val tablero_hueco = reemplazar(tablero_sin_hueco(x), y, '_') //tablero_sin_hueco(x).updated(y, '_')//Donde estaba la bola antes, ahora esta vacio
+        val tablero_con_hueco = reemplazar_lista(tablero_sin_hueco, x, tablero_hueco)//tablero_sin_hueco.updated(x, tablero_hueco)//Lo reemplazamos
         
         //escoger_bola(tablero_con_hueco)
         val tablero_sig_turno = rellenar_turno(tablero_con_hueco, 0)
@@ -122,8 +122,8 @@ object Bolas {
     //Si queda un hueco lo rellena
       if(huecos==1){
         if(tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
-          val tablero_inicial = tablero(posicion1).updated(posicion2, valor)
-          val tablero_inicial_final = tablero.updated(posicion1, tablero_inicial)
+          val tablero_inicial = reemplazar(tablero(posicion1), posicion2, valor)//tablero(posicion1).updated(posicion2, valor)
+          val tablero_inicial_final = reemplazar_lista(tablero, posicion1, tablero_inicial)//tablero.updated(posicion1, tablero_inicial)
           return tablero_inicial_final//Si solo quedaba un hueco, se completa y devuelve el tablero final
       }
         else {
@@ -133,8 +133,8 @@ object Bolas {
       
       else{
         if(tablero(posicion1)(posicion2)=='_'){//Si esa posicion no se ha reemplazado
-          val tablero_inicial = tablero(posicion1).updated(posicion2, valor)
-          val tablero_inicial_final = tablero.updated(posicion1, tablero_inicial)
+          val tablero_inicial = reemplazar(tablero(posicion1), posicion2, valor)//tablero(posicion1).updated(posicion2, valor)
+          val tablero_inicial_final = reemplazar_lista(tablero, posicion1, tablero_inicial)//tablero.updated(posicion1, tablero_inicial)
           rellenar_turno(tablero_inicial_final,cont+1)//Llamamos a la funcion con contador +1
       }
         else {
@@ -205,7 +205,7 @@ object Bolas {
   }
   
   //Funcion que cuenta los huecos libres que hay en el tablero
-  def huecos_libres(tablero: List[List[Char]], huecos: Int, indexFila: Int): Int = {
+  /*def huecos_libres(tablero: List[List[Char]], huecos: Int, indexFila: Int): Int = {
     if(indexFila == 0){
       val ocurrencias = tablero(indexFila).count(x => {x == '_'})
       huecos + ocurrencias
@@ -213,30 +213,114 @@ object Bolas {
       val ocurrencias = tablero(indexFila).count(x => {x == '_'})
       huecos_libres(tablero, huecos + ocurrencias, indexFila - 1)
     }
+  }*/
+  
+  //Funcion que sustituye al updated
+  def reemplazar(lista:List[Char],index:Int,valor:Char):List[Char]={
+    my_update(lista, index, valor, 0, List())
   }
+  def my_update(lista:List[Char],index:Int,valor:Char,cont:Int,listaOut:List[Char]):List[Char]={
+    if(cont==index){
+      val listaAux = listaOut:+valor
+      my_update(lista, index, valor, cont+1, listaAux)
+    }
+    else if(cont==lista.length){
+      listaOut
+    }
+    else{
+      val listaAux = listaOut:+lista(cont)
+      my_update(lista, index, valor, cont+1, listaAux)
+    }
+  }
+  
+  def reemplazar_lista(lista:List[List[Char]],index:Int,valor:List[Char]):List[List[Char]]={
+    my_update_lista(lista, index, valor, 0, List())
+    
+  }
+  def my_update_lista(lista:List[List[Char]],index:Int,valor:List[Char],cont:Int,listaOut:List[List[Char]]):List[List[Char]]={
+    if(cont==index){
+      val listaAux = listaOut:+valor
+      my_update_lista(lista, index, valor, cont+1, listaAux)
+    }
+    else if(cont==lista.length){
+      listaOut
+    }
+    else{
+      val listaAux = listaOut:+lista(cont)
+      my_update_lista(lista, index, valor, cont+1, listaAux)
+    }
+  }
+  
+  def comprobar_fila(tablero:List[List[Char]],cont:Int,fila:Int,columna:Int):List[List[Char]]={
+    if(fila==9){
+      tablero
+    }
+    else{
+      if(columna>=5){
+        comprobar_fila(tablero, 0, fila+1, 0)
+      }
+      else{
+        horizontal(tablero, cont, fila, columna)
+        
+      }
+    }
+  }
+  
+  def horizontal(tablero:List[List[Char]],cont:Int,fila:Int,columna:Int):Int={
+    /*if(tablero(fila)(columna)=='_'){
+      horizontal(tablero,1,fila,columna+1)
+    }*/
+    //else{
+    if(columna==8){
+      print("Contador de fila: "+ fila+cont)
+      cont
+    }
+    else{
+      if(tablero(fila)(columna)==tablero(fila)(columna+1)){
+      horizontal(tablero,cont+1,fila,columna+1)
+     }
+    else{
+      //horizontal(tablero,0,fila,columna+1)
+      print("Contador de fila: "+fila+cont)
+      cont
+    }
+    }
+
+      
+    //}
+  }
+  
+  
+  
+
                       
   def main(args: Array[String]){
-      val tablero_vacio = List(List('A','A','A','A','A','A','A','A','A'),
-                               List('N','G','R','A','A','A','A','A','A'),
-                               List('A','N','A','_','G','G','A','G','G'),
-                               List('A','R','A','A','R','A','A','G','A'),
-                               List('_','_','G','G','G','G','A','_','A'),
-                               List('A','_','_','G','G','G','A','_','A'),
-                               List('A','_','G','_','G','_','_','_','_'),
-                               List('A','_','A','A','A','_','A','A','A'),
-                               List('A','A','G','G','G','G','A','A','A'))
+      val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'))
                  
       //No sabia que esta funcion estaba hecha jj, era tambien para ir aprendiendo el lenguaje
       //y viendo cosas, si se puede utilizar el count, es mejor que la que esta
-      val huecos = huecos_libres(tablero_vacio, 0, 8)
-      println(huecos)
+      //val huecos = huecos_libres(tablero_vacio, 0, 8)
+      //println(huecos)
     
-                      
-    val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
-    mostrar_tablero(tablero_inicial)
-    escoger_bola(tablero_inicial)
+    //val lista = List(1,2,3,4,5)
+    
+    //println(reemplazar(List('A','B','C','D','E'), 2, 'A'))
+    //println(reemplazar_lista(tablero_vacio, 0, List('A','B','C','D','E')))
+    
+                               
+     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
+     mostrar_tablero(tablero_inicial)
+     escoger_bola(tablero_inicial)
     //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
-
+     
    
 
 
