@@ -251,43 +251,107 @@ object Bolas {
     }
   }
   
-  def comprobar_fila(tablero:List[List[Char]],cont:Int,fila:Int,columna:Int):List[List[Char]]={
-    if(fila==9){
+  //**********************************************************************************************
+  //Funcion que itera el tablero de juego y comprueba si hay alguna colocacion de las fichas en
+  //el tablero que satisfaga las condiciones
+  //**********************************************************************************************
+  def comprobar_tablero(tablero:List[List[Char]],fila:Int,columna:Int):List[List[Char]] = {
+    //Si llegamos al final de una fila vamos a la siguiente
+    if(columna == 9){
+      comprobar_tablero(tablero, fila + 1, 0)
+    }
+    //Si llegamos al final retornamos el tablero
+    else if(fila == 9){
       tablero
     }
+    //Para las demas posiciones, comprobamos su horizontal, vertical y diagonales
     else{
-      if(columna>=5){
-        comprobar_fila(tablero, 0, fila+1, 0)
+      val horizontal_cont = horizontal(tablero, 1, fila, columna)
+      val vertical_cont = vertical(tablero, 1, fila, columna)
+      val diagonalIzq_cont = diagonalIzq(tablero, 1, fila, columna)
+      val diagonalDcha_cont = diagonalDcha(tablero, 1, fila, columna)
+      
+      //Si para esa posicion no se ha encontrado nada, se sigue iterando igual
+      if((horizontal_cont < 5) && (vertical_cont < 5) && 
+          (diagonalIzq_cont < 5) && (diagonalDcha_cont < 5)){
+        comprobar_tablero(tablero, fila, columna+1)
+      //Si se encuentra una coincidencia se borran las fichas del tablero y se
+      //sigue iterando con el mismo tablero
+      }else{
+        if(horizontal_cont >= 5){
+          val tableroAux = List() //Tablero borrando columna + horizontal_cont posiciones
+          comprobar_tablero(tableroAux, fila, columna+1)
+        }else if(vertical_cont >= 5){
+          val tableroAux = List() //Tablero borrando fila + vertical_cont posiciones
+          comprobar_tablero(tableroAux, fila, columna+1)
+        }else if(diagonalIzq_cont >= 5){
+          val tableroAux = List() //Tablero borando la diagonalIzq
+          comprobar_tablero(tableroAux, fila, columna+1)
+        }else{
+          val tableroAux = List() //Tablero borrando la diagonalDcha
+          comprobar_tablero(tableroAux, fila, columna+1)
+        }
+      }
+      
+    }
+      /*
+      //No se puede comprobar las horizontales
+      if(columna >= 5){
+        //No puede diagonalIzq y diagonalDcha
+        if(fila >= 7){
+          
+        }
+        //No se puede diagonalDcha
+        else if(columna >= 7){
+          
+        }
+        //No se puede 
+        else if(fila >= 5){
+          
+        }
+        else{
+          
+        }
+      }
+      //No se puede comprobar las verticales
+      else if(fila >= 5){
+        tablero
+      }*/
+  }
+  
+  def horizontal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
+    if(columna==8){
+      contador
+    }
+    else{
+      if(tablero(fila)(columna) == tablero(fila)(columna+1)){
+        horizontal(tablero, contador + 1, fila, columna + 1)
       }
       else{
-        horizontal(tablero, cont, fila, columna)
-        
+        contador
       }
     }
   }
   
-  def horizontal(tablero:List[List[Char]],cont:Int,fila:Int,columna:Int):Int={
-    /*if(tablero(fila)(columna)=='_'){
-      horizontal(tablero,1,fila,columna+1)
-    }*/
-    //else{
-    if(columna==8){
-      print("Contador de fila: "+ fila+cont)
-      cont
+  def vertical(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
+    if(fila == 8){
+      contador
     }
     else{
-      if(tablero(fila)(columna)==tablero(fila)(columna+1)){
-      horizontal(tablero,cont+1,fila,columna+1)
-     }
-    else{
-      //horizontal(tablero,0,fila,columna+1)
-      print("Contador de fila: "+fila+cont)
-      cont
+      if(tablero(fila)(columna) == tablero(fila+1)(columna)){
+        vertical(tablero, contador + 1, fila + 1, columna)
+      }else{
+        contador
+      }
     }
-    }
-
-      
-    //}
+  }
+  
+  def diagonalDcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
+    contador
+  }
+  
+  def diagonalIzq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
+    contador
   }
   
   
