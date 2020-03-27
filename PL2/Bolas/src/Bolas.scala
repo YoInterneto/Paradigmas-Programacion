@@ -75,7 +75,7 @@ object Bolas {
   }
   
   //Mueve la bola escogida a la posicion que le introducimos
-  def mover_bola(tablero:List[List[Char]],bola:Char,x:Int,y:Int,puntuacion:Int){
+  def mover_bola(tablero: List[List[Char]], bola: Char, x: Int, y: Int, puntuacion: Int){
     
     print("Introduzca la fila donde la quiere introducir(1-9): ")
     val xIn = scala.io.StdIn.readInt()
@@ -90,29 +90,23 @@ object Bolas {
       val hueco = tablero(x2)(y2)
       
       if(hueco == '_'){//Si el hueco donde queremos introducir esta vacio
-        val tablero_inicial = reemplazar(tablero(x2),y2,bola)//tablero(x2).updated(y2, bola) 
-        val tablero_sin_hueco = reemplazar_lista(tablero, x2, tablero_inicial) //tablero.updated(x2, tablero_inicial)
+        val fila_nueva = reemplazar(tablero(x2),y2,bola)//tablero(x2).updated(y2, bola) 
+        val tablero_sin_hueco = reemplazar_lista(tablero, x2, fila_nueva) //tablero.updated(x2, tablero_inicial)
         val tablero_hueco = reemplazar(tablero_sin_hueco(x), y, '_') //tablero_sin_hueco(x).updated(y, '_')//Donde estaba la bola antes, ahora esta vacio
         val tablero_con_hueco = reemplazar_lista(tablero_sin_hueco, x, tablero_hueco)//tablero_sin_hueco.updated(x, tablero_hueco)//Lo reemplazamos
         
         //escoger_bola(tablero_con_hueco)
         val tablero_sig_turno = rellenar_turno(tablero_con_hueco, 0)
         
-        
-        val horizontal_contador = horizontal(tablero, 1, 0, 0)
-        val vertical_contador = vertical(tablero, 1, 0, 0)
-        val diagonal_dcha_contador = diagonalDcha(tablero, 1, 0, 0)
-        val diagona_izq_contador = diagonalIzq(tablero, 1, 0, 0)
-        
-        val puntuacion_acumulada = calcular_puntuacion(tablero_sig_turno, puntuacion, horizontal_contador, vertical_contador, diagonal_dcha_contador, diagona_izq_contador)
+        val puntuacionAux = calcular_puntuacion(tablero_sig_turno, 0, 0, 0) * 75
+        val puntuacion_acumulada = puntuacion + puntuacionAux
         println("Puntuacion acumulada: "+ puntuacion_acumulada)
         val tablero_comprobado = comprobar_tablero(tablero_sig_turno,puntuacion_acumulada)
         
-        
+        println("\n*** ANTES ***")
         mostrar_tablero(tablero_sig_turno)
-        //println("*********************************")
+        println("\n*** comprobado ***\n")
         mostrar_tablero(tablero_comprobado)
-        //println("Puntuacion: "+puntuacion)
         escoger_bola(tablero_comprobado,puntuacion_acumulada)
          
       }
@@ -128,30 +122,49 @@ object Bolas {
     
   }
   
-  def calcular_puntuacion(tablero:List[List[Char]],puntuacion:Int,h:Int,v:Int,dd:Int,di:Int):Int={
-
-    
-    
-    if(h>=5){
-      val puntuacion_acumulada = puntuacion+ h
-      calcular_puntuacion(tablero, puntuacion_acumulada,0,v,dd,di)
-    }
-    else if(v>=5){
-      val puntuacion_acumulada = puntuacion + v
-      calcular_puntuacion(tablero, puntuacion_acumulada,h,0,dd,di)
-    }
-    else if(dd>=5){
-      val puntuacion_acumulada = puntuacion+dd
-      calcular_puntuacion(tablero, puntuacion_acumulada,h,v,0,di)
-    }
-    else if(di>=5){
-      val puntuacion_acumulada = puntuacion+di
-      calcular_puntuacion(tablero, puntuacion_acumulada,h,v,dd,0)
-    }
-    else{
+  def calcular_puntuacion(tablero: List[List[Char]], puntuacion: Int, fila: Int, columna: Int):Int ={
+    if(fila == 9){
       puntuacion
     }
-    
+    else{
+      if(columna == 9){
+        calcular_puntuacion(tablero, puntuacion, fila+1, 0)
+      }
+      else{
+        if(tablero(fila)(columna) != '_'){
+          val horizontal_cont = horizontal(tablero, 1, fila, columna)
+          val vertical_cont = vertical(tablero, 1, fila, columna)
+          val diagonalDcha_cont = diagonalDcha(tablero, 1, fila, columna)
+          val diagonalIzq_cont = diagonalIzq(tablero, 1, fila, columna)
+          
+          if((horizontal_cont < 5) && (vertical_cont < 5) && 
+            (diagonalIzq_cont < 5) && (diagonalDcha_cont < 5)){
+            
+            calcular_puntuacion(tablero, puntuacion, fila, columna+1)
+            
+          }else{
+            if(horizontal_cont >= 5){
+              val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) 
+              calcular_puntuacion(tableroAux, puntuacion + horizontal_cont, fila, columna+1)
+              
+            }else if(vertical_cont >= 5){
+              val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna)
+              calcular_puntuacion(tableroAux, puntuacion + vertical_cont, fila, columna+1)
+              
+            }else if(diagonalIzq_cont >= 5){
+              val tableroAux = List()
+              calcular_puntuacion(tablero, puntuacion, fila, columna+1)
+            }else{
+              val tableroAux = List()
+              calcular_puntuacion(tablero, puntuacion, fila, columna+1)
+            }
+          }
+        }
+        else{
+          calcular_puntuacion(tablero, puntuacion, fila, columna+1)
+        }
+      }
+    }
   }
   
   //En cada turno se introducen 3 bolas aleatorias
@@ -190,10 +203,8 @@ object Bolas {
         else {
           rellenar_turno(tablero,contador)
         }
-      }
-        
+      }   
     }
-    
   }
   
   
@@ -531,17 +542,11 @@ object Bolas {
     
     //println(reemplazar(List('A','B','C','D','E'), 2, 'A'))
     //println(reemplazar_lista(tablero_vacio, 0, List('A','B','C','D','E')))
-    
-                               
-        val h = horizontal(tableroPruebas, 1, 0, 0)
-        val v = vertical(tableroPruebas, 1, 0, 0)
-        val dd = diagonalDcha(tableroPruebas, 1, 0, 0)
-        val di = diagonalIzq(tableroPruebas, 1, 0, 0)
         
-        println(calcular_puntuacion(tableroPruebas, 0, h, v, dd, di))
-     //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
-     //mostrar_tablero(tablero_inicial)
-     //escoger_bola(tablero_inicial,0)
+        //println(calcular_puntuacion(tableroPruebas, 0, 0, 0))
+     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
+     mostrar_tablero(tablero_inicial)
+     escoger_bola(tablero_inicial,0)
      //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
      
    
