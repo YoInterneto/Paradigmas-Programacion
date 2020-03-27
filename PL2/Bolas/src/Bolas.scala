@@ -43,7 +43,7 @@ object Bolas {
   }
   
   //Escoge la bola del tablero que quiere mover
-  def escoger_bola(tablero: List[List[Char]]){
+  def escoger_bola(tablero: List[List[Char]],puntuacion:Int){
      
      if(final_partida(tablero, 0, 0)){
        println("Tablero completo, partida finalizada")
@@ -61,21 +61,21 @@ object Bolas {
        val bola = tablero(x)(y)
          if(bola != '_'){//Si en el hueco hay una bola
            println("Bola escogida:"+ bola)
-           mover_bola(tablero,bola,x,y)
+           mover_bola(tablero,bola,x,y,puntuacion)
          }
          else{
            println("ERROR: Posicion vacia. Intente otra posicion. ")
-           escoger_bola(tablero)
+           escoger_bola(tablero,puntuacion)
          }
        }
        else{
-         escoger_bola(tablero)
+         escoger_bola(tablero,puntuacion)
        }
      }  
   }
   
   //Mueve la bola escogida a la posicion que le introducimos
-  def mover_bola(tablero:List[List[Char]],bola:Char,x:Int,y:Int){
+  def mover_bola(tablero:List[List[Char]],bola:Char,x:Int,y:Int,puntuacion:Int){
     
     print("Introduzca la fila donde la quiere introducir(1-9): ")
     val xIn = scala.io.StdIn.readInt()
@@ -98,22 +98,59 @@ object Bolas {
         //escoger_bola(tablero_con_hueco)
         val tablero_sig_turno = rellenar_turno(tablero_con_hueco, 0)
         
+        
+        val horizontal_contador = horizontal(tablero, 1, 0, 0)
+        val vertical_contador = vertical(tablero, 1, 0, 0)
+        val diagonal_dcha_contador = diagonalDcha(tablero, 1, 0, 0)
+        val diagona_izq_contador = diagonalIzq(tablero, 1, 0, 0)
+        
+        val puntuacion_acumulada = calcular_puntuacion(tablero_sig_turno, puntuacion, horizontal_contador, vertical_contador, diagonal_dcha_contador, diagona_izq_contador)
+        println("Puntuacion acumulada: "+ puntuacion_acumulada)
+        val tablero_comprobado = comprobar_tablero(tablero_sig_turno,puntuacion_acumulada)
+        
+        
         mostrar_tablero(tablero_sig_turno)
-        
-        comprobar_tablero(tablero)
-        
-        escoger_bola(tablero_sig_turno)
+        //println("*********************************")
+        mostrar_tablero(tablero_comprobado)
+        //println("Puntuacion: "+puntuacion)
+        escoger_bola(tablero_comprobado,puntuacion_acumulada)
          
       }
       else{
         println("ERROR: Posicion ocupada. Intente otra posicion.")
-        mover_bola(tablero,bola,x,y)
+        mover_bola(tablero,bola,x,y,puntuacion)
       }
     }
     else{
-      mover_bola(tablero,bola,x,y)
+      mover_bola(tablero,bola,x,y,puntuacion)
     }
     
+    
+  }
+  
+  def calcular_puntuacion(tablero:List[List[Char]],puntuacion:Int,h:Int,v:Int,dd:Int,di:Int):Int={
+
+    
+    
+    if(h>=5){
+      val puntuacion_acumulada = puntuacion+ h
+      calcular_puntuacion(tablero, puntuacion_acumulada,0,v,dd,di)
+    }
+    else if(v>=5){
+      val puntuacion_acumulada = puntuacion + v
+      calcular_puntuacion(tablero, puntuacion_acumulada,h,0,dd,di)
+    }
+    else if(dd>=5){
+      val puntuacion_acumulada = puntuacion+dd
+      calcular_puntuacion(tablero, puntuacion_acumulada,h,v,0,di)
+    }
+    else if(di>=5){
+      val puntuacion_acumulada = puntuacion+di
+      calcular_puntuacion(tablero, puntuacion_acumulada,h,v,dd,0)
+    }
+    else{
+      puntuacion
+    }
     
   }
   
@@ -284,13 +321,14 @@ object Bolas {
   //Funcion que itera el tablero de juego y comprueba si hay alguna colocacion de las fichas en
   //el tablero que satisfaga las condiciones
   //**********************************************************************************************
-  def comprobar_tablero(tablero:List[List[Char]]):List[List[Char]] = {
-    comprobar_tableroAux(tablero, 0, 0)
+  def comprobar_tablero(tablero:List[List[Char]],puntuacion:Int):List[List[Char]] = {
+    comprobar_tableroAux(tablero, 0, 0,puntuacion)
   }
-  def comprobar_tableroAux(tablero:List[List[Char]],fila:Int,columna:Int):List[List[Char]] = {
+  def comprobar_tableroAux(tablero:List[List[Char]],fila:Int,columna:Int,puntuacion:Int):List[List[Char]] = {
+    //println("Puntuacion: "+puntuacion)
     //Si llegamos al final de una fila vamos a la siguiente
     if(columna == 9){
-      comprobar_tableroAux(tablero, fila + 1, 0)
+      comprobar_tableroAux(tablero, fila + 1, 0,puntuacion)
     }
     //Si llegamos al final retornamos el tablero
     else if(fila == 9){
@@ -307,7 +345,7 @@ object Bolas {
         
         if((horizontal_cont < 5) && (vertical_cont < 5) && 
           (diagonalIzq_cont < 5) && (diagonalDcha_cont < 5)){
-        comprobar_tableroAux(tablero, fila, columna+1)
+        comprobar_tableroAux(tablero, fila, columna+1,puntuacion)
         
         //Si se encuentra una coincidencia se borran las fichas del tablero y se
         //sigue iterando con el mismo tablero
@@ -316,25 +354,32 @@ object Bolas {
           if(horizontal_cont >= 5){
             val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) //Tablero borrando columna + horizontal_cont posiciones
             mostrar_tablero(tableroAux)
-            comprobar_tableroAux(tableroAux, fila, columna+1)
+            //val puntuacion_acumulada = puntuacion + contador_puntuacion(horizontal_cont)
+            //println("Puntuacion: "+puntuacion_acumulada)
+            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
+            
           }else if(vertical_cont >= 5){
             val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
             mostrar_tablero(tableroAux)
-            comprobar_tableroAux(tableroAux, fila, columna+1)
+            //val puntuacion_acumulada = puntuacion + contador_puntuacion(vertical_cont)
+            //println("Puntuacion: "+puntuacion_acumulada)
+            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
           }else if(diagonalIzq_cont >= 5){
             val tableroAux = List() //Tablero borrando la diagonalIzq
-            comprobar_tableroAux(tableroAux, fila, columna+1)
+            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
           }else{
             val tableroAux = List() //Tablero borrando la diagonalDcha
-            comprobar_tableroAux(tableroAux, fila, columna+1)
+            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
           }
         }
       }
       //Si es null no la comprueba y sigue iterando
       else{
-        comprobar_tableroAux(tablero, fila, columna+1)
+        comprobar_tableroAux(tablero, fila, columna+1,puntuacion)
       }
     }
+    
+    
   }
   
   
@@ -431,6 +476,11 @@ object Bolas {
     contador
   }
   
+  def contador_puntuacion(contador:Int):Int={
+    val puntuacion = contador*75
+    puntuacion
+  }
+  
   
   
 
@@ -470,7 +520,7 @@ object Bolas {
       mostrar_tablero(nuevo3)
       println("******************************")*/
       
-      comprobar_tablero(tableroPruebas)
+      //comprobar_tablero(tableroPruebas)
                  
       //No sabia que esta funcion estaba hecha jj, era tambien para ir aprendiendo el lenguaje
       //y viendo cosas, si se puede utilizar el count, es mejor que la que esta
@@ -483,9 +533,15 @@ object Bolas {
     //println(reemplazar_lista(tablero_vacio, 0, List('A','B','C','D','E')))
     
                                
+        val h = horizontal(tableroPruebas, 1, 0, 0)
+        val v = vertical(tableroPruebas, 1, 0, 0)
+        val dd = diagonalDcha(tableroPruebas, 1, 0, 0)
+        val di = diagonalIzq(tableroPruebas, 1, 0, 0)
+        
+        println(calcular_puntuacion(tableroPruebas, 0, h, v, dd, di))
      //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
      //mostrar_tablero(tablero_inicial)
-     //escoger_bola(tablero_inicial)
+     //escoger_bola(tablero_inicial,0)
      //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
      
    
