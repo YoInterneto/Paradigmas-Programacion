@@ -502,7 +502,7 @@ object Bolas {
   //itera con fila+1 columna+1
   //si es la primera vuelta -> 
   def diagonal1Dcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8 || columna == 8){
+    if(fila == 8){
       contador
     }else{
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd')
@@ -522,7 +522,7 @@ object Bolas {
   
   
   def diagonal2Dcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8 || columna == 8){
+    if(fila == 8){
       contador
     }else{
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd')
@@ -542,7 +542,7 @@ object Bolas {
   
   //itera con fila+1 columna-1
   def diagonal1Izq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8 || columna == 8){
+    if(fila == 8){
       contador
     }else{
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i')
@@ -562,7 +562,7 @@ object Bolas {
   
   
   def diagonal2Izq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8 || columna == 8){
+    if(fila == 8){
       contador
     }else{
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i')
@@ -585,14 +585,14 @@ object Bolas {
   //Funcion auxiliar que devuelve el numero de fichas que forman una diagonal segun un parámetro
   //**********************************************************************************************
   def diagonal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int, lado: Char):Int = {
-    if(fila == 8 || columna == 8){
+    if(fila == 8){
       contador
     }else{
       if(tablero(fila)(columna) != '_'){
         if(lado == 'i'){
           if(columna != 0){
             if(tablero(fila)(columna) == tablero(fila+1)(columna-1)){
-            diagonal(tablero, contador+1, fila+1, columna-1, lado)
+              diagonal(tablero, contador+1, fila+1, columna-1, lado)
             }else{
               contador
             }
@@ -600,11 +600,15 @@ object Bolas {
           else{
             contador
           }
-          
         }else if(lado == 'd'){
-          if(tablero(fila)(columna) == tablero(fila+1)(columna+1)){
-            diagonal(tablero, contador+1, fila+1, columna+1, lado)
-          }else{
+          if(columna != 8){
+            if(tablero(fila)(columna) == tablero(fila+1)(columna+1)){
+              diagonal(tablero, contador+1, fila+1, columna+1, lado)
+            }else{
+              contador
+            }
+          }
+          else{
             contador
           }
         }else{
@@ -673,8 +677,18 @@ object Bolas {
                                List('_','A','_','_','_','A','_','_','A'),
                                List('_','A','_','_','A','A','_','_','A'),
                                List('_','A','_','A','A','_','_','_','A'))
+                               
+      val tableroPruebas1=List(List('A','_','_','_','_','_','_','_','A'),
+                               List('A','A','_','_','_','_','_','A','A'),
+                               List('_','A','A','_','_','_','A','A','_'),
+                               List('_','_','A','A','_','A','A','_','_'),
+                               List('_','_','_','A','A','A','_','_','_'),
+                               List('_','_','_','A','A','A','_','_','_'),
+                               List('_','_','A','A','_','A','A','_','_'),
+                               List('_','A','A','_','_','_','A','A','_'),
+                               List('_','A','_','_','_','_','_','A','_'))
       
-      comprobar_tablero(tableroPruebas)
+      comprobar_tablero(tableroPruebas1)
       /*println("****primera fila****")
       val nuevo = borrar_horizontal(tableroPruebas, 5, 0, 0)
       mostrar_tablero(nuevo)
