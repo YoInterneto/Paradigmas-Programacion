@@ -101,7 +101,7 @@ object Bolas {
         val puntuacionAux = calcular_puntuacion(tablero_sig_turno, 0, 0, 0) * 75
         val puntuacion_acumulada = puntuacion + puntuacionAux
         println("Puntuacion acumulada: "+ puntuacion_acumulada)
-        val tablero_comprobado = comprobar_tablero(tablero_sig_turno,puntuacion_acumulada)
+        val tablero_comprobado = comprobar_tablero(tablero_sig_turno)
         
         println("\n*** ANTES ***")
         mostrar_tablero(tablero_sig_turno)
@@ -134,41 +134,69 @@ object Bolas {
         if(tablero(fila)(columna) != '_'){
           val horizontal_cont = horizontal(tablero, 1, fila, columna)
           val vertical_cont = vertical(tablero, 1, fila, columna)
-<<<<<<< HEAD
-          val diagonalDcha_cont = diagonalDcha(tablero, 1, fila, columna)
-          val diagonalIzq_cont = diagonalIzq(tablero, 1, fila, columna)
-          
-          if((horizontal_cont < 5) && (vertical_cont < 5) && 
-            (diagonalIzq_cont < 5) && (diagonalDcha_cont < 5)){
-=======
-          val diagonal1Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
           val diagonal1Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
+          val diagonal1Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
+          val diagonal2Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
+          val diagonal2Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
           
           if((horizontal_cont < 5) && (vertical_cont < 5) && 
-            (diagonal1Izq_cont < 5) && (diagonal1Dcha_cont < 5)){
->>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
+          (diagonal1Izq_cont < 5) && (diagonal1Dcha_cont < 5) &&
+          (diagonal2Izq_cont < 5) && (diagonal2Dcha_cont < 5)){
             
             calcular_puntuacion(tablero, puntuacion, fila, columna+1)
             
           }else{
+            //Borramos las fichas horizontales
             if(horizontal_cont >= 5){
-              val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) 
+              val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna)
+              
               calcular_puntuacion(tableroAux, puntuacion + horizontal_cont, fila, columna+1)
-              
+            //Borramos las fichas verticales
             }else if(vertical_cont >= 5){
-              val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna)
-              calcular_puntuacion(tableroAux, puntuacion + vertical_cont, fila, columna+1)
+              val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
+              mostrar_tablero(tableroAux)
               
-<<<<<<< HEAD
-            }else if(diagonalIzq_cont >= 5){
-=======
+              calcular_puntuacion(tableroAux, puntuacion + vertical_cont, fila, columna+1)
+            //Borramos las fichas diagonal izquierda, con las fichas abajo
             }else if(diagonal1Izq_cont >= 5){
->>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
-              val tableroAux = List()
-              calcular_puntuacion(tablero, puntuacion, fila, columna+1)
+              val diagonalSecundaria: Int = diagonal1Izq_cont / 2
+              val diagonalPrincipal = diagonal1Izq_cont - diagonalSecundaria
+              
+              val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
+              val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila+1, columna)
+              mostrar_tablero(tableroAux1)
+              
+              calcular_puntuacion(tableroAux1, puntuacion + diagonal1Izq_cont, fila, columna+1)
+            //Borramos las fichas diagonal derecha, con las fichas abajo  
+            }else if(diagonal1Dcha_cont >= 5){
+              val diagonalSecundaria: Int = diagonal1Dcha_cont / 2
+              val diagonalPrincipal = diagonal1Dcha_cont - diagonalSecundaria
+              
+              val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
+              val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila+1, columna)
+              mostrar_tablero(tableroAux1)
+              
+              calcular_puntuacion(tableroAux1, puntuacion + diagonal1Dcha_cont, fila, columna+1)
+            //Borramos las fichas diagonal izquierda, con las fichas arriba  
+            }else if(diagonal2Izq_cont >= 5){
+              val diagonalSecundaria: Int = diagonal2Izq_cont / 2
+              val diagonalPrincipal = diagonal2Izq_cont - diagonalSecundaria
+              
+              val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
+              val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila, columna-1)
+              mostrar_tablero(tableroAux1)
+              
+              calcular_puntuacion(tableroAux1, puntuacion + diagonal2Izq_cont, fila, columna+1)
+            //Borramos las fichas diagonal derecha, con las fichas arriba  
             }else{
-              val tableroAux = List()
-              calcular_puntuacion(tablero, puntuacion, fila, columna+1)
+              val diagonalSecundaria: Int = diagonal2Dcha_cont / 2
+              val diagonalPrincipal = diagonal2Dcha_cont - diagonalSecundaria
+              
+              val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
+              val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila, columna+1)
+              mostrar_tablero(tableroAux1)
+              
+              calcular_puntuacion(tableroAux1, puntuacion + diagonal2Dcha_cont, fila, columna+1)
             }
           }
         }
@@ -344,14 +372,14 @@ object Bolas {
   //Funcion que itera el tablero de juego y comprueba si hay alguna colocacion de las fichas en
   //el tablero que satisfaga las condiciones
   //**********************************************************************************************
-  def comprobar_tablero(tablero:List[List[Char]],puntuacion:Int):List[List[Char]] = {
-    comprobar_tableroAux(tablero, 0, 0,puntuacion)
+  def comprobar_tablero(tablero:List[List[Char]]):List[List[Char]] = {
+    comprobar_tableroAux(tablero, 0, 0)
   }
-  def comprobar_tableroAux(tablero:List[List[Char]],fila:Int,columna:Int,puntuacion:Int):List[List[Char]] = {
+  def comprobar_tableroAux(tablero:List[List[Char]],fila:Int,columna:Int):List[List[Char]] = {
     //println("Puntuacion: "+puntuacion)
     //Si llegamos al final de una fila vamos a la siguiente
     if(columna == 9){
-      comprobar_tableroAux(tablero, fila + 1, 0,puntuacion)
+      comprobar_tableroAux(tablero, fila + 1, 0)
     }
     //Si llegamos al final retornamos el tablero
     else if(fila == 9){
@@ -363,46 +391,80 @@ object Bolas {
       if(tablero(fila)(columna) != '_'){
         val horizontal_cont = horizontal(tablero, 1, fila, columna)
         val vertical_cont = vertical(tablero, 1, fila, columna)
-        val diagonalIzq_cont = diagonalIzq(tablero, 1, fila, columna)
-        val diagonalDcha_cont = diagonalDcha(tablero, 1, fila, columna)
+        val diagonal1Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
+        val diagonal1Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
+        val diagonal2Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
+        val diagonal2Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
         
         if((horizontal_cont < 5) && (vertical_cont < 5) && 
-          (diagonalIzq_cont < 5) && (diagonalDcha_cont < 5)){
-        comprobar_tableroAux(tablero, fila, columna+1,puntuacion)
+          (diagonal1Izq_cont < 5) && (diagonal1Dcha_cont < 5) &&
+          (diagonal2Izq_cont < 5) && (diagonal2Dcha_cont < 5)){
+        comprobar_tableroAux(tablero, fila, columna+1)
         
         //Si se encuentra una coincidencia se borran las fichas del tablero y se
         //sigue iterando con el mismo tablero
         }else{
           println("("+ fila +" x "+ columna+")")
+          //Borramos las fichas horizontales
           if(horizontal_cont >= 5){
             val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) //Tablero borrando columna + horizontal_cont posiciones
             mostrar_tablero(tableroAux)
-            //val puntuacion_acumulada = puntuacion + contador_puntuacion(horizontal_cont)
-            //println("Puntuacion: "+puntuacion_acumulada)
-            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
             
+            comprobar_tableroAux(tableroAux, fila, columna+1)
+          //Borramos las fichas verticales
           }else if(vertical_cont >= 5){
             val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
             mostrar_tablero(tableroAux)
-            //val puntuacion_acumulada = puntuacion + contador_puntuacion(vertical_cont)
-            //println("Puntuacion: "+puntuacion_acumulada)
-            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
-          }else if(diagonalIzq_cont >= 5){
-            val tableroAux = List() //Tablero borrando la diagonalIzq
-            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
+            
+            comprobar_tableroAux(tableroAux, fila, columna+1)
+          //Borramos las fichas diagonal izquierda, con las fichas abajo
+          }else if(diagonal1Izq_cont >= 5){
+            val diagonalSecundaria: Int = diagonal1Izq_cont / 2
+            val diagonalPrincipal = diagonal1Izq_cont - diagonalSecundaria
+            
+            val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
+            val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila+1, columna)
+            mostrar_tablero(tableroAux1)
+            
+            comprobar_tableroAux(tableroAux1, fila, columna+1)
+          //Borramos las fichas diagonal derecha, con las fichas abajo  
+          }else if(diagonal1Dcha_cont >= 5){
+            val diagonalSecundaria: Int = diagonal1Dcha_cont / 2
+            val diagonalPrincipal = diagonal1Dcha_cont - diagonalSecundaria
+            
+            val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
+            val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila+1, columna)
+            mostrar_tablero(tableroAux1)
+            
+            comprobar_tableroAux(tableroAux1, fila, columna+1)
+          //Borramos las fichas diagonal izquierda, con las fichas arriba  
+          }else if(diagonal2Izq_cont >= 5){
+            val diagonalSecundaria: Int = diagonal2Izq_cont / 2
+            val diagonalPrincipal = diagonal2Izq_cont - diagonalSecundaria
+            
+            val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
+            val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila, columna-1)
+            mostrar_tablero(tableroAux1)
+            
+            comprobar_tableroAux(tableroAux1, fila, columna+1)
+          //Borramos las fichas diagonal derecha, con las fichas arriba  
           }else{
-            val tableroAux = List() //Tablero borrando la diagonalDcha
-            comprobar_tableroAux(tableroAux, fila, columna+1,puntuacion)
+            val diagonalSecundaria: Int = diagonal2Dcha_cont / 2
+            val diagonalPrincipal = diagonal2Dcha_cont - diagonalSecundaria
+            
+            val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
+            val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila, columna+1)
+            mostrar_tablero(tableroAux1)
+            
+            comprobar_tableroAux(tableroAux1, fila, columna+1)
           }
         }
       }
       //Si es null no la comprueba y sigue iterando
       else{
-        comprobar_tableroAux(tablero, fila, columna+1,puntuacion)
+        comprobar_tableroAux(tablero, fila, columna+1)
       }
     }
-    
-    
   }
   
   
@@ -427,10 +489,6 @@ object Bolas {
   //**********************************************************************************************
   def borrar_horizontal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
     if(contador == 0){
-      //boramos una ultima vez y devolvemos el tablero
-      val lineaTablero = tablero(fila)
-      val lineaTableroAux = reemplazar(lineaTablero, columna, '_')
-      val tableroAux = reemplazar_lista(tablero, fila, lineaTableroAux)
       tablero
     }
     else{
@@ -466,10 +524,6 @@ object Bolas {
   //**********************************************************************************************
   def borrar_vertical(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
     if(contador == 0){
-      //boramos una ultima vez y devolvemos el tablero
-      val lineaTablero = tablero(fila)
-      val lineaTableroAux = reemplazar(lineaTablero, columna, '_')
-      val tableroAux = reemplazar_lista(tablero, fila, lineaTableroAux)
       tablero
     }
     else{
@@ -484,18 +538,13 @@ object Bolas {
     }
   }
   
-<<<<<<< HEAD
-  //itera con fila+1 columna+1
-  //si es la primera vuelta -> 
-  def diagonalDcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8 || columna == 8){
-      contador
-    }else{
-      contador
-=======
   
-  //itera con fila+1 columna+1
-  //si es la primera vuelta -> 
+  //**********************************************************************************************
+  //Cuenta cuantas fichas tiene la diagonal hacia la derecha y hacia abajo
+  // 100
+  // 110
+  // 011
+  //**********************************************************************************************
   def diagonal1Dcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(fila == 8){
       contador
@@ -503,10 +552,12 @@ object Bolas {
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd')
       val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'd')
       
-      //Caso en el que la diagonalPrincipal es mas grande 
+      //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
+      //en funcion de la diagonalSecundaria 
       if((diagonalPrincipal > diagonalSecundaria) && (diagonalSecundaria > 1)){
            ((diagonalSecundaria + 1) + diagonalSecundaria)
-      //Caso diagonalSecundaria mas grande o igual
+      //Caso diagonalSecundaria mas grande o igual, entonces el contador se hallara en
+      //funcion de la diagonalPrincipal
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
            ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
@@ -516,6 +567,12 @@ object Bolas {
   }
   
   
+  //**********************************************************************************************
+  //Cuenta cuantas fichas tiene la diagonal hacia la derecha y hacia arriba
+  // 110
+  // 011
+  // 001
+  //**********************************************************************************************
   def diagonal2Dcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(fila == 8){
       contador
@@ -523,26 +580,27 @@ object Bolas {
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd')
       val diagonalSecundaria = diagonal(tablero, 1, fila, columna+1, 'd')
       
-      //Caso en el que la diagonalPrincipal es mas grande 
+      //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
+      //en funcion de la diagonalSecundaria
       if((diagonalPrincipal > diagonalSecundaria) && (diagonalSecundaria > 1)){
          ((diagonalSecundaria + 1) + diagonalSecundaria)
-      //Caso diagonalSecundaria mas grande o igual
+      //Caso diagonalSecundaria mas grande o igual, entonces el contador se hallara en
+      //funcion de la diagonalPrincipal
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
           ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
         contador
       }
->>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
     }
   }
   
-  //itera con fila+1 columna-1
-<<<<<<< HEAD
-  def diagonalIzq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    contador
-  }
   
-=======
+  //**********************************************************************************************
+  //Cuenta cuantas fichas tiene la diagonal hacia la izquierda y hacia abajo
+  // 001
+  // 011
+  // 110
+  //**********************************************************************************************
   def diagonal1Izq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(fila == 8){
       contador
@@ -550,10 +608,12 @@ object Bolas {
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i')
       val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'i')
       
-      //Caso en el que la diagonalPrincipal es mas grande 
+      //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
+      //en funcion de la diagonalSecundaria
       if((diagonalPrincipal > diagonalSecundaria) && (diagonalSecundaria > 1)){
          ((diagonalSecundaria + 1) + diagonalSecundaria)
-      //Caso diagonalSecundaria mas grande o igual
+      //Caso diagonalSecundaria mas grande o igual, entonces el contador se hallara en
+      //funcion de la diagonalPrincipal
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
           ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
@@ -563,6 +623,12 @@ object Bolas {
   }
   
   
+  //**********************************************************************************************
+  //Cuenta cuantas fichas tiene la diagonal hacia la izquierda y hacia arriba
+  // 011
+  // 110
+  // 100
+  //**********************************************************************************************
   def diagonal2Izq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(fila == 8){
       contador
@@ -570,10 +636,12 @@ object Bolas {
       val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i')
       val diagonalSecundaria = diagonal(tablero, 1, fila, columna-1, 'i')
       
-      //Caso en el que la diagonalPrincipal es mas grande 
+      //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
+      //en funcion de la diagonalSecundaria 
       if((diagonalPrincipal > diagonalSecundaria) && (diagonalSecundaria > 1)){
          ((diagonalSecundaria + 1) + diagonalSecundaria)
-      //Caso diagonalSecundaria mas grande o igual
+      //Caso diagonalSecundaria mas grande o igual, entonces el contador se hallara en
+      //funcion de la diagonalPrincipal
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
           ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
@@ -623,7 +691,9 @@ object Bolas {
     }
   }
   
-  
+  //**********************************************************************************************
+  //Borra n fichas consecutivas de una diagonal izquierda
+  //**********************************************************************************************
   def borrar_izquierda(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
     if(contador == 0){
       tablero
@@ -637,7 +707,9 @@ object Bolas {
     }
   }
   
-  
+   //**********************************************************************************************
+  //Borra n fichas consecutivas de una diagonal derecha
+  //**********************************************************************************************
   def borrar_derecha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
     if(contador == 0){
       tablero
@@ -652,7 +724,6 @@ object Bolas {
   }
   
   
->>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
   def contador_puntuacion(contador:Int):Int={
     val puntuacion = contador*75
     puntuacion
@@ -660,8 +731,6 @@ object Bolas {
   
   
   
-
-                      
   def main(args: Array[String]){
       val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
@@ -675,17 +744,14 @@ object Bolas {
                                
       val tableroPruebas = List(List('A','A','A','A','A','_','A','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
+                               List('_','A','_','A','_','_','_','_','A'),
+                               List('_','A','_','A','A','_','_','_','A'),
+                               List('_','A','_','_','A','A','_','_','A'),
                                List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','_','_','_','_','A'))
+                               List('_','A','_','_','_','A','_','_','A'),
+                               List('_','A','_','_','A','A','_','_','A'),
+                               List('_','A','_','A','A','_','_','_','A'))
                                
-<<<<<<< HEAD
-                               
-=======
       val tableroPruebas1=List(List('A','_','_','_','_','_','_','_','A'),
                                List('A','A','_','_','_','_','_','A','A'),
                                List('_','A','A','_','_','_','A','A','_'),
@@ -695,49 +761,10 @@ object Bolas {
                                List('_','_','A','A','_','A','A','_','_'),
                                List('_','A','A','_','_','_','A','A','_'),
                                List('_','A','_','_','_','_','_','A','_'))
-      
-      comprobar_tablero(tableroPruebas1)
->>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
-      /*println("****primera fila****")
-      val nuevo = borrar_horizontal(tableroPruebas, 5, 0, 0)
-      mostrar_tablero(nuevo)
-      println("****segunda fila****")
-
-      val nuevo2 = borrar_vertical(tableroPruebas, 7, 2, 1)
-      mostrar_tablero(nuevo2)
-      println("****segunda/2 fila****")
-
-      val nuevo3 = borrar_vertical(tableroPruebas, 3, 2, 1)
-      mostrar_tablero(nuevo3)
-      println("******************************")*/
-      
-      //comprobar_tablero(tableroPruebas)
-                 
-      //No sabia que esta funcion estaba hecha jj, era tambien para ir aprendiendo el lenguaje
-      //y viendo cosas, si se puede utilizar el count, es mejor que la que esta
-      //val huecos = huecos_libres(tablero_vacio, 0, 8)
-      //println(huecos)
-    
-    //val lista = List(1,2,3,4,5)
-    
-    //println(reemplazar(List('A','B','C','D','E'), 2, 'A'))
-    //println(reemplazar_lista(tablero_vacio, 0, List('A','B','C','D','E')))
-        
-        //println(calcular_puntuacion(tableroPruebas, 0, 0, 0))
-<<<<<<< HEAD
-     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
+                               
+     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
      escoger_bola(tablero_inicial,0)
-=======
-     //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
-     //mostrar_tablero(tablero_inicial)
-     //escoger_bola(tablero_inicial,0)
->>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
-     //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
-     
-   
-
-
-    
+     //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION    
   }
 }
