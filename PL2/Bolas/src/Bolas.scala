@@ -729,7 +729,7 @@ object Bolas {
 //De momento solo retorna el maximo
   //Como queremos retornar el contador y las coordenadas haremos una lista que sera (contador,x,y)
   //Falta guardar el color que hay que meter en la fila, columna o diagonal recomendada
-def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
   if(fila==9){
     salida    
   }
@@ -746,11 +746,16 @@ def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int
         val contadorAux = horizontal(tablero, 1, fila, columna)
         if(contadorAux>contador){
           //println("entroh")
-          val salidaAux = columna::List()
-          val salidaAux2 = fila::salidaAux
-          val salidaAux3 = contadorAux::salidaAux2
-          
-          maximo_horizontal(tablero, contadorAux, fila, columna+1,salidaAux3)
+            val columnaChar = columna.toChar
+            val filaChar = fila.toChar
+            val contadorChar = contadorAux.toChar
+            val color = tablero(fila)(columna)
+            val salidaAux = color::List()
+            val salidaAux2 = columnaChar::salidaAux
+            val salidaAux3 = filaChar::salidaAux2
+            val salidaAux4 = contadorChar::salidaAux3
+
+          maximo_horizontal(tablero, contadorAux, fila, columna+1,salidaAux4)
           
         }
         else{
@@ -762,7 +767,7 @@ def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int
   }
 }
 
-def maximo_vertical(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+def maximo_vertical(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
   if(fila==9){
     salida    
   }
@@ -778,11 +783,17 @@ def maximo_vertical(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,s
         val contadorAux = vertical(tablero, 1, fila, columna)
         if(contadorAux>contador){
           //println("entrov")
-          val salidaAux = columna::List()
-          val salidaAux2 = fila::salidaAux
-          val salidaAux3 = contadorAux::salidaAux2
+            val columnaChar = columna.toChar
+            val filaChar = fila.toChar
+            val contadorChar = contadorAux.toChar
+            val color = tablero(fila)(columna)
+            val salidaAux = color::List()
+            val salidaAux2 = columnaChar::salidaAux
+            val salidaAux3 = filaChar::salidaAux2
+            val salidaAux4 = contadorChar::salidaAux3
           
-          maximo_vertical(tablero, contadorAux, fila, columna+1,salidaAux3)
+          
+          maximo_vertical(tablero, contadorAux, fila, columna+1,salidaAux4)
         }
         else{
           maximo_vertical(tablero, contador, fila, columna+1,salida)
@@ -794,7 +805,7 @@ def maximo_vertical(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,s
 }
 
 //Las diagonales las cuenta raro
-def maximo_diagonal1Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+def maximo_diagonal1Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
   
     if(fila==9){
     salida    
@@ -810,12 +821,18 @@ def maximo_diagonal1Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:
         else{
           val contadorAux = diagonal1Dcha(tablero, 1, fila, columna)
           if(contadorAux>contador){   
-            //println("entrodd1")  
-            val salidaAux = columna::List()
-            val salidaAux2 = fila::salidaAux
-            val salidaAux3 = contadorAux::salidaAux2
+            //println("entrodd1") 
+            //En prinicipio va a ser (contador,fila,columna,color)
+            val columnaChar = columna.toChar
+            val filaChar = fila.toChar
+            val contadorChar = contadorAux.toChar
+            val color = tablero(fila)(columna)
+            val salidaAux = color::List()
+            val salidaAux2 = columnaChar::salidaAux
+            val salidaAux3 = filaChar::salidaAux2
+            val salidaAux4 = contadorChar::salidaAux3
           
-            maximo_diagonal1Dcha(tablero, contadorAux, fila, columna+1,salidaAux3)
+            maximo_diagonal1Dcha(tablero, contadorAux, fila, columna+1,salidaAux4)
           }
           else{
             maximo_diagonal1Dcha(tablero, contador, fila, columna+1,salida)
@@ -826,7 +843,7 @@ def maximo_diagonal1Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:
     }
   }
 
-def maximo_diagonal2Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+def maximo_diagonal2Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
   
     if(fila==9){
     salida    
@@ -843,11 +860,17 @@ def maximo_diagonal2Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:
           val contadorAux = diagonal2Dcha(tablero, 1, fila, columna)
           if(contadorAux>contador){
             //println("entrodd2")            
-            val salidaAux = columna::List()
-            val salidaAux2 = fila::salidaAux
-            val salidaAux3 = contadorAux::salidaAux2
+            //En prinicipio va a ser (contador,fila,columna,color)
+            val columnaChar = columna.toChar
+            val filaChar = fila.toChar
+            val contadorChar = contadorAux.toChar
+            val color = tablero(fila)(columna)
+            val salidaAux = color::List()
+            val salidaAux2 = columnaChar::salidaAux
+            val salidaAux3 = filaChar::salidaAux2
+            val salidaAux4 = contadorChar::salidaAux3
           
-            maximo_diagonal2Dcha(tablero, contadorAux, fila, columna+1,salidaAux3)
+            maximo_diagonal2Dcha(tablero, contadorAux, fila, columna+1,salidaAux4)
           }
           else{
             maximo_diagonal2Dcha(tablero, contador, fila, columna+1,salida)
@@ -858,7 +881,7 @@ def maximo_diagonal2Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:
     }
   }
 
-def maximo_diagonal1Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+def maximo_diagonal1Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
   
     if(fila==9){
     salida    
@@ -875,11 +898,16 @@ def maximo_diagonal1Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:I
           val contadorAux = diagonal1Izq(tablero, 1, fila, columna)
           if(contadorAux>contador){
             //println("entrodi1")            
-            val salidaAux = columna::List()
-            val salidaAux2 = fila::salidaAux
-            val salidaAux3 = contadorAux::salidaAux2
+            val columnaChar = columna.toChar
+            val filaChar = fila.toChar
+            val contadorChar = contadorAux.toChar
+            val color = tablero(fila)(columna)
+            val salidaAux = color::List()
+            val salidaAux2 = columnaChar::salidaAux
+            val salidaAux3 = filaChar::salidaAux2
+            val salidaAux4 = contadorChar::salidaAux3
           
-            maximo_diagonal1Izq(tablero, contadorAux, fila, columna+1,salidaAux3)
+            maximo_diagonal1Izq(tablero, contadorAux, fila, columna+1,salidaAux4)
           }
           else{
             maximo_diagonal1Izq(tablero, contador, fila, columna+1,salida)
@@ -890,7 +918,7 @@ def maximo_diagonal1Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:I
     }
   }
 
-def maximo_diagonal2Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+def maximo_diagonal2Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
   
     if(fila==9){
       salida    
@@ -907,11 +935,16 @@ def maximo_diagonal2Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:I
           val contadorAux = diagonal2Izq(tablero, 1, fila, columna)
           if(contadorAux>contador){
             //println("entrodi2")            
-            val salidaAux = columna::List()
-            val salidaAux2 = fila::salidaAux
-            val salidaAux3 = contadorAux::salidaAux2
+            val columnaChar = columna.toChar
+            val filaChar = fila.toChar
+            val contadorChar = contadorAux.toChar
+            val color = tablero(fila)(columna)
+            val salidaAux = color::List()
+            val salidaAux2 = columnaChar::salidaAux
+            val salidaAux3 = filaChar::salidaAux2
+            val salidaAux4 = contadorChar::salidaAux3
           
-            maximo_diagonal2Izq(tablero, contadorAux, fila, columna+1,salidaAux3)
+            maximo_diagonal2Izq(tablero, contadorAux, fila, columna+1,salidaAux4)
           }
           else{
             maximo_diagonal2Izq(tablero, contador, fila, columna+1,salida)
@@ -930,39 +963,45 @@ def saber_maximo(tablero:List[List[Char]]){
   val max_dd2 = maximo_diagonal2Dcha(tablero, 0, 0, 0,List())
   val max_di1 = maximo_diagonal1Izq(tablero, 0, 0, 0,List())
   val max_di2 = maximo_diagonal2Izq(tablero, 0, 0, 0,List())
+  val max_h0 = max_h(0).toInt
+  val max_v0 = max_v(0).toInt
+  val max_dd10 = max_dd1(0).toInt
+  val max_dd20 = max_dd2(0).toInt
+  val max_di10 = max_di1(0).toInt
+  val max_di20 = max_di2(0).toInt
   
   //En caso de empate coge la horizontal, si no la vertical y asi sucesivamente
-  if(max_h(0)>=max_v(0) && max_h(0)>=max_dd1(0) && max_h(0)>=max_dd2(0) && max_h(0)>=max_di1(0) && max_h(0)>=max_di2(0) ){
+  if(max_h0>=max_v0 && max_h0>=max_dd10 && max_h0>=max_dd20 && max_h0>=max_di10 && max_h0>=max_di20 ){
     //println(max_h)
-    val x = max_h(1)+1
-    val y = max_h(2)+1
-    println("Se recomienda poner una bola en la fila que comienza en la coordenada (" + x +","+ y +")")
+    val x = max_h(1).toInt+1
+    val y = max_h(2).toInt+1
+    println("Se recomienda poner una bola de color "+max_h(3)+ " en la fila que comienza en la coordenada (" + x +","+ y +")")
   }
-  else if(max_v(0)>=max_h(0) && max_v(0)>=max_dd1(0) && max_v(0)>=max_dd2(0) && max_v(0)>=max_di1(0) && max_v(0)>=max_di2(0)){
-        val x = max_v(1)+1
-    val y = max_v(2)+1
-    println("Se recomienda poner una bola en la columna que comienza en la coordenada (" + x +","+ y +")")
+  else if(max_v0>=max_h0 && max_v0>=max_dd10 && max_v0>=max_dd20 && max_v0>=max_di10 && max_v0>=max_di20){
+        val x = max_v(1).toInt+1
+    val y = max_v(2).toInt+1
+    println("Se recomienda poner una bola color "+max_v(3)+ "  en la columna que comienza en la coordenada (" + x +","+ y +")")
   }
-  else if(max_dd1(0)>=max_h(0) && max_dd1(0)>=max_v(0) && max_dd1(0)>=max_dd2(0) && max_dd1(0)>=max_di1(0) && max_dd1(0)>=max_di2(0)){
-        val x = max_dd1(1)+1
-    val y = max_dd1(2)+1
-    println("Se recomienda poner una bola en la diagonal hacia la derecha tipo 1 que comienza en la coordenada (" + x +","+ y +")")
+  else if(max_dd10>=max_h0 && max_dd10>=max_v0 && max_dd10>=max_dd20 && max_dd10>=max_di10 && max_dd10>=max_di20){
+        val x = max_dd1(1).toInt+1
+    val y = max_dd1(2).toInt+1
+    println("Se recomienda poner una bola color "+max_dd1(3)+ "  en la diagonal hacia la derecha tipo 1 que comienza en la coordenada (" + x +","+ y +")")
   }
-  else if(max_dd2(0)>=max_h(0) && max_dd2(0)>=max_dd1(0) && max_dd2(0)>=max_v(0) && max_dd2(0)>=max_di1(0) && max_dd2(0)>=max_di2(0)){
-        val x = max_dd2(1)+1
-    val y = max_dd2(2)+1
-    println("Se recomienda poner una bola en la diagonal hacia la derecha tipo 2 que comienza en la coordenada (" + x +","+ y +")")
+  else if(max_dd20>=max_h0 && max_dd20>=max_dd10 && max_dd20>=max_v0 && max_dd20>=max_di10 && max_dd20>=max_di20){
+        val x = max_dd2(1).toInt+1
+    val y = max_dd2(2).toInt+1
+    println("Se recomienda poner una bola color "+max_dd2(3)+ "  en la diagonal hacia la derecha tipo 2 que comienza en la coordenada (" + x +","+ y +")")
   }
-  else if(max_di1(0)>=max_h(0) && max_di1(0)>=max_dd1(0) && max_di1(0)>=max_dd2(0) && max_di1(0)>=max_v(0) && max_di1(0)>=max_di2(0)){
-        val x = max_di1(1)+1
-    val y = max_di1(2)+1
-    println("Se recomienda poner una bola en la diagonal hacia la izquierda tipo 1 que comienza en la coordenada (" + x +","+ y +")")
+  else if(max_di10>=max_h0 && max_di10>=max_dd10 && max_di10>=max_dd20 && max_di10>=max_v0 && max_di10>=max_di20){
+        val x = max_di1(1).toInt+1
+    val y = max_di1(2).toInt+1
+    println("Se recomienda poner una bola color "+max_di1(3)+ "  en la diagonal hacia la izquierda tipo 1 que comienza en la coordenada (" + x +","+ y +")")
 
   }
   else{
-    val x = max_di2(1)+1
-    val y = max_di2(2)+1
-        println("Se recomienda poner una bola en la diagonal hacia la izquierda tipo 2 que comienza en la coordenada (" + x +","+ y +")")
+    val x = max_di2(1).toInt+1
+    val y = max_di2(2).toInt+1
+        println("Se recomienda poner una bola color "+max_di2(3)+ "  en la diagonal hacia la izquierda tipo 2 que comienza en la coordenada (" + x +","+ y +")")
 
   }
   
