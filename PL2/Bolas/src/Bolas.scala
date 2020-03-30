@@ -660,7 +660,7 @@ object Bolas {
     }else{
       if(tablero(fila)(columna) != '_'){
         if(lado == 'i'){
-          if(columna != 0){
+          if(columna >= 0){
             if(tablero(fila)(columna) == tablero(fila+1)(columna-1)){
               diagonal(tablero, contador+1, fila+1, columna-1, lado)
             }else{
@@ -671,7 +671,7 @@ object Bolas {
             contador
           }
         }else if(lado == 'd'){
-          if(columna != 8){
+          if(columna <= 8){
             if(tablero(fila)(columna) == tablero(fila+1)(columna+1)){
               diagonal(tablero, contador+1, fila+1, columna+1, lado)
             }else{
