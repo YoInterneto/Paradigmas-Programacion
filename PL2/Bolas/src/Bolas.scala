@@ -136,8 +136,8 @@ object Bolas {
           val vertical_cont = vertical(tablero, 1, fila, columna)
           val diagonal1Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
           val diagonal1Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
-          val diagonal2Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
-          val diagonal2Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
+          val diagonal2Izq_cont = diagonal2Izq(tablero, 1, fila, columna)
+          val diagonal2Dcha_cont = diagonal2Dcha(tablero, 1, fila, columna)
           
           if((horizontal_cont < 5) && (vertical_cont < 5) && 
           (diagonal1Izq_cont < 5) && (diagonal1Dcha_cont < 5) &&
@@ -393,8 +393,8 @@ object Bolas {
         val vertical_cont = vertical(tablero, 1, fila, columna)
         val diagonal1Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
         val diagonal1Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
-        val diagonal2Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
-        val diagonal2Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
+        val diagonal2Izq_cont = diagonal2Izq(tablero, 1, fila, columna)
+        val diagonal2Dcha_cont = diagonal2Dcha(tablero, 1, fila, columna)
         
         if((horizontal_cont < 5) && (vertical_cont < 5) && 
           (diagonal1Izq_cont < 5) && (diagonal1Dcha_cont < 5) &&
