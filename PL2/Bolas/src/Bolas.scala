@@ -449,6 +449,8 @@ object Bolas {
       }
     }
   }
+  
+  
   //**********************************************************************************************
   //Borra n fichas que sean consecutivas y verticales en el tablero
   //**********************************************************************************************
@@ -478,13 +480,75 @@ object Bolas {
     if(fila == 8 || columna == 8){
       contador
     }else{
-      contador
+      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd')
+      val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'd')
+      
+      //Caso en el que la diagonalPrincipal es mas grande 
+      if((diagonalPrincipal > diagonalSecundaria) && (diagonalSecundaria > 1)){
+          println("Correcto")
+         ((diagonalSecundaria + 1) + diagonalSecundaria)
+      //Caso diagonalSecundaria mas grande o igual
+      }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
+           println("Correcto")
+          ((diagonalPrincipal - 1) + diagonalPrincipal)
+      }else{
+        contador
+      }
     }
   }
   
   //itera con fila+1 columna-1
   def diagonalIzq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    contador
+    if(fila == 8 || columna == 8){
+      contador
+    }else{
+      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i')
+      val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'i')
+      
+      //Caso en el que la diagonalPrincipal es mas grande 
+      if((diagonalPrincipal > diagonalSecundaria) && (diagonalSecundaria > 1)){
+          println("Correcto")
+         ((diagonalSecundaria + 1) + diagonalSecundaria)
+      //Caso diagonalSecundaria mas grande o igual
+      }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
+           println("Correcto")
+          ((diagonalPrincipal - 1) + diagonalPrincipal)
+      }else{
+        contador
+      }
+    }
+  }
+  
+  
+  //**********************************************************************************************
+  //Funcion auxiliar que devuelve el numero de fichas que forman una diagonal segun un parámetro
+  //**********************************************************************************************
+  def diagonal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int, lado: Char):Int = {
+    if(fila == 8 || columna == 8){
+      contador
+    }else{
+      if(tablero(fila)(columna) != '_'){
+        if(lado == 'i'){
+          if(tablero(fila)(columna) == tablero(fila+1)(columna-1)){
+            diagonal(tablero, contador+1, fila+1, columna-1, lado)
+          }else{
+            contador
+          }
+        }else if(lado == 'd'){
+          if(tablero(fila)(columna) == tablero(fila+1)(columna+1)){
+            diagonal(tablero, contador+1, fila+1, columna+1, lado)
+          }else{
+            contador
+          }
+        }else{
+          println("ERRORRRRR")
+          contador
+        }
+      }
+      else{
+        contador
+      }
+    }
   }
   
   def contador_puntuacion(contador:Int):Int={
@@ -516,8 +580,9 @@ object Bolas {
                                List('_','A','_','_','_','_','_','_','A'),
                                List('_','A','_','_','_','_','_','_','A'),
                                List('_','A','_','_','_','_','_','_','A'))
-                               
-                               
+       
+
+      println(diagonalIzq(tableroPruebas, 1, 2, 6))
       /*println("****primera fila****")
       val nuevo = borrar_horizontal(tableroPruebas, 5, 0, 0)
       mostrar_tablero(nuevo)
@@ -544,9 +609,9 @@ object Bolas {
     //println(reemplazar_lista(tablero_vacio, 0, List('A','B','C','D','E')))
         
         //println(calcular_puntuacion(tableroPruebas, 0, 0, 0))
-     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
-     mostrar_tablero(tablero_inicial)
-     escoger_bola(tablero_inicial,0)
+     //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
+     //mostrar_tablero(tablero_inicial)
+     //escoger_bola(tablero_inicial,0)
      //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION
      
    
