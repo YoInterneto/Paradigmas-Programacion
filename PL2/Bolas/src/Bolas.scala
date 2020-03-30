@@ -107,6 +107,7 @@ object Bolas {
         mostrar_tablero(tablero_sig_turno)
         println("\n*** comprobado ***\n")
         mostrar_tablero(tablero_comprobado)
+        saber_maximo(tablero_comprobado)
         escoger_bola(tablero_comprobado,puntuacion_acumulada)
          
       }
@@ -723,11 +724,250 @@ object Bolas {
     }
   }
   
-  
-  def contador_puntuacion(contador:Int):Int={
-    val puntuacion = contador*75
-    puntuacion
+//Funcion para saber cual es el numero de bolas maximas segudias en horizontal, luego se comparara con las verticales y diagonales
+//Retornara las coordenadas, para saber donde estara esa fila, diagonal o columna
+//De momento solo retorna el maximo
+  //Como queremos retornar el contador y las coordenadas haremos una lista que sera (contador,x,y)
+  //Falta guardar el color que hay que meter en la fila, columna o diagonal recomendada
+def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+  if(fila==9){
+    salida    
   }
+  else{
+    if(columna==9){
+      maximo_horizontal(tablero,contador, fila+1, 0,salida)
+    }
+    else{
+      if(tablero(fila)(columna)=='_'){
+        maximo_horizontal(tablero, contador, fila, columna+1,salida)
+        
+      }
+      else{
+        val contadorAux = horizontal(tablero, 1, fila, columna)
+        if(contadorAux>contador){
+          //println("entroh")
+          val salidaAux = columna::List()
+          val salidaAux2 = fila::salidaAux
+          val salidaAux3 = contadorAux::salidaAux2
+          
+          maximo_horizontal(tablero, contadorAux, fila, columna+1,salidaAux3)
+          
+        }
+        else{
+          maximo_horizontal(tablero, contador, fila, columna+1,salida)
+        }
+      }
+          
+    }
+  }
+}
+
+def maximo_vertical(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+  if(fila==9){
+    salida    
+  }
+  else{
+    if(columna==9){
+      maximo_vertical(tablero,contador, fila+1, 0,salida)
+    }
+    else{
+      if(tablero(fila)(columna)=='_'){
+        maximo_vertical(tablero, contador, fila, columna+1,salida)
+      }
+      else{
+        val contadorAux = vertical(tablero, 1, fila, columna)
+        if(contadorAux>contador){
+          //println("entrov")
+          val salidaAux = columna::List()
+          val salidaAux2 = fila::salidaAux
+          val salidaAux3 = contadorAux::salidaAux2
+          
+          maximo_vertical(tablero, contadorAux, fila, columna+1,salidaAux3)
+        }
+        else{
+          maximo_vertical(tablero, contador, fila, columna+1,salida)
+        }
+      }
+          
+    }
+  }
+}
+
+//Las diagonales las cuenta raro
+def maximo_diagonal1Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+  
+    if(fila==9){
+    salida    
+    }
+    else{
+      if(columna==9){
+        maximo_diagonal1Dcha(tablero,contador, fila+1, 0,salida)
+      }
+      else{
+        if(tablero(fila)(columna)=='_'){
+          maximo_diagonal1Dcha(tablero, contador, fila, columna+1,salida)
+        }
+        else{
+          val contadorAux = diagonal1Dcha(tablero, 1, fila, columna)
+          if(contadorAux>contador){   
+            //println("entrodd1")  
+            val salidaAux = columna::List()
+            val salidaAux2 = fila::salidaAux
+            val salidaAux3 = contadorAux::salidaAux2
+          
+            maximo_diagonal1Dcha(tablero, contadorAux, fila, columna+1,salidaAux3)
+          }
+          else{
+            maximo_diagonal1Dcha(tablero, contador, fila, columna+1,salida)
+          }
+        }
+            
+      }
+    }
+  }
+
+def maximo_diagonal2Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+  
+    if(fila==9){
+    salida    
+    }
+    else{
+      if(columna==9){
+        maximo_diagonal2Dcha(tablero,contador, fila+1, 0,salida)
+      }
+      else{
+        if(tablero(fila)(columna)=='_'){
+          maximo_diagonal2Dcha(tablero, contador, fila, columna+1,salida)
+        }
+        else{
+          val contadorAux = diagonal2Dcha(tablero, 1, fila, columna)
+          if(contadorAux>contador){
+            //println("entrodd2")            
+            val salidaAux = columna::List()
+            val salidaAux2 = fila::salidaAux
+            val salidaAux3 = contadorAux::salidaAux2
+          
+            maximo_diagonal2Dcha(tablero, contadorAux, fila, columna+1,salidaAux3)
+          }
+          else{
+            maximo_diagonal2Dcha(tablero, contador, fila, columna+1,salida)
+          }
+        }
+            
+      }
+    }
+  }
+
+def maximo_diagonal1Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+  
+    if(fila==9){
+    salida    
+    }
+    else{
+      if(columna==9){
+        maximo_diagonal1Izq(tablero,contador, fila+1, 0,salida)
+      }
+      else{
+        if(tablero(fila)(columna)=='_'){
+          maximo_diagonal1Izq(tablero, contador, fila, columna+1,salida)
+        }
+        else{
+          val contadorAux = diagonal1Izq(tablero, 1, fila, columna)
+          if(contadorAux>contador){
+            //println("entrodi1")            
+            val salidaAux = columna::List()
+            val salidaAux2 = fila::salidaAux
+            val salidaAux3 = contadorAux::salidaAux2
+          
+            maximo_diagonal1Izq(tablero, contadorAux, fila, columna+1,salidaAux3)
+          }
+          else{
+            maximo_diagonal1Izq(tablero, contador, fila, columna+1,salida)
+          }
+        }
+            
+      }
+    }
+  }
+
+def maximo_diagonal2Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Int]):List[Int]={
+  
+    if(fila==9){
+      salida    
+    }
+    else{
+      if(columna==9){
+        maximo_diagonal2Izq(tablero,contador, fila+1, 0,salida)
+      }
+      else{
+        if(tablero(fila)(columna)=='_'){
+          maximo_diagonal2Izq(tablero, contador, fila, columna+1,salida)
+        }
+        else{
+          val contadorAux = diagonal2Izq(tablero, 1, fila, columna)
+          if(contadorAux>contador){
+            //println("entrodi2")            
+            val salidaAux = columna::List()
+            val salidaAux2 = fila::salidaAux
+            val salidaAux3 = contadorAux::salidaAux2
+          
+            maximo_diagonal2Izq(tablero, contadorAux, fila, columna+1,salidaAux3)
+          }
+          else{
+            maximo_diagonal2Izq(tablero, contador, fila, columna+1,salida)
+          }
+        }
+            
+      }
+    }
+  }
+
+def saber_maximo(tablero:List[List[Char]]){
+  
+  val max_h = maximo_horizontal(tablero, 0, 0, 0,List())
+  val max_v = maximo_vertical(tablero, 0, 0, 0,List())
+  val max_dd1 = maximo_diagonal1Dcha(tablero, 0, 0, 0,List())
+  val max_dd2 = maximo_diagonal2Dcha(tablero, 0, 0, 0,List())
+  val max_di1 = maximo_diagonal1Izq(tablero, 0, 0, 0,List())
+  val max_di2 = maximo_diagonal2Izq(tablero, 0, 0, 0,List())
+  
+  //En caso de empate coge la horizontal, si no la vertical y asi sucesivamente
+  if(max_h(0)>=max_v(0) && max_h(0)>=max_dd1(0) && max_h(0)>=max_dd2(0) && max_h(0)>=max_di1(0) && max_h(0)>=max_di2(0) ){
+    //println(max_h)
+    val x = max_h(1)+1
+    val y = max_h(2)+1
+    println("Se recomienda poner una bola en la fila que comienza en la coordenada (" + x +","+ y +")")
+  }
+  else if(max_v(0)>=max_h(0) && max_v(0)>=max_dd1(0) && max_v(0)>=max_dd2(0) && max_v(0)>=max_di1(0) && max_v(0)>=max_di2(0)){
+        val x = max_v(1)+1
+    val y = max_v(2)+1
+    println("Se recomienda poner una bola en la columna que comienza en la coordenada (" + x +","+ y +")")
+  }
+  else if(max_dd1(0)>=max_h(0) && max_dd1(0)>=max_v(0) && max_dd1(0)>=max_dd2(0) && max_dd1(0)>=max_di1(0) && max_dd1(0)>=max_di2(0)){
+        val x = max_dd1(1)+1
+    val y = max_dd1(2)+1
+    println("Se recomienda poner una bola en la diagonal hacia la derecha tipo 1 que comienza en la coordenada (" + x +","+ y +")")
+  }
+  else if(max_dd2(0)>=max_h(0) && max_dd2(0)>=max_dd1(0) && max_dd2(0)>=max_v(0) && max_dd2(0)>=max_di1(0) && max_dd2(0)>=max_di2(0)){
+        val x = max_dd2(1)+1
+    val y = max_dd2(2)+1
+    println("Se recomienda poner una bola en la diagonal hacia la derecha tipo 2 que comienza en la coordenada (" + x +","+ y +")")
+  }
+  else if(max_di1(0)>=max_h(0) && max_di1(0)>=max_dd1(0) && max_di1(0)>=max_dd2(0) && max_di1(0)>=max_v(0) && max_di1(0)>=max_di2(0)){
+        val x = max_di1(1)+1
+    val y = max_di1(2)+1
+    println("Se recomienda poner una bola en la diagonal hacia la izquierda tipo 1 que comienza en la coordenada (" + x +","+ y +")")
+
+  }
+  else{
+    val x = max_di2(1)+1
+    val y = max_di2(2)+1
+        println("Se recomienda poner una bola en la diagonal hacia la izquierda tipo 2 que comienza en la coordenada (" + x +","+ y +")")
+
+  }
+  
+}
+
   
   
   
@@ -742,15 +982,15 @@ object Bolas {
                                List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'))
                                
-      val tableroPruebas = List(List('A','A','A','A','A','_','A','_','_'),
+      val tableroPruebas = List(List('A','A','A','A','A','A','A','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
                                List('_','A','_','A','_','_','_','_','A'),
                                List('_','A','_','A','A','_','_','_','A'),
-                               List('_','A','_','_','A','A','_','_','A'),
+                               List('_','A','_','_','A','_','_','_','A'),
                                List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','_','A','_','_','A'),
                                List('_','A','_','_','A','A','_','_','A'),
-                               List('_','A','_','A','A','_','_','_','A'))
+                               List('_','A','_','A','A','_','_','_','A'),
+                               List('_','A','_','A','_','_','_','A','A'))
                                
       val tableroPruebas1=List(List('A','_','_','_','_','_','_','_','A'),
                                List('A','A','_','_','_','_','_','A','A'),
@@ -761,7 +1001,9 @@ object Bolas {
                                List('_','_','A','A','_','A','A','_','_'),
                                List('_','A','A','_','_','_','A','A','_'),
                                List('_','A','_','_','_','_','_','A','_'))
+     
                                
+     //println(saber_maximo(tableroPruebas1))
      val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
      escoger_bola(tablero_inicial,0)
