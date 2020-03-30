@@ -655,12 +655,12 @@ object Bolas {
   //Funcion auxiliar que devuelve el numero de fichas que forman una diagonal segun un parámetro
   //**********************************************************************************************
   def diagonal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int, lado: Char):Int = {
-    if(fila == 8){
+    if(fila == 8 || columna == -1 || columna == 9){
       contador
     }else{
       if(tablero(fila)(columna) != '_'){
         if(lado == 'i'){
-          if(columna >= 0){
+          if(columna != 0){
             if(tablero(fila)(columna) == tablero(fila+1)(columna-1)){
               diagonal(tablero, contador+1, fila+1, columna-1, lado)
             }else{
@@ -671,7 +671,7 @@ object Bolas {
             contador
           }
         }else if(lado == 'd'){
-          if(columna <= 8){
+          if(columna != 8){
             if(tablero(fila)(columna) == tablero(fila+1)(columna+1)){
               diagonal(tablero, contador+1, fila+1, columna+1, lado)
             }else{
