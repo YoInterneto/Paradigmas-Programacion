@@ -135,17 +135,23 @@ object Bolas {
           val horizontal_cont = horizontal(tablero, 1, fila, columna)
           val vertical_cont = vertical(tablero, 1, fila, columna)
 <<<<<<< HEAD
+<<<<<<< HEAD
           val diagonalDcha_cont = diagonalDcha(tablero, 1, fila, columna)
           val diagonalIzq_cont = diagonalIzq(tablero, 1, fila, columna)
           
           if((horizontal_cont < 5) && (vertical_cont < 5) && 
             (diagonalIzq_cont < 5) && (diagonalDcha_cont < 5)){
 =======
+=======
+>>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
           val diagonal1Dcha_cont = diagonal1Dcha(tablero, 1, fila, columna)
           val diagonal1Izq_cont = diagonal1Izq(tablero, 1, fila, columna)
           
           if((horizontal_cont < 5) && (vertical_cont < 5) && 
             (diagonal1Izq_cont < 5) && (diagonal1Dcha_cont < 5)){
+<<<<<<< HEAD
+>>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
+=======
 >>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
             
             calcular_puntuacion(tablero, puntuacion, fila, columna+1)
@@ -160,7 +166,11 @@ object Bolas {
               calcular_puntuacion(tableroAux, puntuacion + vertical_cont, fila, columna+1)
               
 <<<<<<< HEAD
+<<<<<<< HEAD
             }else if(diagonalIzq_cont >= 5){
+=======
+            }else if(diagonal1Izq_cont >= 5){
+>>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
 =======
             }else if(diagonal1Izq_cont >= 5){
 >>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
@@ -538,11 +548,14 @@ object Bolas {
   
   //itera con fila+1 columna-1
 <<<<<<< HEAD
+<<<<<<< HEAD
   def diagonalIzq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     contador
   }
   
 =======
+=======
+>>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
   def diagonal1Izq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
     if(fila == 8){
       contador
@@ -697,6 +710,9 @@ object Bolas {
                                List('_','A','_','_','_','_','_','A','_'))
       
       comprobar_tablero(tableroPruebas1)
+<<<<<<< HEAD
+>>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
+=======
 >>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
       /*println("****primera fila****")
       val nuevo = borrar_horizontal(tableroPruebas, 5, 0, 0)
@@ -725,9 +741,15 @@ object Bolas {
         
         //println(calcular_puntuacion(tableroPruebas, 0, 0, 0))
 <<<<<<< HEAD
+<<<<<<< HEAD
      val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
      mostrar_tablero(tablero_inicial)
      escoger_bola(tablero_inicial,0)
+=======
+     //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
+     //mostrar_tablero(tablero_inicial)
+     //escoger_bola(tablero_inicial,0)
+>>>>>>> parent of 350ff8f... puntuacion hecha, falta optimizacion
 =======
      //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)//Llenamos el tablero
      //mostrar_tablero(tablero_inicial)
