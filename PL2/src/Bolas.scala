@@ -753,6 +753,7 @@ object Bolas {
     //Si la funcion siguiente nos retorna este caracter quiere decir que ya ha llegado al final de la lista y entonces se comprueba
     //la siguiente posicion de la matriz empezando de nuevo por el color 'A'
     else if(colorElegido == '_'){
+      println("Colores comprobados")
       mejor_jugadaAux(tablero, fila, columna+1, filaMax, columnaMax, contadorMax, colorMax, tipo, 'A')
     }
     else{
@@ -779,7 +780,7 @@ object Bolas {
         /* Tipo 6 */ val diagonal2Dcha_cont = diagonal2Dcha(tableroAux, 1, fila, columna)
         
         val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, diagonal2Dcha_cont)
-        val maximoContador = List(1,2) //Posicion 0 contador, posicion 1 tipo
+        val maximoContador = maximo_lista(contadores) //Posicion 0 contador, posicion 1 tipo
           
         val contadorElegido = maximoContador(0)
         val tipoElegido = maximoContador(1)
@@ -835,9 +836,11 @@ object Bolas {
     }
     else{
       val posicionValor = listaContadores(contador)
+      //Si el valor de la lista es mayor que el que habia guardado se guarda su posicion y valor
       if(posicionValor > maximo){
         maximo_listaAux(listaContadores, contador+1, posicionValor, contador+1)
       }
+      //Si no es mayor se sigue iterando
       else{
         maximo_listaAux(listaContadores, contador+1, maximo, tipo)
       }
@@ -1179,15 +1182,15 @@ def saber_maximo(tablero:List[List[Char]]){
   
   
   def main(args: Array[String]){
-      val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
+      val tablero_vacio = List(List('_','_','A','A','A','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'))
+                               List('_','_','V','_','_','N','_','R','_'),
+                               List('_','N','_','_','_','_','_','R','_'),
+                               List('_','_','_','_','G','_','_','_','_'),
+                               List('A','_','_','N','_','_','_','_','_'),
+                               List('_','_','_','N','N','_','N','_','_'),
+                               List('_','G','_','_','N','N','_','_','_'),
+                               List('_','_','_','_','_','N','_','_','_'))
                                
       val tableroPruebas = List(List('A','A','A','A','A','A','A','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
@@ -1219,18 +1222,18 @@ def saber_maximo(tablero:List[List[Char]]){
                                List('_','_','_','_','_','_','_','_','_'),
                                List('V','_','A','_','_','_','_','_','A'))
                 
-     val lista = mejor_jugadaAux(tableroPruebas, 9, 0, 0, 0, 0, 'A', 0, 'C')
+     val lista = mejor_jugada(tablero_vacio)
      val fila = lista(0).toInt
      val columna = lista(1).toInt
      val letra = lista(2)
      val contador = lista(3).toInt
      val tipo = lista(4).toInt
 
-     println(fila)
-     println(columna)
-     println(contador)
-     println(letra)
-     println(siguiente('G'))
+     println("Fila:"+ fila)
+     println("Columna:"+columna)
+     println("Color:"+letra)
+     println("Tipo:"+tipo)
+     println("ValorContador:"+contador)
      
      
      val listaValores = maximo_lista(List(3,9,4,6,7,3))
