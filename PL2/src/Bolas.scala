@@ -106,7 +106,7 @@ object Bolas {
         mostrar_tablero(tablero_sig_turno)
         println("\n*** comprobado ***\n")
         mostrar_tablero(tablero_comprobado)
-        saber_maximo(tablero_comprobado)
+        //saber_maximo(tablero_comprobado)
         escoger_bola(tablero_comprobado,puntuacion_acumulada)
          
       }
@@ -726,9 +726,9 @@ object Bolas {
 //Funcion para saber cual es el numero de bolas maximas segudias en horizontal, luego se comparara con las verticales y diagonales
 //Retornara las coordenadas, para saber donde estara esa fila, diagonal o columna
 //De momento solo retorna el maximo
-  //Como queremos retornar el contador y las coordenadas haremos una lista que sera (contador,x,y)
+  //Como queremos retornar el contador y las coordenadas haremos una lista que sera (contador,x,y,color)
   //Falta guardar el color que hay que meter en la fila, columna o diagonal recomendada
-def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
+/*def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
   if(fila==9){
     salida    
   }
@@ -969,42 +969,65 @@ def saber_maximo(tablero:List[List[Char]]){
   val max_di10 = max_di1(0).toInt
   val max_di20 = max_di2(0).toInt
   
+  val hColor = contar_color(tablero, max_h(3))
+  val vColor = contar_color(tablero, max_v(3))
+  val dd1Color = contar_color(tablero, max_dd1(3))
+  val dd2Color = contar_color(tablero, max_dd2(3))
+  val di1Color = contar_color(tablero, max_di1(3))
+  val di2Color = contar_color(tablero, max_di2(3))
+  
+  val poner_h = max_h0 - hColor
+  val poner_v = max_v0 - vColor
+  val poner_dd1 = max_dd10 - dd1Color
+  val poner_dd2 = max_dd20 - dd2Color
+  val poner_di1 = max_di10 - di1Color
+  val poner_di2 = max_di20 - di2Color
+
+  
+  
   //En caso de empate coge la horizontal, si no la vertical y asi sucesivamente
   if(max_h0>=max_v0 && max_h0>=max_dd10 && max_h0>=max_dd20 && max_h0>=max_di10 && max_h0>=max_di20 ){
     //println(max_h)
     val x = max_h(1).toInt+1
     val y = max_h(2).toInt+1
-    println("Se recomienda poner una bola de color "+max_h(3)+ " en la fila que comienza en la coordenada (" + x +","+ y +")")
+    
+    if(poner_h==0 ){
+      maximo_horizontal(tablero, 0, max_h(1), max_v(2)+max_h(0), List())
+      
+    }else{
+      println("Se recomienda poner una bola de color "+max_h(3)+ " en la fila que comienza en la coordenada (" + x +","+ y +")")
+      
+    }
   }
-  else if(max_v0>=max_h0 && max_v0>=max_dd10 && max_v0>=max_dd20 && max_v0>=max_di10 && max_v0>=max_di20){
+  else if(max_v0>=max_h0 && max_v0>=max_dd10 && max_v0>=max_dd20 && max_v0>=max_di10 && max_v0>=max_di20 && poner_v!=0){
         val x = max_v(1).toInt+1
     val y = max_v(2).toInt+1
     println("Se recomienda poner una bola color "+max_v(3)+ "  en la columna que comienza en la coordenada (" + x +","+ y +")")
   }
-  else if(max_dd10>=max_h0 && max_dd10>=max_v0 && max_dd10>=max_dd20 && max_dd10>=max_di10 && max_dd10>=max_di20){
+  else if(max_dd10>=max_h0 && max_dd10>=max_v0 && max_dd10>=max_dd20 && max_dd10>=max_di10 && max_dd10>=max_di20 && poner_dd1!=0){
         val x = max_dd1(1).toInt+1
     val y = max_dd1(2).toInt+1
     println("Se recomienda poner una bola color "+max_dd1(3)+ "  en la diagonal hacia la derecha tipo 1 que comienza en la coordenada (" + x +","+ y +")")
   }
-  else if(max_dd20>=max_h0 && max_dd20>=max_dd10 && max_dd20>=max_v0 && max_dd20>=max_di10 && max_dd20>=max_di20){
+  else if(max_dd20>=max_h0 && max_dd20>=max_dd10 && max_dd20>=max_v0 && max_dd20>=max_di10 && max_dd20>=max_di20 && poner_dd2!=0){
         val x = max_dd2(1).toInt+1
     val y = max_dd2(2).toInt+1
     println("Se recomienda poner una bola color "+max_dd2(3)+ "  en la diagonal hacia la derecha tipo 2 que comienza en la coordenada (" + x +","+ y +")")
   }
-  else if(max_di10>=max_h0 && max_di10>=max_dd10 && max_di10>=max_dd20 && max_di10>=max_v0 && max_di10>=max_di20){
+  else if(max_di10>=max_h0 && max_di10>=max_dd10 && max_di10>=max_dd20 && max_di10>=max_v0 && max_di10>=max_di20 && poner_di1!=0){
         val x = max_di1(1).toInt+1
     val y = max_di1(2).toInt+1
     println("Se recomienda poner una bola color "+max_di1(3)+ "  en la diagonal hacia la izquierda tipo 1 que comienza en la coordenada (" + x +","+ y +")")
 
   }
-  else{
+  else if(max_di20>=max_h0 && max_di20>=max_dd10 && max_di20>=max_dd20 && max_di20>=max_v0 && max_di20>=max_di10 && poner_di2!=0){
     val x = max_di2(1).toInt+1
     val y = max_di2(2).toInt+1
         println("Se recomienda poner una bola color "+max_di2(3)+ "  en la diagonal hacia la izquierda tipo 2 que comienza en la coordenada (" + x +","+ y +")")
 
   }
   
-}
+}*/
 
 //**********************************************************************************************
   //Cuenta el numero de ocurrencias de un color en el tablero
@@ -1076,13 +1099,17 @@ def saber_maximo(tablero:List[List[Char]]){
                                List('V','_','A','_','_','_','_','_','A'))
      
                                
-     println("A -> "+ contar_color(tableroPruebas2, 'A'))
-     println("V -> "+ contar_color(tableroPruebas2, 'V'))
+    // println("A -> "+ contar_color(tableroPruebas2, 'A'))
+     //println("V -> "+ contar_color(tableroPruebas2, 'V'))
      
      //println(saber_maximo(tableroPruebas1))
      
      val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
      escoger_bola(tablero_inicial,0)
+     
+     
+     //IDEA OPTIMIZACION, IR PROBANDO EN CADA CASILLA VACIA LAS DIFERENTES POSIBILIDADES
+     //Y GUARDAR LA MEJOR EN UNA LISTA CON SU CONTADOR, FILA, COLUMNA Y COLOR
   }
 }
