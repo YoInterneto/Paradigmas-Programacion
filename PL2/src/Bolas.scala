@@ -728,15 +728,14 @@ object Bolas {
   
   //**********************************************************************************************
   //Devuelve una lista con la informacion del mejor movimiento posible que el jugador puede 
-  //realizar en el siguiente o siguientes movimientos, la lista tiene esta informacion:
+  //realizar en el siguiente o siguientes movimientos iterando y recorriendo la matriz posicion por
+  //posicion en cada posicion comprobando cada uno de los colores, la lista tiene esta informacion:
   //                --- List(fila, columna, color, contador, tipo) ---
-  //El tipo se refiere a 1(horizontal), 2(vertical), 3(diagonaldcha1), 4(diagonalizq1), 
-  //                     5(diagonaldcha2), 6(diagonalizq2).
+  //El tipo se refiere a 1(horizontal), 2(vertical), 3(diagonalizq1), 4(diagonaldcha1), 
+  //                     5(diagonalizq2), 6(diagonaldcha2).
   //**********************************************************************************************
-  def mejor_jugada(tablero: List[List[Char]]):List[Char] = {
-    mejor_jugadaAux(tablero, 0, 0, 10, 10, 0, '_', 0)
-  }
-  def mejor_jugadaAux(tablero: List[List[Char]], fila: Int, columna: Int, filaMax: Int, columnaMax: Int, contadorMax: Int, colorMax: Char, tipo: Int):List[Char] = {
+  def mejor_jugada(tablero: List[List[Char]]):List[Char] = { mejor_jugadaAux(tablero, 0, 0, 10, 10, 0, '_', 0, 'A') }
+  def mejor_jugadaAux(tablero: List[List[Char]], fila: Int, columna: Int, filaMax: Int, columnaMax: Int, contadorMax: Int, colorMax: Char, tipo: Int, colorElegido: Char):List[Char] = {
     //Si se ha recorrido el tablero retornamos la lista con toda la informacion necesaria
     if(fila == 9){
       val filaFinal = filaMax.toChar
@@ -747,8 +746,64 @@ object Bolas {
       val listaMaximo = List(filaFinal, columnaFinal, colorMax, contadorFinal, tipoFinal)
       
       listaMaximo
-    }else{
-      List('p','u','t','a')
+    }
+    else if(columna == 9){
+       mejor_jugadaAux(tablero, fila+1, 0, filaMax, columnaMax, contadorMax, colorMax, tipo, colorElegido)
+    }
+    //Si la funcion siguiente nos retorna este caracter quiere decir que ya ha llegado al final de la lista y entonces se comprueba
+    //la siguiente posicion de la matriz empezando de nuevo por el color 'A'
+    else if(colorElegido == '_'){
+      mejor_jugadaAux(tablero, fila, columna+1, filaMax, columnaMax, contadorMax, colorMax, tipo, 'A')
+    }
+    else{
+      //Si en la posicion esta el mismo color que el que queremos comprobar no lo comprobamos y seguimos con el siguiente color
+      if(tablero(fila)(columna) == colorElegido){
+        val siguienteColor = siguiente(colorElegido)
+        mejor_jugadaAux(tablero, fila, columna, filaMax, columnaMax, contadorMax, colorMax, tipo, siguienteColor)
+      //Si en la posicion hay otro color o esta vacio pasamos a comprobar con el color correspondiente que toque en esta iteracion
+      //reemplazando el color en el tablero y viendo como serian los contadores
+      }else{
+        //Tablero con la ficha de color para comprobar si es buena opcion
+        val lineaTablero = tablero(fila)
+        val lineaTableroAux = reemplazar(lineaTablero, columna, colorElegido)
+        val tableroAux = reemplazar_lista(tablero, fila, lineaTableroAux)
+        
+        //Contadores de vertical, horizontal y diagonal para ese tablero
+        /* Tipo 1 */ val horizontal_cont = horizontal(tableroAux, 1, fila, columna)
+        /* Tipo 2 */ val vertical_cont = vertical(tableroAux, 1, fila, columna)
+        /* Tipo 3 */ val diagonal1Izq_cont = diagonal1Izq(tableroAux, 1, fila, columna)
+        /* Tipo 4 */ val diagonal1Dcha_cont = diagonal1Dcha(tableroAux, 1, fila, columna)
+        /* Tipo 5 */ val diagonal2Izq_cont = diagonal2Izq(tableroAux, 1, fila, columna)
+        /* Tipo 6 */ val diagonal2Dcha_cont = diagonal2Dcha(tableroAux, 1, fila, columna)
+        
+        if(){
+          
+        }
+        List()
+      }
+    }
+  }
+  
+  
+  //**********************************************************************************************
+  //Devuelve el siguiente color a comprobar a partir de un color dado
+  //**********************************************************************************************
+  def siguiente(anterior: Char): Char = { siguienteAux(anterior, 0) }
+  def siguienteAux(anterior: Char, contador: Int): Char = {
+    val colores = List('A','N','R','V','M','G')
+    //Si hemos llegado al ultimo elemento de la lista mandamos una "señal" para avisar de ello
+    if(contador == colores.length-1){
+      '_'
+    }
+    //Para los demas casos seguimos comprobando hasta dar con el elemento del que queremos saber el siguiente
+    //y una vez lo encontramos devolvemos el siguiente
+    else{
+      if(colores(contador) == anterior){
+        colores(contador + 1)
+      }
+      else{
+        siguienteAux(anterior, contador+1)
+      }
     }
   }
   
@@ -1127,24 +1182,22 @@ def saber_maximo(tablero:List[List[Char]]){
                                List('_','_','_','_','_','_','_','_','_'),
                                List('V','_','A','_','_','_','_','_','A'))
                 
-     val lista = mejor_jugadaAux(tableroPruebas, 9, 0, 0, 0, 0, 'A', 0)
+     val lista = mejor_jugadaAux(tableroPruebas, 9, 0, 0, 0, 0, 'A', 0, 'C')
      val fila = lista(0).toInt
      val columna = lista(1).toInt
      val letra = lista(2)
      val contador = lista(3).toInt
      val tipo = lista(4).toInt
 
-     
      println(fila)
      println(columna)
      println(contador)
      println(letra)
-     println(tipo)
+     println(siguiente('G'))
      
-     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
+     /*val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
-     escoger_bola(tablero_inicial,0)
-     
+     escoger_bola(tablero_inicial,0)*/
      
      //IDEA OPTIMIZACION, IR PROBANDO EN CADA CASILLA VACIA LAS DIFERENTES POSIBILIDADES
      //Y GUARDAR LA MEJOR EN UNA LISTA CON SU CONTADOR, FILA, COLUMNA Y COLOR
