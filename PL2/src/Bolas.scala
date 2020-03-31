@@ -691,6 +691,7 @@ object Bolas {
     }
   }
   
+  
   //**********************************************************************************************
   //Borra n fichas consecutivas de una diagonal izquierda
   //**********************************************************************************************
@@ -707,7 +708,8 @@ object Bolas {
     }
   }
   
-   //**********************************************************************************************
+  
+  //**********************************************************************************************
   //Borra n fichas consecutivas de una diagonal derecha
   //**********************************************************************************************
   def borrar_derecha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
@@ -720,6 +722,33 @@ object Bolas {
       val tableroAux = reemplazar_lista(tablero, fila, lineaTableroAux)
       
       borrar_derecha(tableroAux, contador-1, fila+1, columna+1)
+    }
+  }
+  
+  
+  //**********************************************************************************************
+  //Devuelve una lista con la informacion del mejor movimiento posible que el jugador puede 
+  //realizar en el siguiente o siguientes movimientos, la lista tiene esta informacion:
+  //                --- List(fila, columna, color, contador, tipo) ---
+  //El tipo se refiere a 1(horizontal), 2(vertical), 3(diagonaldcha1), 4(diagonalizq1), 
+  //                     5(diagonaldcha2), 6(diagonalizq2).
+  //**********************************************************************************************
+  def mejor_jugada(tablero: List[List[Char]]):List[Char] = {
+    mejor_jugadaAux(tablero, 0, 0, 10, 10, 0, '_', 0)
+  }
+  def mejor_jugadaAux(tablero: List[List[Char]], fila: Int, columna: Int, filaMax: Int, columnaMax: Int, contadorMax: Int, colorMax: Char, tipo: Int):List[Char] = {
+    //Si se ha recorrido el tablero retornamos la lista con toda la informacion necesaria
+    if(fila == 9){
+      val filaFinal = filaMax.toChar
+      val columnaFinal = columnaMax.toChar
+      val contadorFinal = contadorMax.toChar
+      val tipoFinal = tipo.toChar
+      
+      val listaMaximo = List(filaFinal, columnaFinal, colorMax, contadorFinal, tipoFinal)
+      
+      listaMaximo
+    }else{
+      List('p','u','t','a')
     }
   }
   
@@ -1097,12 +1126,20 @@ def saber_maximo(tablero:List[List[Char]]){
                                List('_','V','_','_','A','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
                                List('V','_','A','_','_','_','_','_','A'))
+                
+     val lista = mejor_jugadaAux(tableroPruebas, 9, 0, 0, 0, 0, 'A', 0)
+     val fila = lista(0).toInt
+     val columna = lista(1).toInt
+     val letra = lista(2)
+     val contador = lista(3).toInt
+     val tipo = lista(4).toInt
+
      
-                               
-    // println("A -> "+ contar_color(tableroPruebas2, 'A'))
-     //println("V -> "+ contar_color(tableroPruebas2, 'V'))
-     
-     //println(saber_maximo(tableroPruebas1))
+     println(fila)
+     println(columna)
+     println(contador)
+     println(letra)
+     println(tipo)
      
      val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
