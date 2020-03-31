@@ -756,9 +756,11 @@ object Bolas {
       mejor_jugadaAux(tablero, fila, columna+1, filaMax, columnaMax, contadorMax, colorMax, tipo, 'A')
     }
     else{
+      
+      val siguienteColor = siguiente(colorElegido)
+      
       //Si en la posicion esta el mismo color que el que queremos comprobar no lo comprobamos y seguimos con el siguiente color
       if(tablero(fila)(columna) == colorElegido){
-        val siguienteColor = siguiente(colorElegido)
         mejor_jugadaAux(tablero, fila, columna, filaMax, columnaMax, contadorMax, colorMax, tipo, siguienteColor)
       //Si en la posicion hay otro color o esta vacio pasamos a comprobar con el color correspondiente que toque en esta iteracion
       //reemplazando el color en el tablero y viendo como serian los contadores
@@ -776,10 +778,21 @@ object Bolas {
         /* Tipo 5 */ val diagonal2Izq_cont = diagonal2Izq(tableroAux, 1, fila, columna)
         /* Tipo 6 */ val diagonal2Dcha_cont = diagonal2Dcha(tableroAux, 1, fila, columna)
         
-        if(){
+        val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, diagonal2Dcha_cont)
+        val maximoContador = List(1,2) //Posicion 0 contador, posicion 1 tipo
           
+        val contadorElegido = maximoContador(0)
+        val tipoElegido = maximoContador(1)
+        
+        //Si alguno de los contadores de colocar la ficha en esa posicion es mayor que el que estaba este sera
+        //la mejor eleccion y se seguira iterando
+        if(contadorElegido > contadorMax){
+          mejor_jugadaAux(tablero, fila, columna, fila, columna, contadorElegido, colorElegido, tipoElegido, siguienteColor)
         }
-        List()
+        //Si no son mayores los contadores seguimos iterando
+        else{
+          mejor_jugadaAux(tablero, fila, columna, filaMax, columnaMax, contadorMax, colorMax, tipo, siguienteColor)
+        }
       }
     }
   }
@@ -803,6 +816,30 @@ object Bolas {
       }
       else{
         siguienteAux(anterior, contador+1)
+      }
+    }
+  }
+  
+  
+  //**********************************************************************************************
+  //Devuelve una lista que tiene como primer numero el maximo de todos los valores de una lista y
+  //como segundo numero la posicion que tiene
+  //Se usa para saber el maximo de todos los contadores ademas de si ese contador es de una 
+  //horizontal, vertical, diagonal
+  //**********************************************************************************************
+  def maximo_lista(listaContadores: List[Int]):List[Int] = { maximo_listaAux(listaContadores, 0, 0, 1)}
+  def maximo_listaAux(listaContadores: List[Int],contador: Int, maximo: Int, tipo: Int):List[Int] = {
+    if(contador == listaContadores.length){
+      val listaFinal = List(maximo, tipo)
+      listaFinal
+    }
+    else{
+      val posicionValor = listaContadores(contador)
+      if(posicionValor > maximo){
+        maximo_listaAux(listaContadores, contador+1, posicionValor, contador+1)
+      }
+      else{
+        maximo_listaAux(listaContadores, contador+1, maximo, tipo)
       }
     }
   }
@@ -1194,6 +1231,11 @@ def saber_maximo(tablero:List[List[Char]]){
      println(contador)
      println(letra)
      println(siguiente('G'))
+     
+     
+     val listaValores = maximo_lista(List(3,9,4,6,7,3))
+     println("Maximo: "+ listaValores(0))
+     println("Posicion: "+ listaValores(1))
      
      /*val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
