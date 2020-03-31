@@ -708,7 +708,7 @@ object Bolas {
     }
   }
   
-  //**********************************************************************************************
+   //**********************************************************************************************
   //Borra n fichas consecutivas de una diagonal derecha
   //**********************************************************************************************
   def borrar_derecha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):List[List[Char]] = {
@@ -955,33 +955,6 @@ def maximo_diagonal2Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:I
     }
   }
 
-
-
-  //**********************************************************************************************
-  //Cuenta el numero de ocurrencias de un color en el tablero
-  //**********************************************************************************************
-  def contar_color(tablero: List[List[Char]], color: Char): Int = {
-    contar_colorAux(tablero, color, 0, 0, 0)
-  }
-  def contar_colorAux(tablero: List[List[Char]], color: Char, contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 9){
-      contador
-    }
-    else{
-      if(columna == 9){
-        contar_colorAux(tablero, color, contador, fila+1, 0)
-      }
-      else{
-        if(tablero(fila)(columna) == color){
-          contar_colorAux(tablero, color, contador+1, fila, columna+1)
-        }
-        else{
-          contar_colorAux(tablero, color, contador, fila, columna+1)
-        }
-      }
-    }
-  }
-
 def saber_maximo(tablero:List[List[Char]]){
   
   val max_h = maximo_horizontal(tablero, 0, 0, 0,List())
@@ -1067,24 +1040,12 @@ def saber_maximo(tablero:List[List[Char]]){
                                List('_','_','A','A','_','A','A','_','_'),
                                List('_','A','A','_','_','_','A','A','_'),
                                List('_','A','_','_','_','_','_','A','_'))
-                               
-     val tableroPruebas2 = List(List('_','_','A','_','_','_','_','_','_'),
-                               List('V','_','_','_','_','_','_','_','_'),
-                               List('_','_','V','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','A','_','_','_'),
-                               List('_','_','A','_','_','_','A','_','_'),
-                               List('_','V','_','_','A','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('V','_','A','_','_','_','_','_','A'))
      
                                
-     println("A -> "+ contar_color(tableroPruebas2, 'A'))
-     println("V -> "+ contar_color(tableroPruebas2, 'V'))
      //println(saber_maximo(tableroPruebas1))
-     //val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
-     //mostrar_tablero(tablero_inicial)
-     //escoger_bola(tablero_inicial,0)
+     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
+     mostrar_tablero(tablero_inicial)
+     escoger_bola(tablero_inicial,0)
      //FALTA COMPROBAR LAS 5 EN LINEA, ELIMINARLAS Y PUNTUACION    
   }
 }
