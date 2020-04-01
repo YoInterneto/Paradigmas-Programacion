@@ -503,6 +503,24 @@ object Bolas {
     }
   }
   
+  //**********************************************************************************************
+  //Cuenta cuantas fichas de un mismo color hay de forma consecutiva en una horizontal yendo de
+  //alante hacia detras
+  //**********************************************************************************************
+  def horizontalInverso(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
+    if(columna==0){
+      contador
+    }
+    else{
+      if(tablero(fila)(columna) == tablero(fila)(columna-1)){
+        horizontalInverso(tablero, contador + 1, fila, columna - 1)
+      }
+      else{
+        contador
+      }
+    }
+  }
+  
   
   //**********************************************************************************************
   //Cuenta cuantas fichas de un mismo color hay de forma consecutiva en una vertical del tablero
@@ -535,6 +553,23 @@ object Bolas {
       val tableroAux = reemplazar_lista(tablero, index, lineaTableroAux)
       
       borrar_vertical(tableroAux, contador-1, fila, columna)
+    }
+  }
+ 
+  //**********************************************************************************************
+  //Cuenta cuantas fichas de un mismo color hay de forma consecutiva en una vertical yendo de
+  //abajo hacia arriba
+  //**********************************************************************************************
+  def verticalInverso(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
+    if(fila == 0){
+      contador
+    }
+    else{
+      if(tablero(fila)(columna) == tablero(fila-1)(columna)){
+        verticalInverso(tablero, contador + 1, fila - 1, columna)
+      }else{
+        contador
+      }
     }
   }
   
@@ -732,7 +767,7 @@ object Bolas {
   //posicion en cada posicion comprobando cada uno de los colores, la lista tiene esta informacion:
   //                --- List(fila, columna, color, contador, tipo) ---
   //El tipo se refiere a 1(horizontal), 2(vertical), 3(diagonalizq1), 4(diagonaldcha1), 
-  //                     5(diagonalizq2), 6(diagonaldcha2).
+  //                     5(diagonalizq2), 6(diagonaldcha2), 7(mitadhorizontal), 8(mitadvertical)
   //**********************************************************************************************
   def mejor_jugada(tablero: List[List[Char]]):List[Char] = { mejor_jugadaAux(tablero, 0, 0, 10, 10, 0, '_', 0, 'A') }
   def mejor_jugadaAux(tablero: List[List[Char]], fila: Int, columna: Int, filaMax: Int, columnaMax: Int, contadorMax: Int, colorMax: Char, tipo: Int, colorElegido: Char):List[Char] = {
@@ -777,8 +812,11 @@ object Bolas {
         /* Tipo 4 */ val diagonal1Dcha_cont = diagonal1Dcha(tableroAux, 1, fila, columna)
         /* Tipo 5 */ val diagonal2Izq_cont = diagonal2Izq(tableroAux, 1, fila, columna)
         /* Tipo 6 */ val diagonal2Dcha_cont = diagonal2Dcha(tableroAux, 1, fila, columna)
+        /* Tipo 7 */ val horizontalMedio_cont = (horizontal_cont + horizontalInverso(tableroAux, 1, fila, columna)) - 1 //Restamos 1 debido a que 
+        /* Tipo 8 */ val verticalMedio_cont = (vertical_cont + verticalInverso(tableroAux, 1, fila, columna)) - 1       //cuenta dos veces la misma ficha
         
-        val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, diagonal2Dcha_cont)
+        val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, 
+                              diagonal2Dcha_cont, horizontalMedio_cont, verticalMedio_cont)
         val maximoContador = maximo_lista(contadores) //Posicion 0 contador, posicion 1 tipo
           
         val contadorElegido = maximoContador(0)
@@ -857,311 +895,6 @@ object Bolas {
     }
   }
   
-//Funcion para saber cual es el numero de bolas maximas segudias en horizontal, luego se comparara con las verticales y diagonales
-//Retornara las coordenadas, para saber donde estara esa fila, diagonal o columna
-//De momento solo retorna el maximo
-  //Como queremos retornar el contador y las coordenadas haremos una lista que sera (contador,x,y,color)
-  //Falta guardar el color que hay que meter en la fila, columna o diagonal recomendada
-/*def maximo_horizontal(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
-  if(fila==9){
-    salida    
-  }
-  else{
-    if(columna==9){
-      maximo_horizontal(tablero,contador, fila+1, 0,salida)
-    }
-    else{
-      if(tablero(fila)(columna)=='_'){
-        maximo_horizontal(tablero, contador, fila, columna+1,salida)
-        
-      }
-      else{
-        val contadorAux = horizontal(tablero, 1, fila, columna)
-        if(contadorAux>contador){
-          //println("entroh")
-            val columnaChar = columna.toChar
-            val filaChar = fila.toChar
-            val contadorChar = contadorAux.toChar
-            val color = tablero(fila)(columna)
-            val salidaAux = color::List()
-            val salidaAux2 = columnaChar::salidaAux
-            val salidaAux3 = filaChar::salidaAux2
-            val salidaAux4 = contadorChar::salidaAux3
-
-          maximo_horizontal(tablero, contadorAux, fila, columna+1,salidaAux4)
-          
-        }
-        else{
-          maximo_horizontal(tablero, contador, fila, columna+1,salida)
-        }
-      }
-          
-    }
-  }
-}
-
-def maximo_vertical(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
-  if(fila==9){
-    salida    
-  }
-  else{
-    if(columna==9){
-      maximo_vertical(tablero,contador, fila+1, 0,salida)
-    }
-    else{
-      if(tablero(fila)(columna)=='_'){
-        maximo_vertical(tablero, contador, fila, columna+1,salida)
-      }
-      else{
-        val contadorAux = vertical(tablero, 1, fila, columna)
-        if(contadorAux>contador){
-          //println("entrov")
-            val columnaChar = columna.toChar
-            val filaChar = fila.toChar
-            val contadorChar = contadorAux.toChar
-            val color = tablero(fila)(columna)
-            val salidaAux = color::List()
-            val salidaAux2 = columnaChar::salidaAux
-            val salidaAux3 = filaChar::salidaAux2
-            val salidaAux4 = contadorChar::salidaAux3
-          
-          
-          maximo_vertical(tablero, contadorAux, fila, columna+1,salidaAux4)
-        }
-        else{
-          maximo_vertical(tablero, contador, fila, columna+1,salida)
-        }
-      }
-          
-    }
-  }
-}
-
-//Las diagonales las cuenta raro
-def maximo_diagonal1Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
-  
-    if(fila==9){
-    salida    
-    }
-    else{
-      if(columna==9){
-        maximo_diagonal1Dcha(tablero,contador, fila+1, 0,salida)
-      }
-      else{
-        if(tablero(fila)(columna)=='_'){
-          maximo_diagonal1Dcha(tablero, contador, fila, columna+1,salida)
-        }
-        else{
-          val contadorAux = diagonal1Dcha(tablero, 1, fila, columna)
-          if(contadorAux>contador){   
-            //println("entrodd1") 
-            //En prinicipio va a ser (contador,fila,columna,color)
-            val columnaChar = columna.toChar
-            val filaChar = fila.toChar
-            val contadorChar = contadorAux.toChar
-            val color = tablero(fila)(columna)
-            val salidaAux = color::List()
-            val salidaAux2 = columnaChar::salidaAux
-            val salidaAux3 = filaChar::salidaAux2
-            val salidaAux4 = contadorChar::salidaAux3
-          
-            maximo_diagonal1Dcha(tablero, contadorAux, fila, columna+1,salidaAux4)
-          }
-          else{
-            maximo_diagonal1Dcha(tablero, contador, fila, columna+1,salida)
-          }
-        }
-            
-      }
-    }
-  }
-
-def maximo_diagonal2Dcha(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
-  
-    if(fila==9){
-    salida    
-    }
-    else{
-      if(columna==9){
-        maximo_diagonal2Dcha(tablero,contador, fila+1, 0,salida)
-      }
-      else{
-        if(tablero(fila)(columna)=='_'){
-          maximo_diagonal2Dcha(tablero, contador, fila, columna+1,salida)
-        }
-        else{
-          val contadorAux = diagonal2Dcha(tablero, 1, fila, columna)
-          if(contadorAux>contador){
-            //println("entrodd2")            
-            //En prinicipio va a ser (contador,fila,columna,color)
-            val columnaChar = columna.toChar
-            val filaChar = fila.toChar
-            val contadorChar = contadorAux.toChar
-            val color = tablero(fila)(columna)
-            val salidaAux = color::List()
-            val salidaAux2 = columnaChar::salidaAux
-            val salidaAux3 = filaChar::salidaAux2
-            val salidaAux4 = contadorChar::salidaAux3
-          
-            maximo_diagonal2Dcha(tablero, contadorAux, fila, columna+1,salidaAux4)
-          }
-          else{
-            maximo_diagonal2Dcha(tablero, contador, fila, columna+1,salida)
-          }
-        }
-            
-      }
-    }
-  }
-
-def maximo_diagonal1Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
-  
-    if(fila==9){
-    salida    
-    }
-    else{
-      if(columna==9){
-        maximo_diagonal1Izq(tablero,contador, fila+1, 0,salida)
-      }
-      else{
-        if(tablero(fila)(columna)=='_'){
-          maximo_diagonal1Izq(tablero, contador, fila, columna+1,salida)
-        }
-        else{
-          val contadorAux = diagonal1Izq(tablero, 1, fila, columna)
-          if(contadorAux>contador){
-            //println("entrodi1")            
-            val columnaChar = columna.toChar
-            val filaChar = fila.toChar
-            val contadorChar = contadorAux.toChar
-            val color = tablero(fila)(columna)
-            val salidaAux = color::List()
-            val salidaAux2 = columnaChar::salidaAux
-            val salidaAux3 = filaChar::salidaAux2
-            val salidaAux4 = contadorChar::salidaAux3
-          
-            maximo_diagonal1Izq(tablero, contadorAux, fila, columna+1,salidaAux4)
-          }
-          else{
-            maximo_diagonal1Izq(tablero, contador, fila, columna+1,salida)
-          }
-        }
-            
-      }
-    }
-  }
-
-def maximo_diagonal2Izq(tablero:List[List[Char]],contador:Int,fila:Int,columna:Int,salida: List[Char]):List[Char]={
-  
-    if(fila==9){
-      salida    
-    }
-    else{
-      if(columna==9){
-        maximo_diagonal2Izq(tablero,contador, fila+1, 0,salida)
-      }
-      else{
-        if(tablero(fila)(columna)=='_'){
-          maximo_diagonal2Izq(tablero, contador, fila, columna+1,salida)
-        }
-        else{
-          val contadorAux = diagonal2Izq(tablero, 1, fila, columna)
-          if(contadorAux>contador){
-            //println("entrodi2")            
-            val columnaChar = columna.toChar
-            val filaChar = fila.toChar
-            val contadorChar = contadorAux.toChar
-            val color = tablero(fila)(columna)
-            val salidaAux = color::List()
-            val salidaAux2 = columnaChar::salidaAux
-            val salidaAux3 = filaChar::salidaAux2
-            val salidaAux4 = contadorChar::salidaAux3
-          
-            maximo_diagonal2Izq(tablero, contadorAux, fila, columna+1,salidaAux4)
-          }
-          else{
-            maximo_diagonal2Izq(tablero, contador, fila, columna+1,salida)
-          }
-        }
-            
-      }
-    }
-  }
-
-def saber_maximo(tablero:List[List[Char]]){
-  
-  val max_h = maximo_horizontal(tablero, 0, 0, 0,List())
-  val max_v = maximo_vertical(tablero, 0, 0, 0,List())
-  val max_dd1 = maximo_diagonal1Dcha(tablero, 0, 0, 0,List())
-  val max_dd2 = maximo_diagonal2Dcha(tablero, 0, 0, 0,List())
-  val max_di1 = maximo_diagonal1Izq(tablero, 0, 0, 0,List())
-  val max_di2 = maximo_diagonal2Izq(tablero, 0, 0, 0,List())
-  val max_h0 = max_h(0).toInt
-  val max_v0 = max_v(0).toInt
-  val max_dd10 = max_dd1(0).toInt
-  val max_dd20 = max_dd2(0).toInt
-  val max_di10 = max_di1(0).toInt
-  val max_di20 = max_di2(0).toInt
-  
-  val hColor = contar_color(tablero, max_h(3))
-  val vColor = contar_color(tablero, max_v(3))
-  val dd1Color = contar_color(tablero, max_dd1(3))
-  val dd2Color = contar_color(tablero, max_dd2(3))
-  val di1Color = contar_color(tablero, max_di1(3))
-  val di2Color = contar_color(tablero, max_di2(3))
-  
-  val poner_h = max_h0 - hColor
-  val poner_v = max_v0 - vColor
-  val poner_dd1 = max_dd10 - dd1Color
-  val poner_dd2 = max_dd20 - dd2Color
-  val poner_di1 = max_di10 - di1Color
-  val poner_di2 = max_di20 - di2Color
-
-  
-  
-  //En caso de empate coge la horizontal, si no la vertical y asi sucesivamente
-  if(max_h0>=max_v0 && max_h0>=max_dd10 && max_h0>=max_dd20 && max_h0>=max_di10 && max_h0>=max_di20 ){
-    //println(max_h)
-    val x = max_h(1).toInt+1
-    val y = max_h(2).toInt+1
-    
-    if(poner_h==0 ){
-      maximo_horizontal(tablero, 0, max_h(1), max_v(2)+max_h(0), List())
-      
-    }else{
-      println("Se recomienda poner una bola de color "+max_h(3)+ " en la fila que comienza en la coordenada (" + x +","+ y +")")
-      
-    }
-  }
-  else if(max_v0>=max_h0 && max_v0>=max_dd10 && max_v0>=max_dd20 && max_v0>=max_di10 && max_v0>=max_di20 && poner_v!=0){
-        val x = max_v(1).toInt+1
-    val y = max_v(2).toInt+1
-    println("Se recomienda poner una bola color "+max_v(3)+ "  en la columna que comienza en la coordenada (" + x +","+ y +")")
-  }
-  else if(max_dd10>=max_h0 && max_dd10>=max_v0 && max_dd10>=max_dd20 && max_dd10>=max_di10 && max_dd10>=max_di20 && poner_dd1!=0){
-        val x = max_dd1(1).toInt+1
-    val y = max_dd1(2).toInt+1
-    println("Se recomienda poner una bola color "+max_dd1(3)+ "  en la diagonal hacia la derecha tipo 1 que comienza en la coordenada (" + x +","+ y +")")
-  }
-  else if(max_dd20>=max_h0 && max_dd20>=max_dd10 && max_dd20>=max_v0 && max_dd20>=max_di10 && max_dd20>=max_di20 && poner_dd2!=0){
-        val x = max_dd2(1).toInt+1
-    val y = max_dd2(2).toInt+1
-    println("Se recomienda poner una bola color "+max_dd2(3)+ "  en la diagonal hacia la derecha tipo 2 que comienza en la coordenada (" + x +","+ y +")")
-  }
-  else if(max_di10>=max_h0 && max_di10>=max_dd10 && max_di10>=max_dd20 && max_di10>=max_v0 && max_di10>=max_di20 && poner_di1!=0){
-        val x = max_di1(1).toInt+1
-    val y = max_di1(2).toInt+1
-    println("Se recomienda poner una bola color "+max_di1(3)+ "  en la diagonal hacia la izquierda tipo 1 que comienza en la coordenada (" + x +","+ y +")")
-
-  }
-  else if(max_di20>=max_h0 && max_di20>=max_dd10 && max_di20>=max_dd20 && max_di20>=max_v0 && max_di20>=max_di10 && poner_di2!=0){
-    val x = max_di2(1).toInt+1
-    val y = max_di2(2).toInt+1
-        println("Se recomienda poner una bola color "+max_di2(3)+ "  en la diagonal hacia la izquierda tipo 2 que comienza en la coordenada (" + x +","+ y +")")
-
-  }
-  
-}*/
 
 //**********************************************************************************************
   //Cuenta el numero de ocurrencias de un color en el tablero
@@ -1232,14 +965,14 @@ def saber_maximo(tablero:List[List[Char]]){
                                List('_','_','_','_','_','_','_','_','_'),
                                List('V','_','A','_','_','_','_','_','A'))
                                
-     val tableroPruebas3 =List(List('_','A','A','A','_','A','A','A','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','A','_','_','_'),
-                               List('_','_','R','R','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
+     val tableroPruebas3 =List(List('_','_','_','_','_','R','_','_','_'),
+                               List('_','_','A','_','_','R','_','_','_'),
+                               List('_','_','A','_','_','R','_','_','_'),
+                               List('_','_','_','_','_','R','_','_','_'),
+                               List('_','_','A','_','_','_','_','_','_'),
+                               List('_','_','A','_','_','R','R','R','R'),
+                               List('_','_','A','_','_','_','_','_','_'),
+                               List('_','_','_','R','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'))
                 
      val lista = mejor_jugada(tableroPruebas3)
