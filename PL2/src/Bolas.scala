@@ -753,7 +753,6 @@ object Bolas {
     //Si la funcion siguiente nos retorna este caracter quiere decir que ya ha llegado al final de la lista y entonces se comprueba
     //la siguiente posicion de la matriz empezando de nuevo por el color 'A'
     else if(colorElegido == '_'){
-      println("Colores comprobados")
       mejor_jugadaAux(tablero, fila, columna+1, filaMax, columnaMax, contadorMax, colorMax, tipo, 'A')
     }
     else{
@@ -785,12 +784,23 @@ object Bolas {
         val contadorElegido = maximoContador(0)
         val tipoElegido = maximoContador(1)
         
+        //Son el numero de fichas del color elegido que pueden moverse
+        val fichasPosibles = contar_color(tablero, colorElegido) - (contadorElegido - 1)
+        
         //Si alguno de los contadores de colocar la ficha en esa posicion es mayor que el que estaba este sera
-        //la mejor eleccion y se seguira iterando
+        //la mejor eleccion
         if(contadorElegido > contadorMax){
-          mejor_jugadaAux(tablero, fila, columna, fila, columna, contadorElegido, colorElegido, tipoElegido, siguienteColor)
+          //Solo se guardara como mejor eleccion, si es posible hacer ese mocvimiento, es decir, que en el tablero haya
+          //una ficha de el color elegido que pueda moverse
+          if(fichasPosibles > 0){
+            mejor_jugadaAux(tablero, fila, columna, fila, columna, contadorElegido, colorElegido, tipoElegido, siguienteColor)
+          }
+          else{
+            println("No se puede maxo")
+            mejor_jugadaAux(tablero, fila, columna, filaMax, columnaMax, contadorMax, colorMax, tipo, siguienteColor)
+          }
         }
-        //Si no son mayores los contadores seguimos iterando
+        //Si no son mayores los contadores que el maximo guardado seguimos iterando
         else{
           mejor_jugadaAux(tablero, fila, columna, filaMax, columnaMax, contadorMax, colorMax, tipo, siguienteColor)
         }
@@ -1182,15 +1192,15 @@ def saber_maximo(tablero:List[List[Char]]){
   
   
   def main(args: Array[String]){
-      val tablero_vacio = List(List('_','_','A','A','A','_','_','_','_'),
+      val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','V','_','_','N','_','R','_'),
-                               List('_','N','_','_','_','_','_','R','_'),
-                               List('_','_','_','_','G','_','_','_','_'),
-                               List('A','_','_','N','_','_','_','_','_'),
-                               List('_','_','_','N','N','_','N','_','_'),
-                               List('_','G','_','_','N','N','_','_','_'),
-                               List('_','_','_','_','_','N','_','_','_'))
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'))
                                
       val tableroPruebas = List(List('A','A','A','A','A','A','A','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
@@ -1221,8 +1231,18 @@ def saber_maximo(tablero:List[List[Char]]){
                                List('_','V','_','_','A','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
                                List('V','_','A','_','_','_','_','_','A'))
+                               
+     val tableroPruebas3 =List(List('_','A','A','A','_','A','A','A','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','A','_','_','_'),
+                               List('_','_','R','R','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'))
                 
-     val lista = mejor_jugada(tablero_vacio)
+     val lista = mejor_jugada(tableroPruebas3)
      val fila = lista(0).toInt
      val columna = lista(1).toInt
      val letra = lista(2)
