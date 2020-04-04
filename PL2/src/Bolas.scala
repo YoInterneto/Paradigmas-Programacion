@@ -106,7 +106,11 @@ object Bolas {
         mostrar_tablero(tablero_sig_turno)
         println("\n*** comprobado ***\n")
         mostrar_tablero(tablero_comprobado)
-        //saber_maximo(tablero_comprobado)
+        
+        
+        val lista_movimientos = mejor_jugada(tablero_comprobado)
+        recomendacion(tablero_comprobado, lista_movimientos)
+        
         escoger_bola(tablero_comprobado,puntuacion_acumulada)
          
       }
@@ -121,6 +125,62 @@ object Bolas {
     
     
   }
+  
+  
+  def recomendacion(tablero: List[List[Char]], lista: List[Char]){
+    val fila = lista(0).toInt
+    val columna = lista(1).toInt
+    val color = lista(2)
+    val contador = lista(3).toInt
+    val tipo = lista(4).toInt
+    
+    //Horizontal
+    if(tipo == 1 || tipo == 7){
+      if(tablero(fila)(columna) == '_'){
+        println("AVISO (horizontal) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+      else{
+        println("AVISO (horizontal) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                   "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+    }
+    //Vertical
+    else if(tipo == 2 || tipo == 8){
+      if(tablero(fila)(columna) == '_'){
+        println("AVISO (vertical) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+      else{
+        println("AVISO (vertical) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                 "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+    }
+    //Diagonal izquierda
+    else if(tipo == 3 || tipo == 5){
+      if(tablero(fila)(columna) == '_'){
+        println("AVISO (diagonal izq.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+      else{
+        println("AVISO (diagonal izq.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                      "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+    }
+    //Diagonal derecha
+    else if(tipo == 4 || tipo == 6){
+      if(tablero(fila)(columna) == '_'){
+        println("AVISO (diagonal dcha.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+      else{
+        println("AVISO (diagonal dcha.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                       "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]")
+      }
+    }
+    else{
+      println("ERROR: no se ha podido encontrar el mejor movimiento")
+    }
+    
+  }
+  
+  
   
   def calcular_puntuacion(tablero: List[List[Char]], puntuacion: Int, fila: Int, columna: Int):Int ={
     if(fila == 9){
@@ -584,8 +644,9 @@ object Bolas {
     if(fila == 8){
       contador
     }else{
-      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd')
-      val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'd')
+      val color = tablero(fila)(columna)
+      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd', color)
+      val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'd', color)
       
       //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
       //en funcion de la diagonalSecundaria 
@@ -612,8 +673,9 @@ object Bolas {
     if(fila == 8){
       contador
     }else{
-      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd')
-      val diagonalSecundaria = diagonal(tablero, 1, fila, columna+1, 'd')
+      val color = tablero(fila)(columna)
+      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'd', color)
+      val diagonalSecundaria = diagonal(tablero, 1, fila, columna+1, 'd', color)
       
       //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
       //en funcion de la diagonalSecundaria
@@ -640,8 +702,9 @@ object Bolas {
     if(fila == 8){
       contador
     }else{
-      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i')
-      val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'i')
+      val color = tablero(fila)(columna)
+      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i', color)
+      val diagonalSecundaria = diagonal(tablero, 1, fila+1, columna, 'i', color)
       
       //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
       //en funcion de la diagonalSecundaria
@@ -668,8 +731,9 @@ object Bolas {
     if(fila == 8){
       contador
     }else{
-      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i')
-      val diagonalSecundaria = diagonal(tablero, 1, fila, columna-1, 'i')
+      val color = tablero(fila)(columna)
+      val diagonalPrincipal = diagonal(tablero, 1, fila, columna, 'i', color)
+      val diagonalSecundaria = diagonal(tablero, 1, fila, columna-1, 'i', color)
       
       //Caso en el que la diagonalPrincipal es mas grande, entonces el contador se hallara
       //en funcion de la diagonalSecundaria 
@@ -689,15 +753,15 @@ object Bolas {
   //**********************************************************************************************
   //Funcion auxiliar que devuelve el numero de fichas que forman una diagonal segun un parámetro
   //**********************************************************************************************
-  def diagonal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int, lado: Char):Int = {
+  def diagonal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int, lado: Char, color: Char):Int = {
     if(fila == 8 || columna == -1 || columna == 9){
       contador
     }else{
       if(tablero(fila)(columna) != '_'){
         if(lado == 'i'){
           if(columna != 0){
-            if(tablero(fila)(columna) == tablero(fila+1)(columna-1)){
-              diagonal(tablero, contador+1, fila+1, columna-1, lado)
+            if(color == tablero(fila+1)(columna-1)){
+              diagonal(tablero, contador+1, fila+1, columna-1, lado, color)
             }else{
               contador
             }
@@ -707,8 +771,8 @@ object Bolas {
           }
         }else if(lado == 'd'){
           if(columna != 8){
-            if(tablero(fila)(columna) == tablero(fila+1)(columna+1)){
-              diagonal(tablero, contador+1, fila+1, columna+1, lado)
+            if(color == tablero(fila+1)(columna+1)){
+              diagonal(tablero, contador+1, fila+1, columna+1, lado, color)
             }else{
               contador
             }
@@ -815,6 +879,7 @@ object Bolas {
         /* Tipo 7 */ val horizontalMedio_cont = (horizontal_cont + horizontalInverso(tableroAux, 1, fila, columna)) - 1 //Restamos 1 debido a que 
         /* Tipo 8 */ val verticalMedio_cont = (vertical_cont + verticalInverso(tableroAux, 1, fila, columna)) - 1       //cuenta dos veces la misma ficha
         
+        
         val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, 
                               diagonal2Dcha_cont, horizontalMedio_cont, verticalMedio_cont)
         val maximoContador = maximo_lista(contadores) //Posicion 0 contador, posicion 1 tipo
@@ -827,6 +892,7 @@ object Bolas {
         
         //Si alguno de los contadores de colocar la ficha en esa posicion es mayor que el que estaba este sera
         //la mejor eleccion
+        //if((contadorElegido > contadorMax) || (contadorElegido >= contadorMax && (tablero(fila)(columna) == '_'))){
         if(contadorElegido > contadorMax){
           //Solo se guardara como mejor eleccion, si es posible hacer ese mocvimiento, es decir, que en el tablero haya
           //una ficha de el color elegido que pueda moverse
@@ -834,7 +900,6 @@ object Bolas {
             mejor_jugadaAux(tablero, fila, columna, fila, columna, contadorElegido, colorElegido, tipoElegido, siguienteColor)
           }
           else{
-            println("No se puede maxo")
             mejor_jugadaAux(tablero, fila, columna, filaMax, columnaMax, contadorMax, colorMax, tipo, siguienteColor)
           }
         }
@@ -993,9 +1058,9 @@ object Bolas {
      println("Maximo: "+ listaValores(0))
      println("Posicion: "+ listaValores(1))
      
-     /*val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
+     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
-     escoger_bola(tablero_inicial,0)*/
+     escoger_bola(tablero_inicial,0)
      
      //IDEA OPTIMIZACION, IR PROBANDO EN CADA CASILLA VACIA LAS DIFERENTES POSIBILIDADES
      //Y GUARDAR LA MEJOR EN UNA LISTA CON SU CONTADOR, FILA, COLUMNA Y COLOR
