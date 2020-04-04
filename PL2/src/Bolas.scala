@@ -657,7 +657,12 @@ object Bolas {
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
            ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
-        contador
+        val valor = diagonalPrincipal + diagonalSecundaria
+        if(valor>3){
+          1
+        }else{
+          valor
+        }
       }
     }
   }
@@ -686,7 +691,12 @@ object Bolas {
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
           ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
-        contador
+        val valor = diagonalPrincipal + diagonalSecundaria
+        if(valor>3){
+          1
+        }else{
+          valor
+        }
       }
     }
   }
@@ -715,7 +725,12 @@ object Bolas {
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
           ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
-        contador
+        val valor = diagonalPrincipal + diagonalSecundaria
+        if(valor>3){
+          1
+        }else{
+          valor
+        }
       }
     }
   }
@@ -744,7 +759,12 @@ object Bolas {
       }else if((diagonalPrincipal <= diagonalSecundaria) && (diagonalSecundaria > 1)){
           ((diagonalPrincipal - 1) + diagonalPrincipal)
       }else{
-        contador
+        val valor = diagonalPrincipal + diagonalSecundaria
+        if(valor>3){
+          1
+        }else{
+          valor
+        }
       }
     }
   }
@@ -756,6 +776,9 @@ object Bolas {
   def diagonal(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int, lado: Char, color: Char):Int = {
     if(fila == 8 || columna == -1 || columna == 9){
       contador
+    }
+    else if(tablero(fila)(columna) != color){
+      0
     }else{
       if(tablero(fila)(columna) != '_'){
         if(lado == 'i'){
@@ -892,8 +915,8 @@ object Bolas {
         
         //Si alguno de los contadores de colocar la ficha en esa posicion es mayor que el que estaba este sera
         //la mejor eleccion
-        //if((contadorElegido > contadorMax) || (contadorElegido >= contadorMax && (tablero(fila)(columna) == '_'))){
-        if(contadorElegido > contadorMax){
+        if((contadorElegido > contadorMax) || (contadorElegido >= contadorMax && (tablero(fila)(columna) == '_'))){
+        //if(contadorElegido > contadorMax){
           //Solo se guardara como mejor eleccion, si es posible hacer ese mocvimiento, es decir, que en el tablero haya
           //una ficha de el color elegido que pueda moverse
           if(fichasPosibles > 0){
@@ -961,7 +984,7 @@ object Bolas {
   }
   
 
-//**********************************************************************************************
+  //**********************************************************************************************
   //Cuenta el numero de ocurrencias de un color en el tablero
   //**********************************************************************************************
   def contar_color(tablero: List[List[Char]], color: Char): Int = {
@@ -1035,28 +1058,12 @@ object Bolas {
                                List('_','_','A','_','_','R','_','_','_'),
                                List('_','_','_','_','_','R','_','_','_'),
                                List('_','_','A','_','_','_','_','_','_'),
-                               List('_','_','A','_','_','R','R','R','R'),
-                               List('_','_','A','_','_','_','_','_','_'),
-                               List('_','_','_','R','_','_','_','_','_'),
+                               List('_','_','A','_','_','R','_','_','_'),
+                               List('_','_','A','_','R','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'))
-                
-     val lista = mejor_jugada(tableroPruebas3)
-     val fila = lista(0).toInt
-     val columna = lista(1).toInt
-     val letra = lista(2)
-     val contador = lista(3).toInt
-     val tipo = lista(4).toInt
-
-     println("Fila:"+ fila)
-     println("Columna:"+columna)
-     println("Color:"+letra)
-     println("Tipo:"+tipo)
-     println("ValorContador:"+contador)
-     
-     
-     val listaValores = maximo_lista(List(3,9,4,6,7,3))
-     println("Maximo: "+ listaValores(0))
-     println("Posicion: "+ listaValores(1))
+                               
+    println(diagonal1Izq(tableroPruebas3, 1, 5, 5))
      
      val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
