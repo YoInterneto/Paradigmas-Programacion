@@ -1,4 +1,6 @@
 
+import java.io._
+
 object Bolas {
   
   //Se llena el tablero inicialmente vacio aleatoriamente                    
@@ -159,6 +161,7 @@ object Bolas {
     }
     else{
       println("ERROR: numero incorrecto, intentelo de nuevo")
+      terminar_juego()
     }
   }
   
@@ -1099,11 +1102,16 @@ object Bolas {
                                List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'))
                                
-    println(diagonal1Izq(tableroPruebas3, 1, 5, 5))
      
-     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
+     
+     /*val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
      mostrar_tablero(tablero_inicial)
-     escoger_bola(tablero_inicial,0)
+     escoger_bola(tablero_inicial,0)*/
+
+      // FileWriter
+      val pw = new PrintWriter(new BufferedWriter(new FileWriter("./src/puntuaciones.txt", true)))
+      try pw.write("Hello worldff\n") finally pw.close()
+      
      
      //IDEA OPTIMIZACION, IR PROBANDO EN CADA CASILLA VACIA LAS DIFERENTES POSIBILIDADES
      //Y GUARDAR LA MEJOR EN UNA LISTA CON SU CONTADOR, FILA, COLUMNA Y COLOR
