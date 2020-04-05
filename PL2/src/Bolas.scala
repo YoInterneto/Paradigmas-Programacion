@@ -45,7 +45,9 @@ object Bolas {
   def escoger_bola(tablero: List[List[Char]],puntuacion:Int){
      
      if(final_partida(tablero, 0, 0)){
-       println("Tablero completo, partida finalizada")
+       println("PARTIDA FINALIZADA.")
+       println("PUNTUACION: "+ puntuacion +"pts")
+       terminar_juego()
      }
      else{
        print("Introduzca la fila de la bola que quiere utilizar(1-9): ")
@@ -122,8 +124,42 @@ object Bolas {
     else{
       mover_bola(tablero,bola,x,y,puntuacion)
     }
+  }
+  
+  
+  def terminar_juego(){
     
+    println("Introuzca la opcion que desee: ")
+    println(" 1)Guardar puntuacion.")
+    println(" 2)Nueva partida.")
+    println(" 3)Terminar juego.")
     
+    val respuesta = scala.io.StdIn.readInt()
+    
+    val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'))
+    
+    if(respuesta == 1){
+      
+    }
+    else if(respuesta == 2){
+      val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
+      mostrar_tablero(tablero_inicial)
+      escoger_bola(tablero_inicial,0)
+    }
+    else if(respuesta == 3){
+      System.exit(1)
+    }
+    else{
+      println("ERROR: numero incorrecto, intentelo de nuevo")
+    }
   }
   
   
