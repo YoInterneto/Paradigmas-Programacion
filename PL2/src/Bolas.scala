@@ -1,7 +1,25 @@
 
 import java.io._
+import java.util.Calendar
 
 object Bolas {
+  
+  
+  def iniciar_juego(){
+    val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'),
+                             List('_','_','_','_','_','_','_','_','_'))
+                        
+    val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
+    mostrar_tablero(tablero_inicial)
+    escoger_bola(tablero_inicial,0)                      
+  }
   
   //Se llena el tablero inicialmente vacio aleatoriamente                    
   def llenar_tablero_inicial(tablero: List[List[Char]], cont: Int):List[List[Char]]={
@@ -49,7 +67,7 @@ object Bolas {
      if(final_partida(tablero, 0, 0)){
        println("PARTIDA FINALIZADA.")
        println("PUNTUACION: "+ puntuacion +"pts")
-       terminar_juego()
+       terminar_juego(puntuacion)
      }
      else{
        print("Introduzca la fila de la bola que quiere utilizar(1-9): ")
@@ -129,39 +147,46 @@ object Bolas {
   }
   
   
-  def terminar_juego(){
+  def terminar_juego(puntuacion: Int){
     
-    println("Introuzca la opcion que desee: ")
+    println("Introduzca la opcion que desee: ")
     println(" 1)Guardar puntuacion.")
     println(" 2)Nueva partida.")
     println(" 3)Terminar juego.")
     
     val respuesta = scala.io.StdIn.readInt()
     
-    val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'),
-                             List('_','_','_','_','_','_','_','_','_'))
-    
-    if(respuesta == 1){
+    if(respuesta == 1){  
+      println("\nOPCION 1 -> Guardar puntuacion")
+      println("Introduzca su nombre: ")
+      val nombre = scala.io.StdIn.readLine()
       
+      var reloj = Calendar.getInstance()
+      var min = reloj.get(Calendar.MINUTE)
+      var h = reloj.get(Calendar.HOUR_OF_DAY)
+      val hora = h +":"+ min
+      
+      val texto = "**********************\n"+
+                  "      ["+ hora +"]      "+
+                  "Jugador: "+ nombre + "\n"+
+                  "Puntuacion: "+ nombre + "\n"+
+                  "**********************\n\n"
+      val pw = new PrintWriter(new BufferedWriter(new FileWriter("./src/puntuaciones.txt", true)))
+      try pw.write(texto) finally pw.close()
+      
+      terminar_juego(puntuacion)
     }
     else if(respuesta == 2){
-      val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
-      mostrar_tablero(tablero_inicial)
-      escoger_bola(tablero_inicial,0)
+      println("\nOPCION 2 -> Nueva partida")
+      iniciar_juego()
     }
     else if(respuesta == 3){
+      println("\nOPCION 3 -> Terminar juego\nGracias por jugar.")
       System.exit(1)
     }
     else{
       println("ERROR: numero incorrecto, intentelo de nuevo")
-      terminar_juego()
+      terminar_juego(puntuacion)
     }
   }
   
@@ -1052,15 +1077,6 @@ object Bolas {
   
   
   def main(args: Array[String]){
-      val tablero_vacio = List(List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'))
                                
       val tableroPruebas = List(List('A','A','A','A','A','A','A','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
@@ -1104,16 +1120,8 @@ object Bolas {
                                
      
      
-     /*val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
-     mostrar_tablero(tablero_inicial)
-     escoger_bola(tablero_inicial,0)*/
-
-      // FileWriter
-      val pw = new PrintWriter(new BufferedWriter(new FileWriter("./src/puntuaciones.txt", true)))
-      try pw.write("Hello worldff\n") finally pw.close()
-      
+     //iniciar_juego()
+     terminar_juego(3400)
      
-     //IDEA OPTIMIZACION, IR PROBANDO EN CADA CASILLA VACIA LAS DIFERENTES POSIBILIDADES
-     //Y GUARDAR LA MEJOR EN UNA LISTA CON SU CONTADOR, FILA, COLUMNA Y COLOR
   }
 }
