@@ -256,7 +256,7 @@ object Bolas {
       }
     }
     //Diagonal izquierda
-    else if(tipo == 3 || tipo == 5){
+    else if(tipo == 3 || tipo == 5 || tipo == 9 || tipo == 10 || tipo == 11 || tipo == 12 || tipo == 13 || tipo == 14 || tipo == 15 || tipo == 16){
       if(tablero(fila)(columna) == '_'){
         println("AVISO (diagonal izq.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
       }
@@ -266,7 +266,7 @@ object Bolas {
       }
     }
     //Diagonal derecha
-    else if(tipo == 4 || tipo == 6){
+    else if(tipo == 4 || tipo == 6 || tipo == 17 || tipo == 18 || tipo == 19 || tipo == 20 || tipo == 21 || tipo == 22 || tipo == 23 || tipo == 24){
       if(tablero(fila)(columna) == '_'){
         println("AVISO (diagonal dcha.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
       }
@@ -1023,10 +1023,32 @@ object Bolas {
         /* Tipo 7 */ val horizontalMedio_cont = (horizontal_cont + horizontalInverso(tableroAux, 1, fila, columna)) - 1 //Restamos 1 debido a que 
         /* Tipo 8 */ val verticalMedio_cont = (vertical_cont + verticalInverso(tableroAux, 1, fila, columna)) - 1       //cuenta dos veces la misma ficha
         
+        /* Tipo 9 */ val izqArriba1_cont = diagonal2Izq(tableroAux, 1, fila, columna+1)
+        /* Tipo 10*/ val izqArriba2_cont = diagonal2Izq(tableroAux, 1, fila-1, columna+2)
+        /* Tipo 11*/ val izqAbajo1_cont = diagonal1Izq(tableroAux, 1, fila-1, columna)
+        /* Tipo 12*/ val izqAbajo2_cont = diagonal1Izq(tableroAux, 1, fila-2, columna+1)
+        /* Tipo 13*/ val izqMedioArriba1_cont = diagonal2Izq(tableroAux, 1, fila-1, columna+1)
+        /* Tipo 14*/ val izqMedioArriba2_cont = diagonal2Izq(tableroAux, 1, fila-2, columna+2)
+        /* Tipo 15*/ val izqMedioAbajo1_cont = diagonal1Izq(tableroAux, 1, fila-1, columna+1)
+        /* Tipo 16*/ val izqMedioAbajo2_cont = diagonal1Izq(tableroAux, 1, fila-2, columna+2)
+        
+        /* Tipo 17*/ val dchaArriba1_cont = diagonal2Dcha(tableroAux, 1, fila, columna-1)
+        /* Tipo 18*/ val dchaArriba2_cont = diagonal2Dcha(tableroAux, 1, fila-1, columna-2)
+        /* Tipo 19*/ val dchaAbajo1_cont = diagonal1Dcha(tableroAux, 1, fila-1, columna)
+        /* Tipo 20*/ val dchaAbajo2_cont = diagonal1Dcha(tableroAux, 1, fila-2, columna-1)
+        /* Tipo 21*/ val dchaMedioArriba1_cont = diagonal2Dcha(tableroAux, 1, fila-1, columna-1)
+        /* Tipo 22*/ val dchaMedioArriba2_cont = diagonal2Dcha(tableroAux, 1, fila-2, columna-2)
+        /* Tipo 23*/ val dchaMedioAbajo1_cont = diagonal1Dcha(tableroAux, 1, fila-1, columna-1)
+        /* Tipo 24*/ val dchaMedioAbajo2_cont = diagonal1Dcha(tableroAux, 1, fila-2, columna-2)
+        
         
         val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, 
-                              diagonal2Dcha_cont, horizontalMedio_cont, verticalMedio_cont)
-        val maximoContador = maximo_lista(contadores) //Posicion 0 contador, posicion 1 tipo
+                              diagonal2Dcha_cont, horizontalMedio_cont, verticalMedio_cont, izqArriba1_cont, izqArriba2_cont,
+                              izqAbajo1_cont, izqAbajo2_cont, dchaArriba1_cont, dchaArriba2_cont, dchaAbajo1_cont, dchaAbajo2_cont,
+                              izqMedioArriba1_cont, izqMedioArriba2_cont, izqMedioAbajo1_cont, izqMedioAbajo2_cont,
+                              dchaMedioArriba1_cont, dchaMedioArriba2_cont, dchaMedioAbajo1_cont, dchaMedioAbajo2_cont)
+        //Posicion 0 contador, posicion 1 tipo                   
+        val maximoContador = maximo_lista(contadores) 
           
         val contadorElegido = maximoContador(0)
         val tipoElegido = maximoContador(1)
@@ -1037,7 +1059,6 @@ object Bolas {
         //Si alguno de los contadores de colocar la ficha en esa posicion es mayor que el que estaba este sera
         //la mejor eleccion
         if((contadorElegido > contadorMax) || (contadorElegido >= contadorMax && (tablero(fila)(columna) == '_'))){
-        //if(contadorElegido > contadorMax){
           //Solo se guardara como mejor eleccion, si es posible hacer ese mocvimiento, es decir, que en el tablero haya
           //una ficha de el color elegido que pueda moverse
           if(fichasPosibles > 0){
