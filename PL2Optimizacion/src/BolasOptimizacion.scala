@@ -1,5 +1,6 @@
 
 import java.io._
+import java.text.SimpleDateFormat
 import java.util.Calendar
 
 object Bolas {
@@ -83,7 +84,7 @@ object Bolas {
      if(final_partida(tablero, 0, 0)){
        println("\nPARTIDA FINALIZADA.")
        println("PUNTUACION: "+ puntuacion +"pts\n")
-       terminar_juego(puntuacion)
+       terminar_juego(puntuacion, false)
      }
      //Si no ha finalizado pedimos y comprobamos la posicion
      else{
@@ -180,16 +181,23 @@ object Bolas {
   //Funcion que muestra un menu con las opciones de las que dispone el usuario una vez acabada la
   //partida, guardar puntuacion, nueva partida o terminar juego
   //**********************************************************************************************
-  def terminar_juego(puntuacion: Int){
+  def terminar_juego(puntuacion: Int, guardado: Boolean){
     
-    println(" 1)Guardar puntuacion.")
-    println(" 2)Nueva partida.")
-    println(" 3)Terminar juego.")
-    print("Introduzca la opcion que desee: ")
+    if(guardado){
+      println(" 1)Nueva partida.")
+      println(" 2)Terminar juego.")
+      print("Introduzca la opcion que desee: ")
+    }
+    else{
+      println(" 1)Guardar puntuacion.")
+      println(" 2)Nueva partida.")
+      println(" 3)Terminar juego.")
+      print("Introduzca la opcion que desee: ")
+    }
     
     val respuesta = scala.io.StdIn.readInt()
     
-    if(respuesta == 1){  
+    if(respuesta == 1 && !guardado){  
       println("\nOPCION 1 -> Guardar puntuacion")
       println("Introduzca su nombre: ")
       val nombre = scala.io.StdIn.readLine()
@@ -199,27 +207,34 @@ object Bolas {
       var h = reloj.get(Calendar.HOUR_OF_DAY)
       val hora = h +":"+ min
       
-      val texto = "**********************\n"+
-                  "      ["+ hora +"]     \n"+
+      val format = new SimpleDateFormat("d/M/y")
+      val fecha = format.format(Calendar.getInstance().getTime())
+      
+      val texto = "***************************\n"+
+                  "   ["+ fecha + " " + hora +"]\n"+
                   "Jugador: "+ nombre + "\n"+
-                  "Puntuacion: "+ nombre + "\n"+
-                  "**********************\n\n"
+                  "Puntuacion: "+ puntuacion + "\n"+
+                  "***************************\n\n"
       val pw = new PrintWriter(new BufferedWriter(new FileWriter("./src/puntuaciones.txt", true)))
       try pw.write(texto) finally pw.close()
       
-      terminar_juego(puntuacion)
+      terminar_juego(puntuacion, true)
     }
-    else if(respuesta == 2){
-      println("\nOPCION 2 -> Nueva partida")
+    else if((respuesta == 2 && !guardado) || (respuesta == 1 && guardado)){
+      if(guardado){println("\nOPCION 1 -> Nueva partida")}
+      else{println("\nOPCION 2 -> Nueva partida")}
       iniciar_juego()
     }
-    else if(respuesta == 3){
-      println("\nOPCION 3 -> Terminar juego\nGracias por jugar.")
+    else if((respuesta == 3 && !guardado) || (respuesta == 2 && guardado)){
+      if(guardado){println("\nOPCION 2 -> Terminar juego\nGracias por jugar.")}
+      else{println("\nOPCION 3 -> Terminar juego\nGracias por jugar.")}
       System.exit(1)
     }
     else{
-      println("ERROR: numero incorrecto, intentelo de nuevo")
-      terminar_juego(puntuacion)
+      println("\nERROR: numero incorrecto, intentelo de nuevo\n")
+      if(guardado){terminar_juego(puntuacion, true)}
+      else{terminar_juego(puntuacion, false)}
+      
     }
   }
   
@@ -963,7 +978,7 @@ object Bolas {
         
       }
       else if(index == 2){
-        if(fila <= 7 && columna != 0){
+        if(fila <= 6 && columna != 0){
           if(ficha == tablero(fila+2)(columna-1)){
             diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -973,7 +988,7 @@ object Bolas {
         
       }
       else if(index == 3){
-        if(fila <= 7 && columna >= 1){
+        if(fila <= 6 && columna >= 2){
           if(ficha == tablero(fila+2)(columna-2)){
             diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1021,7 +1036,7 @@ object Bolas {
         
       }
       else if(index == 2){
-        if(fila != 8 && columna >= 1){
+        if(fila != 8 && columna >= 2){
           if(ficha == tablero(fila+1)(columna-2)){
             diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1031,7 +1046,7 @@ object Bolas {
         
       }
       else if(index == 3){
-        if(fila <= 7 && columna >= 1){
+        if(fila <= 6 && columna >= 2){
           if(ficha == tablero(fila+2)(columna-2)){
             diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1068,7 +1083,7 @@ object Bolas {
         
       }
       else if(index == 1){
-        if(fila != 8 && columna != 1){
+        if(fila != 8 && columna != 8){
           if(ficha == tablero(fila+1)(columna+1)){
             diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1078,7 +1093,7 @@ object Bolas {
         
       }
       else if(index == 2){
-        if(fila <= 7 && columna != 8){
+        if(fila <= 6 && columna != 8){
           if(ficha == tablero(fila+2)(columna+1)){
             diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1088,7 +1103,7 @@ object Bolas {
         
       }
       else if(index == 3){
-        if(fila <= 7 && columna <= 7){
+        if(fila <= 6 && columna <= 6){
           if(ficha == tablero(fila+2)(columna+2)){
             diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1134,7 +1149,7 @@ object Bolas {
         else{ 1 }
       }
       else if(index == 2){
-        if(fila != 8 && columna <= 7){
+        if(fila != 8 && columna <= 6){
           if(ficha == tablero(fila+1)(columna+2)){
             diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1143,7 +1158,7 @@ object Bolas {
         else{ 1 }
       }
       else if(index == 3){
-        if(fila <= 7 && columna <= 7){
+        if(fila <= 6 && columna <= 6){
           if(ficha == tablero(fila+2)(columna+2)){
             diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
@@ -1415,19 +1430,18 @@ object Bolas {
                                List('V','_','A','_','_','_','_','_','A'))
                                
      val tableroPruebas3 =List(List('_','_','_','_','_','R','_','_','_'),
-                               List('_','_','A','_','_','R','_','_','_'),
-                               List('_','_','A','_','_','R','_','_','_'),
                                List('_','_','_','_','_','R','_','_','_'),
-                               List('_','_','A','_','_','_','_','_','_'),
-                               List('_','_','A','_','_','R','_','_','_'),
-                               List('_','_','A','_','R','_','_','_','_'),
+                               List('_','A','_','_','_','R','_','_','_'),
+                               List('_','_','_','_','_','R','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','R','_','_','_'),
+                               List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'))
                                
      
-     
      //iniciar_juego()
-     terminar_juego(3400)
+     terminar_juego(4565, false)
      
   }
 }
