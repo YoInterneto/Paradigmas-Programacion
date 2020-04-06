@@ -167,7 +167,7 @@ object Bolas {
       val hora = h +":"+ min
       
       val texto = "**********************\n"+
-                  "      ["+ hora +"]      "+
+                  "      ["+ hora +"]     \n"+
                   "Jugador: "+ nombre + "\n"+
                   "Puntuacion: "+ nombre + "\n"+
                   "**********************\n\n"
