@@ -762,7 +762,7 @@ object Bolas {
   // 011
   //**********************************************************************************************
   def diagonal1Dcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8){
+    if(fila < 0 || fila >= 8 || columna < 0 || columna > 8){
       contador
     }else{
       val color = tablero(fila)(columna)
@@ -796,7 +796,7 @@ object Bolas {
   // 001
   //**********************************************************************************************
   def diagonal2Dcha(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8){
+    if(fila < 0 || fila >= 8 || columna < 0 || columna > 8){
       contador
     }else{
       val color = tablero(fila)(columna)
@@ -830,7 +830,7 @@ object Bolas {
   // 110
   //**********************************************************************************************
   def diagonal1Izq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8){
+    if(fila < 0 || fila >= 8 || columna < 0 || columna > 8){
       contador
     }else{
       val color = tablero(fila)(columna)
@@ -864,7 +864,7 @@ object Bolas {
   // 100
   //**********************************************************************************************
   def diagonal2Izq(tablero: List[List[Char]], contador: Int, fila: Int, columna: Int):Int = {
-    if(fila == 8){
+    if(fila < 0 || fila >= 8 || columna < 0 || columna > 8){
       contador
     }else{
       val color = tablero(fila)(columna)
@@ -929,6 +929,234 @@ object Bolas {
         }
       }
       else{
+        contador
+      }
+    }
+  }
+  
+  
+  //
+  def diagonal1IzqFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
+    //Si se pasan de los limites o ya se han visto todas las posiciones 
+    if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
+      contador
+    }
+    else{
+      
+      if(index == 0){
+        if(fila != 8){
+          if(ficha == tablero(fila+1)(columna)){
+            diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+      }
+      else if(index == 1){
+        if(fila != 8 && columna != 0){
+          if(ficha == tablero(fila+1)(columna-1)){
+            diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 2){
+        if(fila <= 7 && columna != 0){
+          if(ficha == tablero(fila+2)(columna-1)){
+            diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 3){
+        if(fila <= 7 && columna >= 1){
+          if(ficha == tablero(fila+2)(columna-2)){
+            diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 4){
+        if(ficha == tablero(fila)(columna)){
+            diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ 1 }
+        
+      }else{
+        contador
+      }
+    }
+  }
+  //
+  def diagonal2IzqFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
+    //Si se pasan de los limites o ya se han visto todas las posiciones 
+    if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
+      contador
+    }
+    else{
+      if(index == 0){
+        if(columna != 0){
+            if(ficha == tablero(fila)(columna-1)){
+              diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+            }
+            else{ diagonal2IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+          }
+          else{ 1 }
+        
+      }
+      else if(index == 1){
+        if(fila != 8 && columna != 0){
+          if(ficha == tablero(fila+1)(columna-1)){
+            diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal2IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 2){
+        if(fila != 8 && columna >= 1){
+          if(ficha == tablero(fila+1)(columna-2)){
+            diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal2IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 3){
+        if(fila <= 7 && columna >= 1){
+          if(ficha == tablero(fila+2)(columna-2)){
+            diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal2IzqFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 4){
+        if(ficha == tablero(fila)(columna)){
+            diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ 1 }
+        
+      }else{
+        contador
+      }
+    }
+  }
+  def diagonal1DchaFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
+    //Si se pasan de los limites o ya se han visto todas las posiciones 
+    if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
+      contador
+    }
+    else{
+      if(index == 0){
+        if(fila != 8 ){
+          if(ficha == tablero(fila+1)(columna)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 1){
+        if(fila != 8 && columna != 1){
+          if(ficha == tablero(fila+1)(columna+1)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 2){
+        if(fila <= 7 && columna != 8){
+          if(ficha == tablero(fila+2)(columna+1)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 3){
+        if(fila <= 7 && columna <= 7){
+          if(ficha == tablero(fila+2)(columna+2)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+        
+      }
+      else if(index == 4){
+        if(ficha == tablero(fila)(columna)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+        }
+        else{ 1 }
+        
+      }else{
+        contador
+      }
+    }
+  }
+  
+  def diagonal2DchaFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
+    //Si se pasan de los limites o ya se han visto todas las posiciones 
+    if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
+      contador
+    }
+    else{
+      if(index == 0){
+        if(columna != 8){
+            if(ficha == tablero(fila)(columna+1)){
+              diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+            }
+            else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+          }
+          else{ 1 }
+      }
+      else if(index == 1){
+        if(fila != 8 && columna != 8){
+          if(ficha == tablero(fila+1)(columna+1)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+      }
+      else if(index == 2){
+        if(fila != 8 && columna <= 7){
+          if(ficha == tablero(fila+1)(columna+2)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+      }
+      else if(index == 3){
+        if(fila <= 7 && columna <= 7){
+          if(ficha == tablero(fila+2)(columna+2)){
+            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+        }
+        else{ 1 }
+      }
+      else if(index == 4){
+        if(ficha == tablero(fila)(columna)){
+            diagonal2DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+          }
+          else{ 1 }
+      }else{
         contador
       }
     }
@@ -1023,23 +1251,23 @@ object Bolas {
         /* Tipo 7 */ val horizontalMedio_cont = (horizontal_cont + horizontalInverso(tableroAux, 1, fila, columna)) - 1 //Restamos 1 debido a que 
         /* Tipo 8 */ val verticalMedio_cont = (vertical_cont + verticalInverso(tableroAux, 1, fila, columna)) - 1       //cuenta dos veces la misma ficha
         
-        /* Tipo 9 */ val izqArriba1_cont = diagonal2Izq(tableroAux, 1, fila, columna+1)
-        /* Tipo 10*/ val izqArriba2_cont = diagonal2Izq(tableroAux, 1, fila-1, columna+2)
-        /* Tipo 11*/ val izqAbajo1_cont = diagonal1Izq(tableroAux, 1, fila-1, columna)
-        /* Tipo 12*/ val izqAbajo2_cont = diagonal1Izq(tableroAux, 1, fila-2, columna+1)
-        /* Tipo 13*/ val izqMedioArriba1_cont = diagonal2Izq(tableroAux, 1, fila-1, columna+1)
-        /* Tipo 14*/ val izqMedioArriba2_cont = diagonal2Izq(tableroAux, 1, fila-2, columna+2)
-        /* Tipo 15*/ val izqMedioAbajo1_cont = diagonal1Izq(tableroAux, 1, fila-1, columna+1)
-        /* Tipo 16*/ val izqMedioAbajo2_cont = diagonal1Izq(tableroAux, 1, fila-2, columna+2)
+        /* Tipo 9 */ val izqArriba1_cont = diagonal2IzqFija(tableroAux, 1, 0, fila, columna+1, colorElegido)
+        /* Tipo 10*/ val izqArriba2_cont = diagonal2IzqFija(tableroAux, 1, 0, fila-1, columna+2, colorElegido)
+        /* Tipo 11*/ val izqAbajo1_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-1, columna, colorElegido)
+        /* Tipo 12*/ val izqAbajo2_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-2, columna+1, colorElegido)
+        /* Tipo 13*/ val izqMedioArriba1_cont = diagonal2IzqFija(tableroAux, 1, 0, fila-1, columna+1, colorElegido)
+        /* Tipo 14*/ val izqMedioArriba2_cont = diagonal2IzqFija(tableroAux, 1, 0, fila-2, columna+2, colorElegido)
+        /* Tipo 15*/ val izqMedioAbajo1_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-1, columna+1, colorElegido)
+        /* Tipo 16*/ val izqMedioAbajo2_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-2, columna+2, colorElegido)
         
-        /* Tipo 17*/ val dchaArriba1_cont = diagonal2Dcha(tableroAux, 1, fila, columna-1)
-        /* Tipo 18*/ val dchaArriba2_cont = diagonal2Dcha(tableroAux, 1, fila-1, columna-2)
-        /* Tipo 19*/ val dchaAbajo1_cont = diagonal1Dcha(tableroAux, 1, fila-1, columna)
-        /* Tipo 20*/ val dchaAbajo2_cont = diagonal1Dcha(tableroAux, 1, fila-2, columna-1)
-        /* Tipo 21*/ val dchaMedioArriba1_cont = diagonal2Dcha(tableroAux, 1, fila-1, columna-1)
-        /* Tipo 22*/ val dchaMedioArriba2_cont = diagonal2Dcha(tableroAux, 1, fila-2, columna-2)
-        /* Tipo 23*/ val dchaMedioAbajo1_cont = diagonal1Dcha(tableroAux, 1, fila-1, columna-1)
-        /* Tipo 24*/ val dchaMedioAbajo2_cont = diagonal1Dcha(tableroAux, 1, fila-2, columna-2)
+        /* Tipo 17*/ val dchaArriba1_cont = diagonal2DchaFija(tableroAux, 1, 0, fila, columna-1, colorElegido)
+        /* Tipo 18*/ val dchaArriba2_cont = diagonal2DchaFija(tableroAux, 1, 0, fila-1, columna-2, colorElegido)
+        /* Tipo 19*/ val dchaAbajo1_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-1, columna, colorElegido)
+        /* Tipo 20*/ val dchaAbajo2_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-2, columna-1, colorElegido)
+        /* Tipo 21*/ val dchaMedioArriba1_cont = diagonal2DchaFija(tableroAux, 1, 0, fila-1, columna-1, colorElegido)
+        /* Tipo 22*/ val dchaMedioArriba2_cont = diagonal2DchaFija(tableroAux, 1, 0, fila-2, columna-2, colorElegido)
+        /* Tipo 23*/ val dchaMedioAbajo1_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-1, columna-1, colorElegido)
+        /* Tipo 24*/ val dchaMedioAbajo2_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-2, columna-2, colorElegido)
         
         
         val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, 
