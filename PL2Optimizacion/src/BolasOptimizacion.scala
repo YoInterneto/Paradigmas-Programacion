@@ -22,6 +22,9 @@ object Bolas {
                         
     val tablero_inicial = llenar_tablero_inicial(tablero_vacio,0)
     mostrar_tablero(tablero_inicial)
+    
+    val lista_movimientos = mejor_jugada(tablero_inicial)
+    recomendacion(tablero_inicial, lista_movimientos)
     escoger_bola(tablero_inicial,0)                      
   }
   
@@ -150,7 +153,7 @@ object Bolas {
         //Nueva puntuacion
         val puntuacionAux = calcular_puntuacion(tablero_sig_turno, 0, 0, 0) * 75
         val puntuacion_acumulada = puntuacion + puntuacionAux
-        println("Puntuacion acumulada: "+ puntuacion_acumulada)
+        println("\nPuntuacion acumulada: "+ puntuacion_acumulada +"\n")
         
         //Comprobamos si se pueden eliminar fichas que han formado figuras
         val tablero_comprobado = comprobar_tablero(tablero_sig_turno)
@@ -333,7 +336,6 @@ object Bolas {
             //Borramos las fichas verticales
             }else if(vertical_cont >= 5){
               val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
-              mostrar_tablero(tableroAux)
               
               calcular_puntuacion(tableroAux, puntuacion + vertical_cont, fila, columna+1)
             //Borramos las fichas diagonal izquierda, con las fichas abajo
@@ -343,7 +345,6 @@ object Bolas {
               
               val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
               val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila+1, columna)
-              mostrar_tablero(tableroAux1)
               
               calcular_puntuacion(tableroAux1, puntuacion + diagonal1Izq_cont, fila, columna+1)
             //Borramos las fichas diagonal derecha, con las fichas abajo  
@@ -353,7 +354,6 @@ object Bolas {
               
               val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
               val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila+1, columna)
-              mostrar_tablero(tableroAux1)
               
               calcular_puntuacion(tableroAux1, puntuacion + diagonal1Dcha_cont, fila, columna+1)
             //Borramos las fichas diagonal izquierda, con las fichas arriba  
@@ -363,7 +363,6 @@ object Bolas {
               
               val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
               val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila, columna-1)
-              mostrar_tablero(tableroAux1)
               
               calcular_puntuacion(tableroAux1, puntuacion + diagonal2Izq_cont, fila, columna+1)
             //Borramos las fichas diagonal derecha, con las fichas arriba  
@@ -373,7 +372,6 @@ object Bolas {
               
               val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
               val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila, columna+1)
-              mostrar_tablero(tableroAux1)
               
               calcular_puntuacion(tableroAux1, puntuacion + diagonal2Dcha_cont, fila, columna+1)
             }
@@ -600,17 +598,19 @@ object Bolas {
         //Si se encuentra una coincidencia se borran las fichas del tablero y se
         //sigue iterando con el mismo tablero
         }else{
-          println("("+ fila +" x "+ columna+")")
+          
+          val ficha = tablero(fila)(columna)
+          
           //Borramos las fichas horizontales
           if(horizontal_cont >= 5){
             val tableroAux = borrar_horizontal(tablero, horizontal_cont, fila, columna) //Tablero borrando columna + horizontal_cont posiciones
-            mostrar_tablero(tableroAux)
+            println("\nCOMPLETADA: Horizontal["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
             
             comprobar_tableroAux(tableroAux, fila, columna+1)
           //Borramos las fichas verticales
           }else if(vertical_cont >= 5){
             val tableroAux = borrar_vertical(tablero, vertical_cont, fila, columna) //Tablero borrando fila + vertical_cont posiciones
-            mostrar_tablero(tableroAux)
+            println("\nCOMPLETADA: Vertical["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
             
             comprobar_tableroAux(tableroAux, fila, columna+1)
           //Borramos las fichas diagonal izquierda, con las fichas abajo
@@ -620,7 +620,7 @@ object Bolas {
             
             val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
             val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila+1, columna)
-            mostrar_tablero(tableroAux1)
+            println("\nCOMPLETADA: DiagonalIzquierda["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
             
             comprobar_tableroAux(tableroAux1, fila, columna+1)
           //Borramos las fichas diagonal derecha, con las fichas abajo  
@@ -630,7 +630,7 @@ object Bolas {
             
             val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
             val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila+1, columna)
-            mostrar_tablero(tableroAux1)
+            println("\nCOMPLETADA: DiagonalDerecha["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
             
             comprobar_tableroAux(tableroAux1, fila, columna+1)
           //Borramos las fichas diagonal izquierda, con las fichas arriba  
@@ -640,7 +640,7 @@ object Bolas {
             
             val tableroAux = borrar_izquierda(tablero, diagonalPrincipal, fila, columna)
             val tableroAux1 = borrar_izquierda(tableroAux, diagonalSecundaria, fila, columna-1)
-            mostrar_tablero(tableroAux1)
+            println("\nCOMPLETADA: DiagonalIzquierda["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
             
             comprobar_tableroAux(tableroAux1, fila, columna+1)
           //Borramos las fichas diagonal derecha, con las fichas arriba  
@@ -650,7 +650,7 @@ object Bolas {
             
             val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
             val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila, columna+1)
-            mostrar_tablero(tableroAux1)
+            println("\nCOMPLETADA: DiagonalIzquierda["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
             
             comprobar_tableroAux(tableroAux1, fila, columna+1)
           }
@@ -1001,7 +1001,7 @@ object Bolas {
         if(ficha == tablero(fila)(columna)){
             diagonal1IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
-          else{ 1 }
+          else{ contador }
         
       }else{
         contador
@@ -1059,7 +1059,7 @@ object Bolas {
         if(ficha == tablero(fila)(columna)){
             diagonal2IzqFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
-          else{ 1 }
+          else{ contador }
         
       }else{
         contador
@@ -1069,7 +1069,7 @@ object Bolas {
   def diagonal1DchaFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
     //Si se pasan de los limites o ya se han visto todas las posiciones 
     if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
-      contador
+      contador - 1
     }
     else{
       if(index == 0){
@@ -1116,7 +1116,7 @@ object Bolas {
         if(ficha == tablero(fila)(columna)){
             diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
         }
-        else{ 1 }
+        else{ contador }
         
       }else{
         contador
@@ -1133,36 +1133,36 @@ object Bolas {
       if(index == 0){
         if(columna != 8){
             if(ficha == tablero(fila)(columna+1)){
-              diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+              diagonal2DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
             }
-            else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+            else{ diagonal2DchaFija(tablero, contador, index+1, fila, columna, ficha) }
           }
           else{ 1 }
       }
       else if(index == 1){
         if(fila != 8 && columna != 8){
           if(ficha == tablero(fila+1)(columna+1)){
-            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+            diagonal2DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
-          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+          else{ diagonal2DchaFija(tablero, contador, index+1, fila, columna, ficha) }
         }
         else{ 1 }
       }
       else if(index == 2){
         if(fila != 8 && columna <= 6){
           if(ficha == tablero(fila+1)(columna+2)){
-            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+            diagonal2DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
-          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+          else{ diagonal2DchaFija(tablero, contador, index+1, fila, columna, ficha) }
         }
         else{ 1 }
       }
       else if(index == 3){
         if(fila <= 6 && columna <= 6){
           if(ficha == tablero(fila+2)(columna+2)){
-            diagonal1DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
+            diagonal2DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
-          else{ diagonal1DchaFija(tablero, contador, index+1, fila, columna, ficha) }
+          else{ diagonal2DchaFija(tablero, contador, index+1, fila, columna, ficha) }
         }
         else{ 1 }
       }
@@ -1170,7 +1170,7 @@ object Bolas {
         if(ficha == tablero(fila)(columna)){
             diagonal2DchaFija(tablero, contador+1, index+1, fila, columna, ficha)
           }
-          else{ 1 }
+          else{ contador }
       }else{
         contador
       }
@@ -1259,30 +1259,30 @@ object Bolas {
         //Contadores de vertical, horizontal y diagonal para ese tablero
         /* Tipo 1 */ val horizontal_cont = horizontal(tableroAux, 1, fila, columna)
         /* Tipo 2 */ val vertical_cont = vertical(tableroAux, 1, fila, columna)
-        /* Tipo 3 */ val diagonal1Izq_cont = diagonal1Izq(tableroAux, 1, fila, columna)
-        /* Tipo 4 */ val diagonal1Dcha_cont = diagonal1Dcha(tableroAux, 1, fila, columna)
-        /* Tipo 5 */ val diagonal2Izq_cont = diagonal2Izq(tableroAux, 1, fila, columna)
-        /* Tipo 6 */ val diagonal2Dcha_cont = diagonal2Dcha(tableroAux, 1, fila, columna)
+        /* Tipo 3 */ val diagonal1Izq_cont = diagonal1Izq(tableroAux, 0, fila, columna)
+        /* Tipo 4 */ val diagonal1Dcha_cont = diagonal1Dcha(tableroAux, 0, fila, columna)
+        /* Tipo 5 */ val diagonal2Izq_cont = diagonal2Izq(tableroAux, 0, fila, columna)
+        /* Tipo 6 */ val diagonal2Dcha_cont = diagonal2Dcha(tableroAux, 0, fila, columna)
         /* Tipo 7 */ val horizontalMedio_cont = (horizontal_cont + horizontalInverso(tableroAux, 1, fila, columna)) - 1 //Restamos 1 debido a que 
         /* Tipo 8 */ val verticalMedio_cont = (vertical_cont + verticalInverso(tableroAux, 1, fila, columna)) - 1       //cuenta dos veces la misma ficha
         
-        /* Tipo 9 */ val izqArriba1_cont = diagonal2IzqFija(tableroAux, 1, 0, fila, columna+1, colorElegido)
-        /* Tipo 10*/ val izqArriba2_cont = diagonal2IzqFija(tableroAux, 1, 0, fila-1, columna+2, colorElegido)
-        /* Tipo 11*/ val izqAbajo1_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-1, columna, colorElegido)
-        /* Tipo 12*/ val izqAbajo2_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-2, columna+1, colorElegido)
-        /* Tipo 13*/ val izqMedioArriba1_cont = diagonal2IzqFija(tableroAux, 1, 0, fila-1, columna+1, colorElegido)
-        /* Tipo 14*/ val izqMedioArriba2_cont = diagonal2IzqFija(tableroAux, 1, 0, fila-2, columna+2, colorElegido)
-        /* Tipo 15*/ val izqMedioAbajo1_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-1, columna+1, colorElegido)
-        /* Tipo 16*/ val izqMedioAbajo2_cont = diagonal1IzqFija(tableroAux, 1, 0, fila-2, columna+2, colorElegido)
+        /* Tipo 9 */ val izqArriba1_cont = diagonal2IzqFija(tableroAux, 0, 0, fila, columna+1, colorElegido)
+        /* Tipo 10*/ val izqArriba2_cont = diagonal2IzqFija(tableroAux, 0, 0, fila-1, columna+2, colorElegido)
+        /* Tipo 11*/ val izqAbajo1_cont = diagonal1IzqFija(tableroAux, 0, 0, fila-1, columna, colorElegido)
+        /* Tipo 12*/ val izqAbajo2_cont = diagonal1IzqFija(tableroAux, 0, 0, fila-2, columna+1, colorElegido)
+        /* Tipo 13*/ val izqMedioArriba1_cont = diagonal2IzqFija(tableroAux, 0, 0, fila-1, columna+1, colorElegido)
+        /* Tipo 14*/ val izqMedioArriba2_cont = diagonal2IzqFija(tableroAux, 0, 0, fila-2, columna+2, colorElegido)
+        /* Tipo 15*/ val izqMedioAbajo1_cont = diagonal1IzqFija(tableroAux, 0, 0, fila-1, columna+1, colorElegido)
+        /* Tipo 16*/ val izqMedioAbajo2_cont = diagonal1IzqFija(tableroAux, 0, 0, fila-2, columna+2, colorElegido)
         
-        /* Tipo 17*/ val dchaArriba1_cont = diagonal2DchaFija(tableroAux, 1, 0, fila, columna-1, colorElegido)
-        /* Tipo 18*/ val dchaArriba2_cont = diagonal2DchaFija(tableroAux, 1, 0, fila-1, columna-2, colorElegido)
-        /* Tipo 19*/ val dchaAbajo1_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-1, columna, colorElegido)
-        /* Tipo 20*/ val dchaAbajo2_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-2, columna-1, colorElegido)
-        /* Tipo 21*/ val dchaMedioArriba1_cont = diagonal2DchaFija(tableroAux, 1, 0, fila-1, columna-1, colorElegido)
-        /* Tipo 22*/ val dchaMedioArriba2_cont = diagonal2DchaFija(tableroAux, 1, 0, fila-2, columna-2, colorElegido)
-        /* Tipo 23*/ val dchaMedioAbajo1_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-1, columna-1, colorElegido)
-        /* Tipo 24*/ val dchaMedioAbajo2_cont = diagonal1DchaFija(tableroAux, 1, 0, fila-2, columna-2, colorElegido)
+        /* Tipo 17*/ val dchaArriba1_cont = diagonal2DchaFija(tableroAux, 0, 0, fila, columna-1, colorElegido)
+        /* Tipo 18*/ val dchaArriba2_cont = diagonal2DchaFija(tableroAux, 0, 0, fila-1, columna-2, colorElegido)
+        /* Tipo 19*/ val dchaAbajo1_cont = diagonal1DchaFija(tableroAux, 0, 0, fila-1, columna, colorElegido)
+        /* Tipo 20*/ val dchaAbajo2_cont = diagonal1DchaFija(tableroAux, 0, 0, fila-2, columna-1, colorElegido)
+        /* Tipo 21*/ val dchaMedioArriba1_cont = diagonal2DchaFija(tableroAux, 0, 0, fila-1, columna-1, colorElegido)
+        /* Tipo 22*/ val dchaMedioArriba2_cont = diagonal2DchaFija(tableroAux, 0, 0, fila-2, columna-2, colorElegido)
+        /* Tipo 23*/ val dchaMedioAbajo1_cont = diagonal1DchaFija(tableroAux, 0, 0, fila-1, columna-1, colorElegido)
+        /* Tipo 24*/ val dchaMedioAbajo2_cont = diagonal1DchaFija(tableroAux, 0, 0, fila-2, columna-2, colorElegido)
         
         
         val contadores = List(horizontal_cont, vertical_cont, diagonal1Izq_cont, diagonal1Dcha_cont, diagonal2Izq_cont, 
@@ -1429,19 +1429,19 @@ object Bolas {
                                List('_','_','_','_','_','_','_','_','_'),
                                List('V','_','A','_','_','_','_','_','A'))
                                
-     val tableroPruebas3 =List(List('_','_','_','_','_','R','_','_','_'),
-                               List('_','_','_','_','_','R','_','_','_'),
-                               List('_','A','_','_','_','R','_','_','_'),
-                               List('_','_','_','_','_','R','_','_','_'),
+     val tableroPruebas3 =List(List('_','_','_','_','_','_','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','R','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','A','A','_'),
+                               List('_','_','A','_','_','A','_','A','_'),
+                               List('_','A','_','_','_','A','_','_','_'),
+                               List('_','_','A','A','_','_','_','_','_'),
+                               List('_','_','_','_','_','_','_','V','_'),
+                               List('_','_','_','_','_','V','_','_','_'),
                                List('_','_','_','_','_','_','_','_','_'))
                                
      
-     //iniciar_juego()
-     terminar_juego(4565, false)
+      iniciar_juego()
+     //terminar_juego(4565, false)
      
   }
 }
