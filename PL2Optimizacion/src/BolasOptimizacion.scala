@@ -950,14 +950,18 @@ object Bolas {
   }
   
   
-  //
+  //**********************************************************************************************
+  //Estas funciones retornan un contador con el numero de fichas que hay en las posiciones de una
+  //diagonal sin tener estas que ser todas iguales. La iteracion de index hace que se puedan 
+  //comprobar correctamente
+  //**********************************************************************************************
   def diagonal1IzqFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
     //Si se pasan de los limites o ya se han visto todas las posiciones 
     if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
       contador
     }
     else{
-      
+      //Vamos iterando index para comprobar cada una de las posiciones de la diagonal
       if(index == 0){
         if(fila != 8){
           if(ficha == tablero(fila+1)(columna)){
@@ -1008,13 +1012,14 @@ object Bolas {
       }
     }
   }
-  //
+  //**********************************************************************************************
   def diagonal2IzqFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
     //Si se pasan de los limites o ya se han visto todas las posiciones 
     if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
       contador
     }
     else{
+      //Vamos iterando index para comprobar cada una de las posiciones de la diagonal
       if(index == 0){
         if(columna != 0){
             if(ficha == tablero(fila)(columna-1)){
@@ -1066,12 +1071,14 @@ object Bolas {
       }
     }
   }
+  //**********************************************************************************************
   def diagonal1DchaFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
     //Si se pasan de los limites o ya se han visto todas las posiciones 
     if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
       contador - 1
     }
     else{
+      //Vamos iterando index para comprobar cada una de las posiciones de la diagonal
       if(index == 0){
         if(fila != 8 ){
           if(ficha == tablero(fila+1)(columna)){
@@ -1123,13 +1130,14 @@ object Bolas {
       }
     }
   }
-  
+  //**********************************************************************************************
   def diagonal2DchaFija(tablero: List[List[Char]], contador: Int, index: Int, fila: Int, columna: Int, ficha: Char):Int = {
     //Si se pasan de los limites o ya se han visto todas las posiciones 
     if(fila < 0 || fila > 8 || columna < 0 || columna > 8){
       contador
     }
     else{
+      //Vamos iterando index para comprobar cada una de las posiciones de la diagonal
       if(index == 0){
         if(columna != 8){
             if(ficha == tablero(fila)(columna+1)){
@@ -1399,49 +1407,7 @@ object Bolas {
   
   def main(args: Array[String]){
                                
-      val tableroPruebas =List(List('A','A','A','A','A','A','A','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','A','_','A','_','_','_','_','A'),
-                               List('_','A','_','A','A','_','_','_','A'),
-                               List('_','A','_','_','A','_','_','_','A'),
-                               List('_','A','_','_','_','_','_','_','A'),
-                               List('_','A','_','_','A','A','_','_','A'),
-                               List('_','A','_','A','A','_','_','_','A'),
-                               List('_','A','_','A','_','_','_','A','A'))
-                               
-      val tableroPruebas1=List(List('A','_','_','_','_','_','_','_','A'),
-                               List('A','A','_','_','_','_','_','A','A'),
-                               List('_','A','A','_','_','_','A','A','_'),
-                               List('_','_','A','A','_','A','A','_','_'),
-                               List('_','_','_','A','A','A','_','_','_'),
-                               List('_','_','_','A','A','A','_','_','_'),
-                               List('_','_','A','A','_','A','A','_','_'),
-                               List('_','A','A','_','_','_','A','A','_'),
-                               List('_','A','_','_','_','_','_','A','_'))
-     
-     val tableroPruebas2 =List(List('_','_','A','_','_','_','_','_','_'),
-                               List('V','_','_','_','_','_','_','_','_'),
-                               List('_','_','V','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','A','_','_','_'),
-                               List('_','_','A','_','_','_','A','_','_'),
-                               List('_','V','_','_','A','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('V','_','A','_','_','_','_','_','A'))
-                               
-     val tableroPruebas3 =List(List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','A','A','_'),
-                               List('_','_','A','_','_','A','_','A','_'),
-                               List('_','A','_','_','_','A','_','_','_'),
-                               List('_','_','A','A','_','_','_','_','_'),
-                               List('_','_','_','_','_','_','_','V','_'),
-                               List('_','_','_','_','_','V','_','_','_'),
-                               List('_','_','_','_','_','_','_','_','_'))
-                               
-     
       iniciar_juego()
-     //terminar_juego(4565, false)
      
   }
 }
