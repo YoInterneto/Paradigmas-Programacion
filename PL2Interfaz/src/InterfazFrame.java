@@ -1,14 +1,14 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package interfaz;
+
 /**
  *
  * @author Alberto
  */
-
-import scala.collection.immutable.*;
-
-import java.util.ArrayList;
-
-import scala.Char;
-
 public class InterfazFrame extends javax.swing.JFrame {
 
     /**
@@ -109,101 +109,172 @@ public class InterfazFrame extends javax.swing.JFrame {
         pos86 = new javax.swing.JLabel();
         pos87 = new javax.swing.JLabel();
         pos88 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
+        recomendacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        
-        jLabel1.setText("MARICON");
-        
-        
-        pos01.setText("");
-        pos02.setText("");
-        pos03.setText("");
-        pos04.setText("");
-        pos05.setText("");
-        pos06.setText("");
-        pos07.setText("");
-        pos08.setText("");
-        pos00.setText("");
-        pos10.setText("");
-        pos11.setText("");
-        pos12.setText("");
-        pos13.setText("");
-        pos14.setText("");
-        pos15.setText("");
-        pos16.setText("");
-        pos18.setText("");
-        pos19.setText("");
-        pos20.setText("");
-        pos21.setText("");
-        pos22.setText("");
-        pos23.setText("");
-        pos24.setText("");
-        pos25.setText("");
-        pos26.setText("");
-        pos27.setText("");
-        pos28.setText("");
-        pos30.setText("");
-        pos31.setText("");
-        pos32.setText("");
-        pos33.setText("");
-        pos34.setText("");
-        pos35.setText("");
-        pos36.setText("");
-        pos37.setText("");
-        pos38.setText("");
-        pos40.setText("");
-        pos41.setText("");
-        pos42.setText("");
-        pos43.setText("");
-        pos44.setText("");
-        pos45.setText("");
-        pos46.setText("");
-        pos47.setText("");
-        pos48.setText("");
-        pos50.setText("");
-        pos51.setText("");
-        pos52.setText("");
-        pos53.setText("");
-        pos54.setText("");
-        pos55.setText("");
-        pos56.setText("");
-        pos57.setText("");
-        pos58.setText("");
-        pos60.setText("");
-        pos61.setText("");
-        pos62.setText("");
-        pos63.setText("");
-        pos64.setText("");
-        pos65.setText("");
-        pos66.setText("");
-        pos67.setText("");
-        pos68.setText("");
-        pos70.setText("");
-        pos71.setText("");
-        pos72.setText("");
-        pos73.setText("");
-        pos74.setText("");
-        pos75.setText("");
-        pos76.setText("");
-        pos77.setText("");
-        pos78.setText("");
-        pos80.setText("");
-        pos81.setText("");
-        pos82.setText("");
-        pos83.setText("");
-        pos84.setText("");
-        pos85.setText("");
-        pos86.setText("");
-        pos87.setText("");
-        pos88.setText("");
-        
-        
-        List<List<Object>> tablero = Bolas.llenar_tablero_inicial(Bolas.vacio(), 0);
-        mostrarTablero(tablero);
-        
-        
+        pos01.setText("jLabel3");
+
+        pos02.setText("jLabel2");
+
+        pos03.setText("jLabel2");
+
+        pos04.setText("jLabel2");
+
+        pos05.setText("jLabel2");
+
+        pos06.setText("jLabel2");
+
+        pos07.setText("jLabel2");
+
+        pos08.setText("jLabel2");
+
+        pos00.setText("jLabel2");
+
+        pos10.setText("jLabel2");
+
+        pos11.setText("jLabel3");
+
+        pos12.setText("jLabel2");
+
+        pos13.setText("jLabel2");
+
+        pos14.setText("jLabel2");
+
+        pos15.setText("jLabel2");
+
+        pos16.setText("jLabel2");
+
+        pos18.setText("jLabel2");
+
+        pos19.setText("jLabel2");
+
+        pos20.setText("jLabel2");
+
+        pos21.setText("jLabel3");
+
+        pos22.setText("jLabel2");
+
+        pos23.setText("jLabel2");
+
+        pos24.setText("jLabel2");
+
+        pos25.setText("jLabel2");
+
+        pos26.setText("jLabel2");
+
+        pos27.setText("jLabel2");
+
+        pos28.setText("jLabel2");
+
+        pos30.setText("jLabel2");
+
+        pos31.setText("jLabel3");
+
+        pos32.setText("jLabel2");
+
+        pos33.setText("jLabel2");
+
+        pos34.setText("jLabel2");
+
+        pos35.setText("jLabel2");
+
+        pos36.setText("jLabel2");
+
+        pos37.setText("jLabel2");
+
+        pos38.setText("jLabel2");
+
+        pos40.setText("jLabel2");
+
+        pos41.setText("jLabel3");
+
+        pos42.setText("jLabel2");
+
+        pos43.setText("jLabel2");
+
+        pos44.setText("jLabel2");
+
+        pos45.setText("jLabel2");
+
+        pos46.setText("jLabel2");
+
+        pos47.setText("jLabel2");
+
+        pos48.setText("jLabel2");
+
+        pos50.setText("jLabel2");
+
+        pos51.setText("jLabel3");
+
+        pos52.setText("jLabel2");
+
+        pos53.setText("jLabel2");
+
+        pos54.setText("jLabel2");
+
+        pos55.setText("jLabel2");
+
+        pos56.setText("jLabel2");
+
+        pos57.setText("jLabel2");
+
+        pos58.setText("jLabel2");
+
+        pos60.setText("jLabel2");
+
+        pos61.setText("jLabel3");
+
+        pos62.setText("jLabel2");
+
+        pos63.setText("jLabel2");
+
+        pos64.setText("jLabel2");
+
+        pos65.setText("jLabel2");
+
+        pos66.setText("jLabel2");
+
+        pos67.setText("jLabel2");
+
+        pos68.setText("jLabel2");
+
+        pos70.setText("jLabel2");
+
+        pos71.setText("jLabel3");
+
+        pos72.setText("jLabel2");
+
+        pos73.setText("jLabel2");
+
+        pos74.setText("jLabel2");
+
+        pos75.setText("jLabel2");
+
+        pos76.setText("jLabel2");
+
+        pos77.setText("jLabel2");
+
+        pos78.setText("jLabel2");
+
+        pos80.setText("jLabel2");
+
+        pos81.setText("jLabel3");
+
+        pos82.setText("jLabel2");
+
+        pos83.setText("jLabel2");
+
+        pos84.setText("jLabel2");
+
+        pos85.setText("jLabel2");
+
+        pos86.setText("jLabel2");
+
+        pos87.setText("jLabel2");
+
+        pos88.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -490,45 +561,43 @@ public class InterfazFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        titulo.setText("MARICON");
+
+        recomendacion.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(77, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(85, 85, 85))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(recomendacion, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(recomendacion, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    private void mostrarTablero(List<List<Object>> tablero) {
-    	
-    	for(int i = 0; i < 9; i++) {
-    		List<Object> fila = tablero.apply(i);
-    		for(int j = 0; j < 9; j++) {
-    			Object valor = fila.apply(j);
-    			System.out.print(valor.toString());
-    		}
-    		System.out.println("");
-    	}
-    }
     /**
      * @param args the command line arguments
      */
@@ -560,19 +629,11 @@ public class InterfazFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new InterfazFrame().setVisible(true);
-                
-                
-                	    /*mostrar_tablero(tablero_inicial)
-                	    
-                	    val lista_movimientos = mejor_jugada(tablero_inicial)
-                	    recomendacion(tablero_inicial, lista_movimientos)
-                	    escoger_bola(tablero_inicial,0)*/
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel pos00;
     private javax.swing.JLabel pos01;
@@ -655,5 +716,7 @@ public class InterfazFrame extends javax.swing.JFrame {
     private javax.swing.JLabel pos86;
     private javax.swing.JLabel pos87;
     private javax.swing.JLabel pos88;
+    private javax.swing.JLabel recomendacion;
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }
