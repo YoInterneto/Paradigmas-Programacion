@@ -1,9 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package interfaz;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import scala.collection.immutable.List;
 
 /**
  *
@@ -14,8 +12,20 @@ public class InterfazFrame extends javax.swing.JFrame {
     /**
      * Creates new form InterfazFrame
      */
+	
+	ImageIcon rojo = new ImageIcon("./src/Imagenes/Rojo.png");
+	ImageIcon gris = new ImageIcon("./src/Imagenes/Gris.png");
+	ImageIcon amarillo = new ImageIcon("./src/Imagenes/Amarillo.png");
+	ImageIcon morado = new ImageIcon("./src/Imagenes/Morado.png");
+	ImageIcon naranja = new ImageIcon("./src/Imagenes/Naranja.png");
+	ImageIcon vacio = new ImageIcon("./src/Imagenes/Vacio.png");
+	ImageIcon verde = new ImageIcon("./src/Imagenes/Verde.png");
+	
+	
     public InterfazFrame() {
         initComponents();
+        
+        recomendacion.setEditable(false);
     }
 
     /**
@@ -26,6 +36,8 @@ public class InterfazFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+    	
+    	setResizable(false);
 
         jPanel1 = new javax.swing.JPanel();
         pos01 = new javax.swing.JLabel();
@@ -110,171 +122,124 @@ public class InterfazFrame extends javax.swing.JFrame {
         pos87 = new javax.swing.JLabel();
         pos88 = new javax.swing.JLabel();
         titulo = new javax.swing.JLabel();
-        recomendacion = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        recomendacion = new javax.swing.JTextArea();
+        Recomendado = new javax.swing.JButton();
+        Origen = new javax.swing.JLabel();
+        Destino = new javax.swing.JLabel();
+        OrigenX = new javax.swing.JTextField();
+        OrigenY = new javax.swing.JTextField();
+        DestinoX = new javax.swing.JTextField();
+        DestinoY = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        Mover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pos01.setText("jLabel3");
-
-        pos02.setText("jLabel2");
-
-        pos03.setText("jLabel2");
-
-        pos04.setText("jLabel2");
-
-        pos05.setText("jLabel2");
-
-        pos06.setText("jLabel2");
-
-        pos07.setText("jLabel2");
-
-        pos08.setText("jLabel2");
-
-        pos00.setText("jLabel2");
-
-        pos10.setText("jLabel2");
-
-        pos11.setText("jLabel3");
-
-        pos12.setText("jLabel2");
-
-        pos13.setText("jLabel2");
-
-        pos14.setText("jLabel2");
-
-        pos15.setText("jLabel2");
-
-        pos16.setText("jLabel2");
-
-        pos18.setText("jLabel2");
-
-        pos19.setText("jLabel2");
-
-        pos20.setText("jLabel2");
-
-        pos21.setText("jLabel3");
-
-        pos22.setText("jLabel2");
-
-        pos23.setText("jLabel2");
-
-        pos24.setText("jLabel2");
-
-        pos25.setText("jLabel2");
-
-        pos26.setText("jLabel2");
-
-        pos27.setText("jLabel2");
-
-        pos28.setText("jLabel2");
-
-        pos30.setText("jLabel2");
-
-        pos31.setText("jLabel3");
-
-        pos32.setText("jLabel2");
-
-        pos33.setText("jLabel2");
-
-        pos34.setText("jLabel2");
-
-        pos35.setText("jLabel2");
-
-        pos36.setText("jLabel2");
-
-        pos37.setText("jLabel2");
-
-        pos38.setText("jLabel2");
-
-        pos40.setText("jLabel2");
-
-        pos41.setText("jLabel3");
-
-        pos42.setText("jLabel2");
-
-        pos43.setText("jLabel2");
-
-        pos44.setText("jLabel2");
-
-        pos45.setText("jLabel2");
-
-        pos46.setText("jLabel2");
-
-        pos47.setText("jLabel2");
-
-        pos48.setText("jLabel2");
-
-        pos50.setText("jLabel2");
-
-        pos51.setText("jLabel3");
-
-        pos52.setText("jLabel2");
-
-        pos53.setText("jLabel2");
-
-        pos54.setText("jLabel2");
-
-        pos55.setText("jLabel2");
-
-        pos56.setText("jLabel2");
-
-        pos57.setText("jLabel2");
-
-        pos58.setText("jLabel2");
-
-        pos60.setText("jLabel2");
-
-        pos61.setText("jLabel3");
-
-        pos62.setText("jLabel2");
-
-        pos63.setText("jLabel2");
-
-        pos64.setText("jLabel2");
-
-        pos65.setText("jLabel2");
-
-        pos66.setText("jLabel2");
-
-        pos67.setText("jLabel2");
-
-        pos68.setText("jLabel2");
-
-        pos70.setText("jLabel2");
-
-        pos71.setText("jLabel3");
-
-        pos72.setText("jLabel2");
-
-        pos73.setText("jLabel2");
-
-        pos74.setText("jLabel2");
-
-        pos75.setText("jLabel2");
-
-        pos76.setText("jLabel2");
-
-        pos77.setText("jLabel2");
-
-        pos78.setText("jLabel2");
-
-        pos80.setText("jLabel2");
-
-        pos81.setText("jLabel3");
-
-        pos82.setText("jLabel2");
-
-        pos83.setText("jLabel2");
-
-        pos84.setText("jLabel2");
-
-        pos85.setText("jLabel2");
-
-        pos86.setText("jLabel2");
-
-        pos87.setText("jLabel2");
-
-        pos88.setText("jLabel2");
+        titulo.setText("5 BOLAS");
+        
+        pos01.setIcon(vacio);
+        pos02.setIcon(vacio);
+        pos03.setIcon(vacio);
+        pos04.setIcon(vacio);
+        pos05.setIcon(vacio);
+        pos06.setIcon(vacio);
+        pos07.setIcon(vacio);
+        pos08.setIcon(vacio);
+        pos00.setIcon(vacio);
+        pos10.setIcon(vacio);
+        pos11.setIcon(vacio);
+        pos12.setIcon(vacio);
+        pos13.setIcon(vacio);
+        pos14.setIcon(vacio);
+        pos15.setIcon(vacio);
+        pos16.setIcon(vacio);
+        pos18.setIcon(vacio);
+        pos19.setIcon(vacio);
+        pos20.setIcon(vacio);
+        pos21.setIcon(vacio);
+        pos22.setIcon(vacio);
+        pos23.setIcon(vacio);
+        pos24.setIcon(vacio);
+        pos25.setIcon(vacio);
+        pos26.setIcon(vacio);
+        pos27.setIcon(vacio);
+        pos28.setIcon(vacio);
+        pos30.setIcon(vacio);
+        pos31.setIcon(vacio);
+        pos32.setIcon(vacio);
+        pos33.setIcon(vacio);
+        pos34.setIcon(vacio);
+        pos35.setIcon(vacio);
+        pos36.setIcon(vacio);
+        pos37.setIcon(vacio);
+        pos38.setIcon(vacio);
+        pos40.setIcon(vacio);
+        pos41.setIcon(vacio);
+        pos42.setIcon(vacio);
+        pos43.setIcon(vacio);
+        pos44.setIcon(vacio);
+        pos45.setIcon(vacio);
+        pos46.setIcon(vacio);
+        pos47.setIcon(vacio);
+        pos48.setIcon(vacio);
+        pos50.setIcon(vacio);
+        pos51.setIcon(vacio);
+        pos52.setIcon(vacio);
+        pos53.setIcon(vacio);
+        pos54.setIcon(vacio);
+        pos55.setIcon(vacio);
+        pos56.setIcon(vacio);
+        pos57.setIcon(vacio);
+        pos58.setIcon(vacio);
+        pos60.setIcon(vacio);
+        pos61.setIcon(vacio);
+        pos62.setIcon(vacio);
+        pos63.setIcon(vacio);
+        pos64.setIcon(vacio);
+        pos65.setIcon(vacio);
+        pos66.setIcon(vacio);
+        pos67.setIcon(vacio);
+        pos68.setIcon(vacio);
+        pos70.setIcon(vacio);
+        pos71.setIcon(vacio);
+        pos72.setIcon(vacio);
+        pos73.setIcon(vacio);
+        pos74.setIcon(vacio);
+        pos75.setIcon(vacio);
+        pos76.setIcon(vacio);
+        pos77.setIcon(vacio);
+        pos78.setIcon(vacio);
+        pos80.setIcon(vacio);
+        pos81.setIcon(vacio);
+        pos82.setIcon(vacio);
+        pos83.setIcon(vacio);
+        pos84.setIcon(vacio);
+        pos85.setIcon(vacio);
+        pos86.setIcon(vacio);
+        pos87.setIcon(vacio);
+        pos88.setIcon(vacio);
+        
+        JLabel[] iconos = {pos00,pos01,pos02,pos03,pos04,pos05,pos06,pos07,pos08,
+        					pos10,pos11,pos12,pos13,pos14,pos15,pos16,pos18,pos19,
+        					pos20,pos21,pos22,pos23,pos24,pos25,pos26,pos27,pos28,
+        					pos30,pos31,pos32,pos33,pos34,pos35,pos36,pos37,pos38,
+        					pos40,pos41,pos42,pos43,pos44,pos45,pos46,pos47,pos48,
+        					pos50,pos51,pos52,pos53,pos54,pos55,pos56,pos57,pos58,
+        					pos60,pos61,pos62,pos63,pos64,pos65,pos66,pos67,pos68,
+        					pos70,pos71,pos72,pos73,pos74,pos75,pos76,pos77,pos78,
+        					pos80,pos81,pos82,pos83,pos84,pos85,pos86,pos87,pos88};
+        	
+        List<List<Object>> tablero_vacio = Bolas.vacio();
+        List<List<Object>> tablero_inicial = Bolas.llenar_tablero_inicial(tablero_vacio,0);
+        	    
+        List<Object> lista_movimientos = Bolas.mejor_jugada(tablero_inicial);
+        String movimiento = Bolas.recomendacion(tablero_inicial, lista_movimientos);
+        System.out.println(movimiento);
+        recomendacion.setText(movimiento);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -563,40 +528,124 @@ public class InterfazFrame extends javax.swing.JFrame {
 
         titulo.setText("MARICON");
 
-        recomendacion.setText("jLabel2");
+        recomendacion.setColumns(20);
+        recomendacion.setRows(5);
+        jScrollPane1.setViewportView(recomendacion);
+
+        Recomendado.setText("Seguir recomendacion");
+
+        Origen.setText("ORIGEN:");
+
+        Destino.setText("DESTINO:");
+
+        OrigenX.setToolTipText("fila");
+
+        OrigenY.setToolTipText("columna");
+        OrigenY.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OrigenYActionPerformed(evt);
+            }
+        });
+
+        DestinoX.setToolTipText("fila");
+
+        DestinoY.setToolTipText("columna");
+
+        jLabel1.setText("X:");
+
+        jLabel2.setText("Y:");
+
+        jLabel3.setText("X:");
+
+        jLabel4.setText("Y:");
+
+        Mover.setText("Mover");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(recomendacion, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGap(406, 406, 406)
+                .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Origen)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(4, 4, 4)
+                        .addComponent(OrigenX, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel2)
+                        .addGap(4, 4, 4)
+                        .addComponent(OrigenY, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Destino)
+                        .addGap(120, 120, 120)
+                        .addComponent(Mover))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(4, 4, 4)
+                        .addComponent(DestinoX, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel4)
+                        .addGap(4, 4, 4)
+                        .addComponent(DestinoY, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(72, 72, 72)
+                        .addComponent(Recomendado)))
+                .addGap(75, 75, 75)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(Origen)
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(OrigenX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(OrigenY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))))
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(Destino))
+                            .addComponent(Mover))
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addComponent(recomendacion, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(DestinoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(DestinoY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))))
+                        .addGap(44, 44, 44)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(Recomendado))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void OrigenYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrigenYActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_OrigenYActionPerformed
 
     /**
      * @param args the command line arguments
@@ -634,7 +683,20 @@ public class InterfazFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Destino;
+    private javax.swing.JTextField DestinoX;
+    private javax.swing.JTextField DestinoY;
+    private javax.swing.JButton Mover;
+    private javax.swing.JLabel Origen;
+    private javax.swing.JTextField OrigenX;
+    private javax.swing.JTextField OrigenY;
+    private javax.swing.JButton Recomendado;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel pos00;
     private javax.swing.JLabel pos01;
     private javax.swing.JLabel pos02;
@@ -716,7 +778,7 @@ public class InterfazFrame extends javax.swing.JFrame {
     private javax.swing.JLabel pos86;
     private javax.swing.JLabel pos87;
     private javax.swing.JLabel pos88;
-    private javax.swing.JLabel recomendacion;
+    private javax.swing.JTextArea recomendacion;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

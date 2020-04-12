@@ -255,7 +255,7 @@ object Bolas {
   //Funcion que a partir de la lista retornada por la funcion mejor_jugada(), crea un mensaje
   //personalizado para recomendar al usuario el mejor movimiento
   //**********************************************************************************************
-  def recomendacion(tablero: List[List[Char]], lista: List[Char]){
+  def recomendacion(tablero: List[List[Char]], lista: List[Char]): String ={
     val fila = lista(0).toInt
     val columna = lista(1).toInt
     val color = lista(2)
@@ -266,44 +266,57 @@ object Bolas {
     if(tipo == 1 || tipo == 7){
       if(tablero(fila)(columna) == '_'){
         println("AVISO (horizontal) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+        "AVISO (horizontal) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
         println("AVISO (horizontal) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                    "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+                                                   "AVISO (horizontal) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                   "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
     //Vertical
     else if(tipo == 2 || tipo == 8){
       if(tablero(fila)(columna) == '_'){
         println("AVISO (vertical) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+        "AVISO (vertical) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
         println("AVISO (vertical) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                  "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+                                                 "AVISO (vertical) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                 "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
     //Diagonal izquierda
     else if(tipo == 3 || tipo == 5 || tipo == 9 || tipo == 10 || tipo == 11 || tipo == 12 || tipo == 13 || tipo == 14 || tipo == 15 || tipo == 16){
       if(tablero(fila)(columna) == '_'){
         println("AVISO (diagonal izq.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+        "AVISO (diagonal izq.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
         println("AVISO (diagonal izq.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                       "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+                                                      "AVISO (diagonal izq.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                      "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
     //Diagonal derecha
     else if(tipo == 4 || tipo == 6 || tipo == 17 || tipo == 18 || tipo == 19 || tipo == 20 || tipo == 21 || tipo == 22 || tipo == 23 || tipo == 24){
       if(tablero(fila)(columna) == '_'){
         println("AVISO (diagonal dcha.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+        "AVISO (diagonal dcha.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
         println("AVISO (diagonal dcha.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                        "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
+                                                       "AVISO (diagonal dcha.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                       "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
     else{
       println("\nERROR: no se ha podido encontrar el mejor movimiento.\n")
+      "\nERROR: no se ha podido encontrar el mejor movimiento.\n"
     }
     
   }
