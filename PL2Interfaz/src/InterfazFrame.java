@@ -902,7 +902,7 @@ titulo.setText("5 BOLAS");
         // TODO add your handling code here:
     }                                       
 
-    private void MoverActionPerformed(java.awt.event.ActionEvent evt) {                                      
+    private void MoverActionPerformed(java.awt.event.ActionEvent evt) {
         try {
         	if(OrigenX.getText().equals("") || OrigenY.getText().equals("") || DestinoX.getText().equals("")|| DestinoY.getText().equals("")) {
         		JOptionPane.showMessageDialog(null, "ERROR: Rellena todos los campos");
@@ -961,6 +961,75 @@ titulo.setText("5 BOLAS");
                 	OrigenY.setText("");
                 	DestinoX.setText("");
                 	DestinoY.setText("");
+                	
+                	if(Bolas.final_partida(this.tablero, 0, 0)) {
+                		Recomendado.setEnabled(false);
+                		Mover.setEnabled(false);
+                		
+                		//llamar a nueva interfaz y cerrar esta
+                		this.setVisible(false);
+                		
+                			/**********************************************************************************************
+                		  //Funcion que muestra un menu con las opciones de las que dispone el usuario una vez acabada la
+                		  //partida, guardar puntuacion, nueva partida o terminar juego
+                		  //**********************************************************************************************
+                		  def terminar_juego(puntuacion: Int, guardado: Boolean){
+                		    
+                		    if(guardado){
+                		      println(" 1)Nueva partida.")
+                		      println(" 2)Terminar juego.")
+                		      print("Introduzca la opcion que desee: ")
+                		    }
+                		    else{
+                		      println(" 1)Guardar puntuacion.")
+                		      println(" 2)Nueva partida.")
+                		      println(" 3)Terminar juego.")
+                		      print("Introduzca la opcion que desee: ")
+                		    }
+                		    
+                		    val respuesta = scala.io.StdIn.readInt()
+                		    
+                		    if(respuesta == 1 && !guardado){  
+                		      println("\nOPCION 1 -> Guardar puntuacion")
+                		      println("Introduzca su nombre: ")
+                		      val nombre = scala.io.StdIn.readLine()
+                		      
+                		      var reloj = Calendar.getInstance()
+                		      var min = reloj.get(Calendar.MINUTE)
+                		      var h = reloj.get(Calendar.HOUR_OF_DAY)
+                		      val hora = h +":"+ min
+                		      
+                		      val format = new SimpleDateFormat("d/M/y")
+                		      val fecha = format.format(Calendar.getInstance().getTime())
+                		      
+                		      val texto = "***************************\n"+
+                		                  "   ["+ fecha + " " + hora +"]\n"+
+                		                  "Jugador: "+ nombre + "\n"+
+                		                  "Puntuacion: "+ puntuacion + "\n"+
+                		                  "***************************\n\n"
+                		      val pw = new PrintWriter(new BufferedWriter(new FileWriter("./src/puntuaciones.txt", true)))
+                		      try pw.write(texto) finally pw.close()
+                		      
+                		      terminar_juego(puntuacion, true)
+                		    }
+                		    else if((respuesta == 2 && !guardado) || (respuesta == 1 && guardado)){
+                		      if(guardado){println("\nOPCION 1 -> Nueva partida")}
+                		      else{println("\nOPCION 2 -> Nueva partida")}
+                		      iniciar_juego()
+                		    }
+                		    else if((respuesta == 3 && !guardado) || (respuesta == 2 && guardado)){
+                		      if(guardado){println("\nOPCION 2 -> Terminar juego\nGracias por jugar.")}
+                		      else{println("\nOPCION 3 -> Terminar juego\nGracias por jugar.")}
+                		      System.exit(1)
+                		    }
+                		    else{
+                		      println("\nERROR: numero incorrecto, intentelo de nuevo\n")
+                		      if(guardado){terminar_juego(puntuacion, true)}
+                		      else{terminar_juego(puntuacion, false)}
+                		      
+                		    }
+                		  }*/
+                	}
             	}
             	
         	}
