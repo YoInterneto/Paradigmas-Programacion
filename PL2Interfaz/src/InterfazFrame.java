@@ -966,8 +966,9 @@ titulo.setText("5 BOLAS");
                 		Recomendado.setEnabled(false);
                 		Mover.setEnabled(false);
                 		
-                		//llamar a nueva interfaz y cerrar esta
+                		MenuFrame menu = new MenuFrame(this.puntuacion);
                 		this.setVisible(false);
+                		menu.setVisible(true);
                 	}
             	}
             	

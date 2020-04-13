@@ -22,6 +22,9 @@ public class MenuFrame extends javax.swing.JFrame {
     public MenuFrame(int puntos) {
         initComponents();
         this.puntuacion = puntos;
+        setResizable(false);
+        setBounds(0, 0, 370, 280);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -98,8 +101,10 @@ public class MenuFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarPartidaActionPerformed(java.awt.event.ActionEvent evt) {
-        String nombre = JOptionPane.showInputDialog("Introduce tu nombre");
+     
         try {
+        	
+        	String nombre = JOptionPane.showInputDialog("Introduce tu nombre");
         	
         	SimpleDateFormat format = new SimpleDateFormat("d/M/y");
         	String fecha = format.format(Calendar.getInstance().getTime());
@@ -121,7 +126,7 @@ public class MenuFrame extends javax.swing.JFrame {
         	pw.close();
         	
         	guardarPartida.setEnabled(false);
-        } //Si existe un problema al escribir cae aqui
+        }
         catch (Exception e) {
             JOptionPane.showMessageDialog(null,"ERROR: Algo salio mal, vuelva a seleccionar la misma opcion.");
         }
@@ -137,6 +142,7 @@ public class MenuFrame extends javax.swing.JFrame {
 
     private void terminarJuegoActionPerformed(java.awt.event.ActionEvent evt) {
         this.setVisible(false);
+        System.exit(1);
     	
     }//GEN-LAST:event_terminarJuegoActionPerformed
 
