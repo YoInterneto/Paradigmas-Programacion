@@ -1,3 +1,12 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Alberto
@@ -7,8 +16,12 @@ public class MenuFrame extends javax.swing.JFrame {
     /**
      * Creates new form InterfazInicio
      */
-    public MenuFrame() {
+	
+	int puntuacion;
+	
+    public MenuFrame(int puntos) {
         initComponents();
+        this.puntuacion = puntos;
     }
 
     /**
@@ -85,17 +98,45 @@ public class MenuFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarPartidaActionPerformed(java.awt.event.ActionEvent evt) {
-        
+        String nombre = JOptionPane.showInputDialog("Introduce tu nombre");
+        try {
+        	
+        	SimpleDateFormat format = new SimpleDateFormat("d/M/y");
+        	String fecha = format.format(Calendar.getInstance().getTime());
+        	
+        	Calendar reloj = Calendar.getInstance();
+        	int min = reloj.get(Calendar.MINUTE);
+        	int h = reloj.get(Calendar.HOUR_OF_DAY);
+        	String hora = h +":"+ min;
+        			
+        	
+        	String mensaje = "***************************\n"+
+			                  "   ["+ fecha + " " + hora +"]\n"+
+			                  "Jugador: "+ nombre + "\n"+
+			                  "Puntuacion: "+ this.puntuacion + "\n"+
+			                  "***************************\n\n";
+        	
+        	PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("./src/puntuaciones.txt", true)));
+        	pw.write(mensaje);
+        	pw.close();
+        	
+        	guardarPartida.setEnabled(false);
+        } //Si existe un problema al escribir cae aqui
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"ERROR: Algo salio mal, vuelva a seleccionar la misma opcion.");
+        }
     	
     }//GEN-LAST:event_guardarPartidaActionPerformed
 
     private void nuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {
-        
+        InterfazFrame nueva = new InterfazFrame();
+        this.setVisible(false);
+        nueva.setVisible(true);
     	
     }//GEN-LAST:event_nuevaPartidaActionPerformed
 
     private void terminarJuegoActionPerformed(java.awt.event.ActionEvent evt) {
-        
+        this.setVisible(false);
     	
     }//GEN-LAST:event_terminarJuegoActionPerformed
 
@@ -131,7 +172,7 @@ public class MenuFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuFrame().setVisible(true);
+                new MenuFrame(0).setVisible(true);
             }
         });
     }
