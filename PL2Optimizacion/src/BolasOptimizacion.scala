@@ -77,10 +77,10 @@ object Bolas {
   }
   
   
-  //**********************************************************************************************
+  //********************************
   //Funcion que pide al usuario que elija una ficha del tablero para moverla posteriormente,
   //comprobando la posicion y si la partida ha finalizado o no
-  //**********************************************************************************************
+  //********************************
   def escoger_bola(tablero: List[List[Char]],puntuacion:Int){
      
     //Si la partida ha finalizado se muestra la puntuacion y se llama a la funcion
@@ -91,92 +91,107 @@ object Bolas {
      }
      //Si no ha finalizado pedimos y comprobamos la posicion
      else{
-       print("Introduzca la fila de la bola que quiere utilizar(1-9): ")
-       val xIn = scala.io.StdIn.readInt()
-       print("Introduzca la columna de la bola que quiere utilizar(1-9): ")
-       val yIn = scala.io.StdIn.readInt()
-       
-       val x = xIn - 1
-       val y = yIn - 1
-       
-       if(comprobar_limite(x,y)){
+       try{
+         print("Introduzca la fila de la bola que quiere utilizar(1-9): ")
+         val xIn = scala.io.StdIn.readInt()
+         print("Introduzca la columna de la bola que quiere utilizar(1-9): ")
+         val yIn = scala.io.StdIn.readInt()
          
-         val bola = tablero(x)(y)
+         val x = xIn - 1
+         val y = yIn - 1
          
-         //Si en el hueco hay una bola
-         if(bola != '_'){
-           println("\nBOLA ESCOGIDA ["+ bola +"]\n")
-           mover_bola(tablero,bola,x,y,puntuacion)
+         if(comprobar_limite(x,y)){
+           
+           val bola = tablero(x)(y)
+           
+           //Si en el hueco hay una bola
+           if(bola != '_'){
+             println("\nBOLA ESCOGIDA ["+ bola +"]\n")
+             mover_bola(tablero,bola,x,y,puntuacion)
+           }
+           else{
+             println("\nERROR: Posicion vacia. Intente otra posicion.\n")
+             escoger_bola(tablero,puntuacion)
+           }
          }
          else{
-           println("\nERROR: Posicion vacia. Intente otra posicion.\n")
            escoger_bola(tablero,puntuacion)
          }
        }
-       else{
+       //Si no se introduce un numero, salta la excepcion, y se vuelve a introducir
+       catch{
+         case e: NumberFormatException => println("\nERROR: Formato numerico incorrecto, empiece otra vez\n")
          escoger_bola(tablero,puntuacion)
+         
        }
-     }  
+     }
   }
   
   
-  //**********************************************************************************************
+  //********************************
   //Funcion que mueve una bola de una posicion a otra y sigue con la ejecucion del juego llamando
   //a mas funciones
-  //**********************************************************************************************
+  //********************************
   def mover_bola(tablero: List[List[Char]], bola: Char, x: Int, y: Int, puntuacion: Int){
-    
-    print("Introduzca la fila donde la quiere introducir(1-9): ")
-    val xIn = scala.io.StdIn.readInt()
-    print("Introduzca la columna donde la quiere introducir(1-9): ")
-    val yIn = scala.io.StdIn.readInt()
-    
-    val x2 = xIn - 1
-    val y2 = yIn - 1
-    
-    //Comprobamos que el numero introducido no se pase de los limites
-    if(comprobar_limite(x2, y2)){
+    try{
+      print("Introduzca la fila donde la quiere introducir(1-9): ")
+      val xIn = scala.io.StdIn.readInt()
+      print("Introduzca la columna donde la quiere introducir(1-9): ")
+      val yIn = scala.io.StdIn.readInt()
       
-      val hueco = tablero(x2)(y2)
+      val x2 = xIn - 1
+      val y2 = yIn - 1
       
-      //Si el hueco donde queremos introducir esta vacio
-      if(hueco == '_'){
-        val fila_nueva = reemplazar(tablero(x2),y2,bola)
-        val tablero_sin_hueco = reemplazar_lista(tablero, x2, fila_nueva) 
-        //Donde estaba la bola antes, ahora esta vacio
-        val tablero_hueco = reemplazar(tablero_sin_hueco(x), y, '_') 
-        //Lo reemplazamos
-        val tablero_con_hueco = reemplazar_lista(tablero_sin_hueco, x, tablero_hueco)
-        //Rellenamos el tablero con las 3 nuevas posiciones
-        val tablero_sig_turno = rellenar_turno(tablero_con_hueco, 0)
+      //Comprobamos que el numero introducido no se pase de los limites
+      if(comprobar_limite(x2, y2)){
         
-        //Nueva puntuacion
-        val puntuacionAux = calcular_puntuacion(tablero_sig_turno, 0, 0, 0) * 75
-        val puntuacion_acumulada = puntuacion + puntuacionAux
-        println("\nPuntuacion acumulada: "+ puntuacion_acumulada +"\n")
+        val hueco = tablero(x2)(y2)
         
-        //Comprobamos si se pueden eliminar fichas que han formado figuras
-        val tablero_comprobado = comprobar_tablero(tablero_sig_turno)
-        mostrar_tablero(tablero_comprobado)
-        
-        //Vemos la mejor jugada y recomendamos
-        val lista_movimientos = mejor_jugada(tablero_comprobado)
-        recomendacion(tablero_comprobado, lista_movimientos)
-        
-        //Volvemos a llamar a la funcion para seguir con el juego
-        escoger_bola(tablero_comprobado,puntuacion_acumulada)
-         
+        //Si el hueco donde queremos introducir esta vacio
+        if(hueco == '_'){
+          val fila_nueva = reemplazar(tablero(x2),y2,bola)
+          val tablero_sin_hueco = reemplazar_lista(tablero, x2, fila_nueva) 
+          //Donde estaba la bola antes, ahora esta vacio
+          val tablero_hueco = reemplazar(tablero_sin_hueco(x), y, '_') 
+          //Lo reemplazamos
+          val tablero_con_hueco = reemplazar_lista(tablero_sin_hueco, x, tablero_hueco)
+          //Rellenamos el tablero con las 3 nuevas posiciones
+          val tablero_sig_turno = rellenar_turno(tablero_con_hueco, 0)
+          
+          //Nueva puntuacion
+          val puntuacionAux = calcular_puntuacion(tablero_sig_turno, 0, 0, 0) * 75
+          val puntuacion_acumulada = puntuacion + puntuacionAux
+          println("\nPuntuacion acumulada: "+ puntuacion_acumulada +"\n")
+          
+          //Comprobamos si se pueden eliminar fichas que han formado figuras
+          val tablero_comprobado = comprobar_tablero(tablero_sig_turno)
+          mostrar_tablero(tablero_comprobado)
+          
+          //Vemos la mejor jugada y recomendamos
+          val lista_movimientos = mejor_jugada(tablero_comprobado)
+          recomendacion(tablero_comprobado, lista_movimientos)
+          
+          //Volvemos a llamar a la funcion para seguir con el juego
+          escoger_bola(tablero_comprobado,puntuacion_acumulada)
+           
+        }
+        //Si hay una ficha ya en la posicion elegida, la volvemos a pedir
+        else{
+          println("\nERROR: Posicion ocupada. Intente otra posicion.\n")
+          mover_bola(tablero,bola,x,y,puntuacion)
+        }
       }
-      //Si hay una ficha ya en la posicion elegida, la volvemos a pedir
+      //Si los limites estan mal volvemos a pedirlos
       else{
-        println("\nERROR: Posicion ocupada. Intente otra posicion.\n")
         mover_bola(tablero,bola,x,y,puntuacion)
-      }
+      }      
     }
-    //Si los limites estan mal volvemos a pedirlos
-    else{
+    //Si no se introduce un numero, salta la excepcion, y se vuelve a introducir
+    catch{
+      case e: NumberFormatException => println("\nERROR: Formato numerico incorrecto, empiece otra vez\n")
       mover_bola(tablero,bola,x,y,puntuacion)
-    }
+         
+       }
   }
   
   

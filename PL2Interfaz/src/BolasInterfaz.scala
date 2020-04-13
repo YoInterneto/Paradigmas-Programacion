@@ -49,6 +49,31 @@ object Bolas {
   }
   
   
+  def colorString(color: Char): String = {
+    if(color == 'M'){
+      "bola morada"
+    }
+    else if(color == 'R'){
+      "bola roja"
+    }
+    else if(color == 'V'){
+      "bola verde"
+    }
+    else if(color == 'N'){
+      "bola naranja"
+    }
+    else if(color == 'G'){
+      "bola gris"
+    }
+    else if(color == 'A'){
+      "bola amarilla"
+    }
+    else{
+      "cualquier bola"
+    }
+  }
+  
+  
   //**********************************************************************************************
   //Funcion que a partir de la lista retornada por la funcion mejor_jugada(), crea un mensaje
   //personalizado para recomendar al usuario el mejor movimiento
@@ -56,9 +81,11 @@ object Bolas {
   def recomendacion(tablero: List[List[Char]], lista: List[Char]): String ={
     val fila = lista(0).toInt
     val columna = lista(1).toInt
-    val color = lista(2)
+    val colorChar = lista(2)
     val contador = lista(3).toInt
     val tipo = lista(4).toInt
+    
+    val color = colorString(colorChar)
     
     //Horizontal
     if(tipo == 1 || tipo == 7){
@@ -67,9 +94,9 @@ object Bolas {
         "AVISO (horizontal) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
-        println("AVISO (horizontal) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+        println("AVISO (horizontal) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                    "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
-                                                   "AVISO (horizontal) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                   "AVISO (horizontal) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                    "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
@@ -80,9 +107,9 @@ object Bolas {
         "AVISO (vertical) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
-        println("AVISO (vertical) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+        println("AVISO (vertical) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                  "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
-                                                 "AVISO (vertical) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                 "AVISO (vertical) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                  "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
@@ -93,9 +120,9 @@ object Bolas {
         "AVISO (diagonal izq.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
-        println("AVISO (diagonal izq.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+        println("AVISO (diagonal izq.) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                       "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
-                                                      "AVISO (diagonal izq.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                      "AVISO (diagonal izq.) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                       "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
@@ -106,9 +133,9 @@ object Bolas {
         "AVISO (diagonal dcha.) *1 movimiento* \n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
       else{
-        println("AVISO (diagonal dcha.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+        println("AVISO (diagonal dcha.) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                        "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n")
-                                                       "AVISO (diagonal dcha.) *2 movimientos* \n  -Mover "+ tablero(fila)(columna) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
+                                                       "AVISO (diagonal dcha.) *2 movimientos* \n  -Mover "+ colorString(tablero(fila)(columna)) +" en posicion ["+ (fila+1) +","+ (columna+1) +"]"+
                                                        "\n  -Colocar "+ color +" en posicion ["+ (fila+1) +","+ (columna+1) +"]\n"
       }
     }
@@ -1220,11 +1247,5 @@ object Bolas {
         }
       }
     }
-  }
-
-  
-  
-  
-  def main(args: Array[String]){
   }
 }
