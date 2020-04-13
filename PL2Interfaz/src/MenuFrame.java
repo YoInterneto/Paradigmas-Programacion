@@ -1,10 +1,14 @@
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Image;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,9 +26,22 @@ public class MenuFrame extends javax.swing.JFrame {
     public MenuFrame(int puntos) {
         initComponents();
         this.puntuacion = puntos;
+        
         setResizable(false);
         setBounds(0, 0, 370, 280);
         setLocationRelativeTo(null);
+        setTitle("FiveBalls");
+        
+        ImageIcon imagen = new ImageIcon("./src/Imagenes/Icono.png");
+        Image icono = imagen.getImage();
+        setIconImage(icono);
+        
+        setLayout(new BorderLayout());
+        JLabel background=new JLabel(new ImageIcon("./src/Imagenes/Fondo.jpg"));
+        add(background);
+        background.setLayout(new FlowLayout());
+        
+        setVisible(true);
     }
 
     /**

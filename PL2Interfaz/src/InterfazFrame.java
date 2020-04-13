@@ -1,8 +1,13 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
-import scala.Char;
 import scala.collection.immutable.List;
 
 /**
@@ -23,6 +28,7 @@ public class InterfazFrame extends javax.swing.JFrame {
 	ImageIcon naranja = new ImageIcon("./src/Imagenes/Naranja.png");
 	ImageIcon vacio = new ImageIcon("./src/Imagenes/Vacio.png");
 	ImageIcon verde = new ImageIcon("./src/Imagenes/Verde.png");
+	ImageIcon tituloFrame = new ImageIcon("./src/Imagenes/Titulo.png");
 	
 	List<List<Object>> tablero;
 	List<Object> lista;
@@ -32,7 +38,26 @@ public class InterfazFrame extends javax.swing.JFrame {
 	
     public InterfazFrame() {
         initComponents();
+        
         recomendacion.setEditable(false);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("FiveBalls");
+        ImageIcon imagen = new ImageIcon("./src/Imagenes/Icono.png");
+        Image icono = imagen.getImage();
+        setIconImage(icono);
+        setVisible(true);
+        
+        setLayout(new BorderLayout());
+        JLabel background=new JLabel(new ImageIcon("./src/Imagenes/Fondo.jpg"));
+        add(background);
+        background.setLayout(new FlowLayout());
+        
+        Color color = new Color(119, 136, 153);
+        jPanel1.setBackground(color);
+        
+        titulo.setIcon(tituloFrame);
+        titulo.setAlignmentX(CENTER_ALIGNMENT);
     }
 
     
