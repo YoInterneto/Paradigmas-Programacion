@@ -943,64 +943,62 @@ titulo.setText("5 BOLAS");
             	int destinoY = Integer.parseInt(DestinoY.getText()) - 1;
             	
             	List<List<Object>> tableroAux = this.tablero;
-        		
-        		char huecoOrigen = (char) tableroAux.apply(origenX).apply(origenY);
-        		char huecoDestino = (char) tableroAux.apply(destinoX).apply(destinoY);
             	
-            	if((0>origenX || origenX>8) || (0>origenY || origenY>8) || (0>destinoX || destinoX>8) || (0>destinoY || destinoY>8)){
+            	if(0>origenX || origenX>8 || 0>origenY || origenY>8 || 0>destinoX || destinoX>8 || 0>destinoY || destinoY>8){
             		JOptionPane.showMessageDialog(null, "ERROR: Rango de valores incorrecto");
             	}
-            	else if(huecoDestino != '_') {
-            		JOptionPane.showMessageDialog(null, "ERROR: Posicion de destino ocupada.");
-            	}
-            	else if(huecoOrigen == '_') {
-            		JOptionPane.showMessageDialog(null, "ERROR: Posicion de origen vacia");
-            	}
             	else {
-            		List<Object> fila_nueva = Bolas.reemplazar(tableroAux.apply(destinoX), destinoY, huecoOrigen);
-            		List<List<Object>> tablero_sin_hueco = Bolas.reemplazar_lista(this.tablero, destinoX, fila_nueva);
-            		List<Object> tablero_hueco = Bolas.reemplazar(tablero_sin_hueco.apply(origenX), origenY, '_');
-            		List<List<Object>> tablero_con_hueco = Bolas.reemplazar_lista(tablero_sin_hueco, origenX, tablero_hueco);
+            		char huecoOrigen = (char) tableroAux.apply(origenX).apply(origenY);
+            		char huecoDestino = (char) tableroAux.apply(destinoX).apply(destinoY);
             		
-            		List<List<Object>> tablero_sig_turno = Bolas.rellenar_turno(tablero_con_hueco, 0);
-            		mostrarTablero(iconos, tablero_sig_turno);
-            		
-            		int puntuacioAux = Bolas.calcular_puntuacion(tablero_sig_turno, 0, 0, 0) * 75;
-            		int puntuacion_acumulada = this.puntuacion + puntuacioAux;
-            		this.puntuacion = puntuacion_acumulada;
-            		
-            		puntos.setText(String.valueOf(this.puntuacion));
-            		
-            		List<List<Object>> tablero_comprobado = Bolas.comprobar_tablero(tablero_sig_turno);
-            		mostrarTablero(this.iconos, tablero_comprobado);
-            		
-            		this.tablero = tablero_comprobado;
-            		
-            		List<Object> lista_movimientos = Bolas.mejor_jugada(this.tablero);
-                    String movimiento = Bolas.recomendacion(this.tablero, lista_movimientos);
-                    recomendacion.setText(movimiento);
-                    
-                    this.lista = lista_movimientos;
-                    
-                    OrigenX.setText("");
-                	OrigenY.setText("");
-                	DestinoX.setText("");
-                	DestinoY.setText("");
-                	
-                	if(Bolas.final_partida(this.tablero, 0, 0)) {
-                		Recomendado.setEnabled(false);
-                		Mover.setEnabled(false);
+            		if(huecoDestino != '_') {
+                		JOptionPane.showMessageDialog(null, "ERROR: Posicion de destino ocupada.");
+                	}
+                	else if(huecoOrigen == '_') {
+                		JOptionPane.showMessageDialog(null, "ERROR: Posicion de origen vacia");
+                	}
+                	else {
+                		List<Object> fila_nueva = Bolas.reemplazar(tableroAux.apply(destinoX), destinoY, huecoOrigen);
+                		List<List<Object>> tablero_sin_hueco = Bolas.reemplazar_lista(this.tablero, destinoX, fila_nueva);
+                		List<Object> tablero_hueco = Bolas.reemplazar(tablero_sin_hueco.apply(origenX), origenY, '_');
+                		List<List<Object>> tablero_con_hueco = Bolas.reemplazar_lista(tablero_sin_hueco, origenX, tablero_hueco);
                 		
-                		MenuFrame menu = new MenuFrame(this.puntuacion);
-                		this.setVisible(false);
-                		menu.setVisible(true);
+                		List<List<Object>> tablero_sig_turno = Bolas.rellenar_turno(tablero_con_hueco, 0);
+                		mostrarTablero(iconos, tablero_sig_turno);
+                		
+                		int puntuacioAux = Bolas.calcular_puntuacion(tablero_sig_turno, 0, 0, 0) * 75;
+                		int puntuacion_acumulada = this.puntuacion + puntuacioAux;
+                		this.puntuacion = puntuacion_acumulada;
+                		
+                		puntos.setText(String.valueOf(this.puntuacion));
+                		
+                		List<List<Object>> tablero_comprobado = Bolas.comprobar_tablero(tablero_sig_turno);
+                		mostrarTablero(this.iconos, tablero_comprobado);
+                		
+                		this.tablero = tablero_comprobado;
+                		
+                		List<Object> lista_movimientos = Bolas.mejor_jugada(this.tablero);
+                        String movimiento = Bolas.recomendacion(this.tablero, lista_movimientos);
+                        recomendacion.setText(movimiento);
+                        
+                        this.lista = lista_movimientos;
+                        
+                        OrigenX.setText("");
+                    	OrigenY.setText("");
+                    	DestinoX.setText("");
+                    	DestinoY.setText("");
+                    	
+                    	if(Bolas.final_partida(this.tablero, 0, 0)) {
+                    		Recomendado.setEnabled(false);
+                    		Mover.setEnabled(false);
+                    		
+                    		MenuFrame menu = new MenuFrame(this.puntuacion);
+                    		this.setVisible(false);
+                    		menu.setVisible(true);
+                    	}
                 	}
             	}
-            	
         	}
-        	
-        	
-        	
         }catch(Exception e) {
         	JOptionPane.showMessageDialog(null, "ERROR: Introduce formato numérico");
         	OrigenX.setText("");

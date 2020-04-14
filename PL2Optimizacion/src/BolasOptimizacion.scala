@@ -665,7 +665,7 @@ object Bolas {
             
             val tableroAux = borrar_derecha(tablero, diagonalPrincipal, fila, columna)
             val tableroAux1 = borrar_derecha(tableroAux, diagonalSecundaria, fila, columna+1)
-            println("\nCOMPLETADA: DiagonalIzquierda["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
+            println("\nCOMPLETADA: DiagonalDerecha["+ (fila+1) +","+ (columna+1) +"] Color: "+ ficha +"\n")
             
             comprobar_tableroAux(tableroAux1, fila, columna+1)
           }
