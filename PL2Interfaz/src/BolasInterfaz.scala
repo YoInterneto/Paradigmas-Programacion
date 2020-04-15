@@ -1074,6 +1074,7 @@ object Bolas {
   //                --- List(fila, columna, color, contador, tipo) ---
   //El tipo se refiere a 1(horizontal), 2(vertical), 3(diagonalizq1), 4(diagonaldcha1), 
   //                     5(diagonalizq2), 6(diagonaldcha2), 7(mitadhorizontal), 8(mitadvertical)
+  //                     9-24(todas las posibilidades de crear una diagonal)
   //**********************************************************************************************
   def mejor_jugada(tablero: List[List[Char]]):List[Char] = { mejor_jugadaAux(tablero, 0, 0, 10, 10, 0, '_', 0, 'A') }
   def mejor_jugadaAux(tablero: List[List[Char]], fila: Int, columna: Int, filaMax: Int, columnaMax: Int, contadorMax: Int, colorMax: Char, tipo: Int, colorElegido: Char):List[Char] = {
